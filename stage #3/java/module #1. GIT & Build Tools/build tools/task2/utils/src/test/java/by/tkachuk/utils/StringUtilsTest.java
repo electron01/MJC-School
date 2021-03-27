@@ -21,5 +21,4 @@ public class StringUtilsTest {
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> StringUtils.isPositiveNumber(null));
     }
-
 }
