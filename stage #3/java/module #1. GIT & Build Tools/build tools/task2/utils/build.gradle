@@ -13,10 +13,8 @@ repositories {
 }
 
 dependencies {
-
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.5.2')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.5.2')
-
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
 }
@@ -27,15 +25,8 @@ tasks.named('jar') {
     manifest {
         attributes('Implementation-Title': project.name,
                 'Implementation-Version': project.version)
-        
     }
-  
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
-   
-
 }
-
-
-

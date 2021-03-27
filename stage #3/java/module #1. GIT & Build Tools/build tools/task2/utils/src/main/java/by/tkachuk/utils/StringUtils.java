@@ -22,29 +22,9 @@ public class StringUtils {
      * @return = true is Positive Number
      */
     public static boolean isPositiveNumber(String str) {
-        if (!isNumbers(str)) {
+        if (!NumberUtils.isCreatable(str)) {
             throw new IllegalArgumentException("Param is not a Number!");
         }
         return str.charAt(0) != '-';
-
-
     }
-
-    /**
-     * @param str - String to check
-     * @return true if is Number, positive or negative
-     */
-    public static boolean isNumbers(String str) {
-        if (str == null || str.length() == 0) {
-            return false;
-        }
-        if (str.charAt(0) == '-') {
-            return NumberUtils.isDigits(str.substring(1));
-        }
-        return NumberUtils.isDigits(str);
-
-
-    }
-
-
 }

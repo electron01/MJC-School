@@ -11,18 +11,15 @@ public class StringUtilsTest {
         String test = "12";
         Assertions.assertTrue(StringUtils.isPositiveNumber(test));
     }
-
     @Test
     public void isNotPositiveNumberTest() {
         String test = "-12";
         Assertions.assertFalse(StringUtils.isPositiveNumber(test));
     }
-
-    @Test()
+    @Test
     public void isPositiveNumberTestWithNullParam() {
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> StringUtils.isPositiveNumber(null));
     }
-
 
 }
