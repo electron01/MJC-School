@@ -1,0 +1,4 @@
+apply plugin: 'java'
+dependencies{
+    implementation files('/Users/alekseytkachuk/Documents/lab/MJC-School/stage #3/java/module #1. GIT & Build Tools/build tools/task2/utils/build/libs/utils-1.3.5.jar')
+}
