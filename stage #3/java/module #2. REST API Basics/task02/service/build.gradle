@@ -1,0 +1,21 @@
+configurations {
+    mapstruct
+}
+dependencies {
+    implementation "org.springframework:spring-webmvc:5.2.13.RELEASE"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.12.2"
+    implementation "org.springframework:spring-jdbc:5.2.13.RELEASE"
+    testImplementation "org.springframework:spring-test:5.2.13.RELEASE"
+    implementation "javax.validation:validation-api:2.0.1.Final"
+    implementation group: 'javax.el', name: 'el-api', version: '2.2'
+    implementation "org.hibernate.validator:hibernate-validator:6.0.22.Final"
+    implementation "org.mapstruct:mapstruct:1.4.2.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+    implementation project(":repository")
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
+}
