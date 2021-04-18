@@ -1,14 +1,13 @@
 package by.epam.esm;
 
 
-import by.epam.esm.dao.CertificateSqlQuery;
+import by.epam.esm.dao.CertificateSqlQueryAssembler;
 import by.epam.esm.dao.CrdTagDao;
 import by.epam.esm.dao.CrudGiftCertificateDao;
 import by.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import by.epam.esm.dao.impl.TagDaoImpl;
 import by.epam.esm.dao.mapper.GiftCertificateRowMapper;
 import by.epam.esm.dao.mapper.TagRowMapper;
-import by.epam.esm.enity.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +30,7 @@ public class RepositoryConfig {
     @Autowired
     private GiftCertificateRowMapper giftCertificateRowMapper;
     @Autowired
-    private CertificateSqlQuery sqlQuery;
+    private CertificateSqlQueryAssembler sqlQuery;
     @Autowired
     private CrdTagDao tagDao;
     @Autowired
@@ -64,8 +63,8 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public CertificateSqlQuery getSqlQuery() {
-        return new CertificateSqlQuery();
+    public CertificateSqlQueryAssembler getSqlQuery() {
+        return new CertificateSqlQueryAssembler();
     }
 
     @Bean

@@ -7,7 +7,7 @@ import by.epam.esm.enity.request.GiftCertificateRequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CertificateSqlQuery {
+public class CertificateSqlQueryAssembler implements BaseSqlQueryAssembler {
     private static final String FULL_SELECT = "SELECT DISTINCT gift_certificate.gift_certificate_id, gift_certificate.name," +
             "gift_certificate.description, gift_certificate.price, gift_certificate.duration," +
             "gift_certificate.create_date, gift_certificate.last_update_date " +
@@ -51,8 +51,6 @@ public class CertificateSqlQuery {
         addWhereIdEqual(giftCertificate.getId());
         System.out.println(sqlQuery);
         return new SqlQuery(sqlQuery.toString(),params.toArray());
-
-
     }
 
     private void addParamIfNeed(Object param, String paramName) {
@@ -60,7 +58,6 @@ public class CertificateSqlQuery {
             sqlQuery.append(paramName + EQUALLY + EXCEPTED_VALUE + COMMA);
             params.add(param);
         }
-
     }
 
     private void deleteLastComma() {
@@ -81,8 +78,6 @@ public class CertificateSqlQuery {
         addSort(giftCertificateRequestParam.getSort());
         addPagination(pagination);
         return new SqlQuery(sqlQuery.toString(), params.toArray());
-
-
     }
 
     private void addRequestParam(String requestParam, String column) {
@@ -112,8 +107,6 @@ public class CertificateSqlQuery {
             }
             deleteLastOrderSeparator();
         }
-
-
     }
 
     private void deleteLastOrderSeparator() {
@@ -140,13 +133,8 @@ public class CertificateSqlQuery {
             return sqlQuery;
         }
 
-
         public Object[] getParams() {
             return params;
         }
-
-
     }
-
-
 }

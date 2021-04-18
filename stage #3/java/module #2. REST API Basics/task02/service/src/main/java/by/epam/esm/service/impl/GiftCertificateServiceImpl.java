@@ -193,7 +193,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     private boolean isGiftCertificateNameIsExists(String name) {
-        return giftCertificateDao.getGiftCertificateByName(name).isPresent();
+        return giftCertificateDao.findByName(name).isPresent();
 
     }
 

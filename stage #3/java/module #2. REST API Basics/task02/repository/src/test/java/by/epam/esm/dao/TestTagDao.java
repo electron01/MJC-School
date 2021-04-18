@@ -34,82 +34,113 @@ public class TestTagDao {
     }
 
     @Test
-    public void getAllTagTest() {
+    public void findAllTagTest() {
+        // Given Request for find all tags
+        // When method findAll will start executing with default pagination params
         List<Tag> tagList = tagDao.findAll(pagination);
+        //Then a complete tag list should be received with startPosition = 0 and Limit = 6
         Assertions.assertEquals(tags, tagList);
     }
 
     @Test
-    public void getAllTagsWithPagination() {
+    public void findAllTagsWithPagination() {
+        // Given Request for find all tags
         Pagination pagination = new Pagination();
         pagination.setStartPosition(2);
         pagination.setLimit(2);
+        // When method findAll will start executing with pagination params startPosition = 2 and Limit = 2
         List<Tag> expectedTags = tags.subList(pagination.getStartPosition(), pagination.getLimit() + pagination.getStartPosition());
+        //Then a complete tag list should be received with startPosition = 2 and Limit = 2
         Assertions.assertEquals(expectedTags, tagDao.findAll(pagination));
 
     }
 
     @Test
-    public void getTagByCorrectId() {
+    public void findTagByCorrectId() {
+        // Given Request for find tag by id
         Integer id = 1;
+        // When method find will start executing with correct id
         Optional<Tag> tag = tagDao.findById(id);
+        //Then returned Optional should be contains tag
         Assertions.assertEquals(Optional.of(tags.get(id)), tag);
 
     }
 
     @Test
-    public void getTagByUnCorrectId() {
+    public void findTagByUnCorrectId() {
+        // Given Request for find tag by id
         Integer id = -1;
+        // When method find will start executing with unCorrect id
         Optional<Tag> tag = tagDao.findById(id);
+        //Then returned Optional should be empty
         Assertions.assertEquals(Optional.empty(), tag);
 
     }
 
     @Test
-    public void getTagByCorrectCertificateId() {
+    public void findTagByCorrectCertificateId() {
+        // Given Request for find tag by certificate id
         Integer id = 1;
-        List<Tag> tagByCertificateId = tagDao.getTagByCertificateId(id);
+        // When method findByCertificateId will start executing with correct id
+        List<Tag> tagByCertificateId = tagDao.findByCertificateId(id);
+        //Then returned list should be contains tags related for certificate
         Assertions.assertEquals(certificateTags, tagByCertificateId);
 
     }
 
     @Test
-    public void getTagByUnCorrectCertificateId() {
+    public void findTagByUnCorrectCertificateId() {
+        // Given Request for find tag by certificate id
         Integer id = -1;
-        List<Tag> tagByCertificateId = tagDao.getTagByCertificateId(id);
+        // When method findByCertificateId will start executing with unCorrect id
+        List<Tag> tagByCertificateId = tagDao.findByCertificateId(id);
+        //Then returned list should be empty
         Assertions.assertTrue((tagByCertificateId).isEmpty());
 
     }
 
     @Test
     public void addNewTag() {
+        // Given Request for add new tag
         Tag tag = new Tag();
         tag.setId(10);
         tag.setName("newTag");
+        // When method save will start executing with correct tag
         Tag savedTag = tagDao.save(tag);
+        // Then new tag must be saved with an autoIncrement identifier
         Assertions.assertEquals(tag.getName(), savedTag.getName());
         Assertions.assertNotNull(savedTag.getId());
     }
 
     @Test
     public void updateTag() {
+        // Given Request for update  tag
+        // When method update will start executing
+        // Then get an exception (UnsupportedOperationException)
         Assertions.assertThrows(UnsupportedOperationException.class, () -> tagDao.update(new Tag()));
     }
 
     @Test
     void deleteTagByCorrectId() {
+        // Given Request for delete tag by id
         Tag tag = new Tag();
         tag.setId(11);
         tag.setName("tagNew12)");
         Tag savedTag = tagDao.save(tag);
-        Integer id = savedTag.getId();
-        Assertions.assertTrue(tagDao.deleteById(id));
+        // When method deleteById will start executing with correct id
+        boolean deleteById = tagDao.deleteById(savedTag.getId());
+        //Then certificate must be removed and method delete must be return true
+        Assertions.assertTrue(deleteById);
     }
 
     @Test
     void deleteTagByUnCorrectId() {
+        // Given Request for delete tag by id
         Integer id = -1;
-        Assertions.assertFalse(tagDao.deleteById(id));
+        // When method deleteById will start executing with unCorrect id
+        boolean deleteById = tagDao.deleteById(id);
+        //Then certificate must be return false
+        Assertions.assertFalse(deleteById);
     }
 
 

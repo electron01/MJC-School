@@ -8,11 +8,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class GiftCertificateDto extends EntityDto {
-    @Pattern(regexp = "^[A-Za-z0-9\\s]{3,25}$",
+    @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){3,})(?=(^[\\s\\S]{0,25}$)).*",
             message = "GiftCertificateService Name must be longer than 3 characters and shorter than 25 characters" +
                     " and consist only of letters, numbers and an underscore ")
     @NotNull(message = "Name can't be null")
-    //@NotBlank(message = "Name can't be empty")
     private String name;
 
     @DecimalMin(value = "0.00")
@@ -24,7 +23,6 @@ public class GiftCertificateDto extends EntityDto {
             message = "GiftCertificateService description must be longer than 5 characters and shorter than 255 characters" +
                     " and consist only of letters, numbers and an underscore ")
     @NotNull(message = "Description can't be null")
-    //@NotBlank(message = "Description can't be empty")
     private String description;
 
     @Min(value = 1)

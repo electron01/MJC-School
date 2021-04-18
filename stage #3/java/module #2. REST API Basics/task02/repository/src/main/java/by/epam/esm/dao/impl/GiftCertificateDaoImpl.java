@@ -1,6 +1,6 @@
 package by.epam.esm.dao.impl;
 
-import by.epam.esm.dao.CertificateSqlQuery;
+import by.epam.esm.dao.CertificateSqlQueryAssembler;
 import by.epam.esm.dao.CrudGiftCertificateDao;
 import by.epam.esm.dao.mapper.GiftCertificateRowMapper;
 import by.epam.esm.enity.GiftCertificate;
@@ -61,15 +61,15 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     @Override
     public List<GiftCertificate> findAll(GiftCertificateRequestParam giftCertificateRequestParam, Pagination pagination) {
-        CertificateSqlQuery certificateSqlQuery = new CertificateSqlQuery();
-        CertificateSqlQuery.SqlQuery sqlQuery = certificateSqlQuery.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
+        CertificateSqlQueryAssembler certificateSqlQuery = new CertificateSqlQueryAssembler();
+        CertificateSqlQueryAssembler.SqlQuery sqlQuery = certificateSqlQuery.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
         return jdbcTemplate.query(sqlQuery.getSqlQuery(),
                 sqlQuery.getParams(),
                 giftCertificateRowMapper);
     }
 
     @Override
-    public Optional<GiftCertificate> getGiftCertificateByName(String name) {
+    public Optional<GiftCertificate> findByName(String name) {
         return jdbcTemplate.query(GET_CERTIFICATE_BY_NAME,
                 new Object[]{name},
                 giftCertificateRowMapper).stream()
@@ -78,8 +78,8 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     @Override
     public GiftCertificate partUpdate(GiftCertificate entity) {
-        CertificateSqlQuery certificateSqlQuery = new CertificateSqlQuery();
-        CertificateSqlQuery.SqlQuery sqlUpdateRequest = certificateSqlQuery.createPartUpdateRequest(entity);
+        CertificateSqlQueryAssembler certificateSqlQuery = new CertificateSqlQueryAssembler();
+        CertificateSqlQueryAssembler.SqlQuery sqlUpdateRequest = certificateSqlQuery.createPartUpdateRequest(entity);
         jdbcTemplate.update(sqlUpdateRequest.getSqlQuery(), sqlUpdateRequest.getParams());
         if (entity.getTags() != null) {
             updateTags(entity);
@@ -103,7 +103,6 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
                 new Object[]{id},
                 giftCertificateRowMapper).stream()
                 .findAny();
-
     }
 
     @Override
@@ -140,9 +139,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         preparedStatement.setString(index++, entity.getDescription());
         preparedStatement.setBigDecimal(index++, entity.getPrice());
         preparedStatement.setInt(index, entity.getDuration());
-
         return preparedStatement;
-
     }
 
     private PreparedStatement getUpdateStatement(Connection con, GiftCertificate entity) throws SQLException {
@@ -154,7 +151,6 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         preparedStatement.setInt(index++, entity.getDuration());
         preparedStatement.setInt(index, entity.getId());
         return preparedStatement;
-
     }
 
     private Integer getGeneratedId(KeyHolder keyHolder) {
@@ -167,6 +163,4 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         deleteFromGiftCertificate(giftCertificate);
         addToTagGiftCertificate(giftCertificate);
     }
-
-
 }

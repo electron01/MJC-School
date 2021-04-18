@@ -34,9 +34,7 @@ public class GiftCertificateRequestParam implements EntityRequestParam {
         return sort;
     }
 
-
     public void setSort(String sort) {
         this.sort = sort;
     }
-
 }

@@ -40,7 +40,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<TagDto> getByGiftCertificateId(Integer certificateId) {
-        return tagDao.getTagByCertificateId(certificateId)
+        return tagDao.findByCertificateId(certificateId)
                 .stream()
                 .map(tagMapper::tagToTagDTO)
                 .collect(Collectors.toList());
@@ -48,12 +48,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public boolean isTagByNameExist(String name) {
-        return tagDao.getTagByName(name).isPresent();
+        return tagDao.findByName(name).isPresent();
     }
 
     @Override
     public TagDto getByName(String name) {
-        return tagDao.getTagByName(name)
+        return tagDao.findByName(name)
                 .stream()
                 .findAny()
                 .map(tagMapper::tagToTagDTO)
@@ -90,7 +90,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDto add(TagDto dto) {
         baseValidator.dtoValidator(dto);
-        if (tagDao.getTagByName(dto.getName()).isPresent()) {
+        if (tagDao.findByName(dto.getName()).isPresent()) {
             throw new ServiceException(ErrorCode.NAME_TAG_IS_ALREADY_EXIST,
                     ErrorCode.NAME_TAG_IS_ALREADY_EXIST.getMessage(),
                     Set.of(new ErrorMessage("name", dto.getName(), ErrorCode.NAME_TAG_IS_ALREADY_EXIST.getMessage())

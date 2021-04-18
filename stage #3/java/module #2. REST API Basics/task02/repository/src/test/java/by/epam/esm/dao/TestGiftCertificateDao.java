@@ -34,52 +34,69 @@ public class TestGiftCertificateDao {
     }
 
     @Test
-    public void getAllCertificateTest() {
+    public void findAllCertificateTest() {
+        // Given Request for find all gift certificate
         GiftCertificateRequestParam giftCertificateRequestParam = new GiftCertificateRequestParam();
+        // When method findAll will start executing with default pagination params startPosition = 0 and Limit = 6
         List<GiftCertificate> foundCertificateList = giftCertificateDao.findAll(giftCertificateRequestParam, pagination);
+        //Then a complete  certificate list should be received with startPosition = 0 and Limit = 6
         Assertions.assertEquals(certificateList, foundCertificateList);
-
     }
 
     @Test
-    public void getAllCertificateByNameLikeTest() {
+    public void findAllCertificateByNameLikeTest() {
+        // Given Request for find all gift certificate
         GiftCertificateRequestParam giftCertificateRequestParam = new GiftCertificateRequestParam();
+        // When method findAll will start executing with params name like Scuba
         giftCertificateRequestParam.setName("Scuba");
         List<GiftCertificate> foundCertificateList = giftCertificateDao.findAll(giftCertificateRequestParam, pagination);
+        // Then a certificate list with a name like Scuba
         Assertions.assertEquals(List.of(certificateList.get(3)), foundCertificateList);
     }
 
     @Test
-    public void getAllCertificateByDescriptionLikeTest() {
+    public void findAllCertificateByDescriptionLikeTest() {
+        // Given Request for find all gift certificate
         GiftCertificateRequestParam giftCertificateRequestParam = new GiftCertificateRequestParam();
+        // When method findAll will start executing with params description like house
         giftCertificateRequestParam.setDescription("hours");
         List<GiftCertificate> foundCertificateList = giftCertificateDao.findAll(giftCertificateRequestParam, pagination);
+        // Then a certificate list with a name description house
         Assertions.assertEquals(List.of(certificateList.get(2), certificateList.get(3)), foundCertificateList);
     }
 
     @Test
-    public void getAllCertificateSortByDescName() {
+    public void findAllCertificateSortByDescName() {
+        // Given Request for find all gift certificate
         GiftCertificateRequestParam giftCertificateRequestParam = new GiftCertificateRequestParam();
+        // When method findAll will start executing with sort by desc name
         giftCertificateRequestParam.setSort("desc(name)");
         List<GiftCertificate> foundCertificateList = giftCertificateDao.findAll(giftCertificateRequestParam, pagination);
-        List<GiftCertificate> expectedList = giftCertificateDao.findAll(giftCertificateRequestParam, pagination);
+        // Then a certificate list with sort by desc name
+        List<GiftCertificate> expectedList =  new ArrayList<>();
+        expectedList.addAll(certificateList);
         expectedList.sort(Comparator.comparing(GiftCertificate::getName).reversed());
-
         Assertions.assertEquals(expectedList, foundCertificateList);
     }
 
     @Test
-    public void getAllCertificateSortByDescDurationAndAscName() {
+    public void findAllCertificateSortByDescDurationAndAscName() {
+        // Given Request for find all gift certificate
         GiftCertificateRequestParam giftCertificateRequestParam = new GiftCertificateRequestParam();
+        // When method findAll will start executing with sort by desc duration and asc name
         giftCertificateRequestParam.setSort("desc(duration),asc(name)");
         List<GiftCertificate> foundCertificateList = giftCertificateDao.findAll(giftCertificateRequestParam, pagination);
-        List<GiftCertificate> expectedList = giftCertificateDao.findAll(giftCertificateRequestParam, pagination);
-        expectedList.sort(Comparator.comparingInt(GiftCertificate::getDuration).reversed());
+        // Then a certificate list with sort by desc duration and asc name
+        List<GiftCertificate> expectedList = new ArrayList<>();
+        expectedList.addAll(certificateList);
+        expectedList.sort(Comparator.comparingInt(GiftCertificate::getDuration).reversed()
+                .thenComparing(GiftCertificate::getName));
         Assertions.assertEquals(expectedList, foundCertificateList);
     }
 
     @Test
     public void addNewCertificateTest() {
+        // Given Request for add new gift certificate
         GiftCertificate giftCertificate = new GiftCertificate();
         giftCertificate.setName("New Certificate");
         giftCertificate.setDescription("New Description");
@@ -87,13 +104,16 @@ public class TestGiftCertificateDao {
         giftCertificate.setPrice(BigDecimal.valueOf(123.00).setScale(2));
         giftCertificate.setCreateDate(LocalDateTime.parse("2021-01-01T10:21:34"));
         giftCertificate.setUpdateDate(LocalDateTime.parse("2021-02-20T19:25:16"));
+        // When method save will start executing with correct certificate
         GiftCertificate savedCertificate = giftCertificateDao.save(giftCertificate);
+        // Then new certificate must be saved  with an autoIncrement identifier
         Assertions.assertEquals(savedCertificate.getName(), giftCertificate.getName());
         Assertions.assertNotNull(savedCertificate.getId());
     }
 
     @Test
     public void deleteCertificateByCorrectIdTest() {
+        // Given Request for delete gift certificate by id
         GiftCertificate giftCertificate = new GiftCertificate();
         giftCertificate.setName("New Certificate");
         giftCertificate.setDescription("New Description");
@@ -102,44 +122,52 @@ public class TestGiftCertificateDao {
         giftCertificate.setCreateDate(LocalDateTime.parse("2021-01-01T10:21:34"));
         giftCertificate.setUpdateDate(LocalDateTime.parse("2021-02-20T19:25:16"));
         GiftCertificate savedCertificate = giftCertificateDao.save(giftCertificate);
-        Assertions.assertTrue(giftCertificateDao.deleteById(savedCertificate.getId()));
+        // When method deleteById will start executing with correct id
+        boolean deleteById = giftCertificateDao.deleteById(savedCertificate.getId());
+        //Then certificate must be removed and method delete must be return true
+        Assertions.assertTrue(deleteById);
     }
 
     @Test
     public void deleteCertificateByUnCorrectIdTest() {
-        GiftCertificate giftCertificate = new GiftCertificate();
-        giftCertificate.setName("New Certificate");
-        giftCertificate.setDescription("New Description");
-        giftCertificate.setDuration(123);
-        giftCertificate.setPrice(BigDecimal.valueOf(123.00).setScale(2));
-        giftCertificate.setCreateDate(LocalDateTime.parse("2021-01-01T10:21:34"));
-        giftCertificate.setUpdateDate(LocalDateTime.parse("2021-02-20T19:25:16"));
-        GiftCertificate savedCertificate = giftCertificateDao.save(giftCertificate);
-        Assertions.assertTrue(giftCertificateDao.deleteById(savedCertificate.getId()));
+        // Given Request for delete gift certificate by id
+        // When method deleteById will start executing with unCorrect id
+        boolean deleteById = giftCertificateDao.deleteById(-1);
+        //Then certificate must be removed and method delete must be return false
+        Assertions.assertFalse(deleteById);
     }
 
     @Test
     public void findCertificateByCorrectId() {
+        // Given Request for find gift certificate by id
         Integer id = 1;
+        // When method find will start executing with correct id
         Optional<GiftCertificate> findById = giftCertificateDao.findById(id);
+        //Then returned Optional should be contains certificate
         Assertions.assertEquals(Optional.of(certificateList.get(id)), findById);
 
     }
 
     @Test
     public void findCertificateByUnCorrectId() {
+        // Given Request for find gift certificate by id
         Integer id = -1;
+        // When method find will start executing with unCorrect id
         Optional<GiftCertificate> findById = giftCertificateDao.findById(id);
+        //Then returned Optional should be empty
         Assertions.assertEquals(Optional.empty(), findById);
 
     }
 
     @Test
-   public void getAllWithPagination(){
+   public void findAllWithPagination(){
+        // Given Request for find all gift certificate
         Pagination pagination = new Pagination();
         pagination.setStartPosition(2);
         pagination.setLimit(2);
+        // When method findAll will start executing with pagination params (startPosition = 2 and Limit = 2)
         List<GiftCertificate> foundList = giftCertificateDao.findAll(new GiftCertificateRequestParam(),pagination);
+        // Then a certificate list with startPosition = 2 and Limit = 2
         Assertions.assertEquals(certificateList.subList(pagination.getStartPosition(),pagination.getStartPosition()+pagination.getLimit()),
                 foundList);
     }

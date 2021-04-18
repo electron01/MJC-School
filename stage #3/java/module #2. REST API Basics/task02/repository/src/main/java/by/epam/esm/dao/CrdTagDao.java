@@ -8,9 +8,6 @@ import java.util.Optional;
 
 public interface CrdTagDao extends BaseDao<Tag, Integer> {
     List<Tag> findAll(Pagination pagination);
-
-    Optional<Tag> getTagByName(String tagName);
-
-    List<Tag> getTagByCertificateId(Integer id);
-
+    Optional<Tag> findByName(String tagName);
+    List<Tag> findByCertificateId(Integer id);
 }

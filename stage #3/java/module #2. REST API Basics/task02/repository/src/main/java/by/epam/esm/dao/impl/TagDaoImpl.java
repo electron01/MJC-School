@@ -41,14 +41,14 @@ public class TagDaoImpl implements CrdTagDao {
     }
 
     @Override
-    public Optional<Tag> getTagByName(String tagName) {
+    public Optional<Tag> findByName(String tagName) {
         return jdbcTemplate.query(GET_TAG_NY_NAME, new Object[]{tagName}, tagRowMapper)
                 .stream()
                 .findAny();
     }
 
     @Override
-    public List<Tag> getTagByCertificateId(Integer id) {
+    public List<Tag> findByCertificateId(Integer id) {
         return jdbcTemplate.query(GET_LIST_TAG_BY_CERTIFICATE_ID,
                 new Object[]{id},
                 tagRowMapper);

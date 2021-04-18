@@ -100,8 +100,6 @@ public class GiftCertificate extends Entity {
                 Objects.equals(tags, that.tags);
     }
 
-
-
     @Override
     public int hashCode() {
         return Objects.hash(getId(),name, price, description, duration, createDate, updateDate, tags);

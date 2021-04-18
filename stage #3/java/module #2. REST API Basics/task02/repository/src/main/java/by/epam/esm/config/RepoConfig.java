@@ -27,6 +27,4 @@ public class RepoConfig {
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
-
-
 }
