@@ -1,7 +1,7 @@
 package by.epam.esm;
 
 
-import by.epam.esm.dao.CertificateSqlQueryAssembler;
+import by.epam.esm.dao.CertificateSqlQueryAssemblerImpl;
 import by.epam.esm.dao.CrdTagDao;
 import by.epam.esm.dao.CrudGiftCertificateDao;
 import by.epam.esm.dao.impl.GiftCertificateDaoImpl;
@@ -29,7 +29,7 @@ public class RepositoryConfig {
     @Autowired
     private GiftCertificateRowMapper giftCertificateRowMapper;
     @Autowired
-    private CertificateSqlQueryAssembler sqlQuery;
+    private CertificateSqlQueryAssemblerImpl sqlQuery;
     @Autowired
     private CrdTagDao tagDao;
     @Autowired
@@ -59,8 +59,8 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public CertificateSqlQueryAssembler getSqlQuery() {
-        return new CertificateSqlQueryAssembler();
+    public CertificateSqlQueryAssemblerImpl getSqlQuery() {
+        return new CertificateSqlQueryAssemblerImpl();
     }
 
     @Bean

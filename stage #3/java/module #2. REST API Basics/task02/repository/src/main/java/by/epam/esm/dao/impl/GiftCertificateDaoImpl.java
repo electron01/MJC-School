@@ -1,6 +1,7 @@
 package by.epam.esm.dao.impl;
 
-import by.epam.esm.dao.CertificateSqlQueryAssembler;
+import by.epam.esm.dao.BaseSqlQueryAssembler;
+import by.epam.esm.dao.CertificateSqlQueryAssemblerImpl;
 import by.epam.esm.dao.CrudGiftCertificateDao;
 import by.epam.esm.dao.mapper.GiftCertificateRowMapper;
 import by.epam.esm.enity.GiftCertificate;
@@ -52,17 +53,18 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     private GiftCertificateRowMapper giftCertificateRowMapper;
     private JdbcTemplate jdbcTemplate;
-    private CertificateSqlQueryAssembler certificateSqlQueryAssembler = new CertificateSqlQueryAssembler();
+    private BaseSqlQueryAssembler certificateSqlQueryAssembler;
 
     @Autowired
-    public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate) {
+    public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate,BaseSqlQueryAssembler certificateSqlQueryAssembler ) {
         this.giftCertificateRowMapper = giftCertificateRowMapper;
         this.jdbcTemplate = jdbcTemplate;
+        this.certificateSqlQueryAssembler=certificateSqlQueryAssembler;
     }
 
     @Override
     public List<GiftCertificate> findAll(GiftCertificateRequestParam giftCertificateRequestParam, Pagination pagination) {
-        CertificateSqlQueryAssembler.SqlQuery sqlQuery = certificateSqlQueryAssembler.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
+        CertificateSqlQueryAssemblerImpl.SqlQuery sqlQuery = certificateSqlQueryAssembler.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
         return jdbcTemplate.query(sqlQuery.getSqlQuery(),
                 sqlQuery.getParams(),
                 giftCertificateRowMapper);
@@ -78,7 +80,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     @Override
     public GiftCertificate partUpdate(GiftCertificate entity) {
-        CertificateSqlQueryAssembler.SqlQuery sqlUpdateRequest = certificateSqlQueryAssembler.createPartUpdateRequest(entity);
+        CertificateSqlQueryAssemblerImpl.SqlQuery sqlUpdateRequest = certificateSqlQueryAssembler.createPartUpdateRequest(entity);
         jdbcTemplate.update(sqlUpdateRequest.getSqlQuery(), sqlUpdateRequest.getParams());
         if (entity.getTags() != null) {
             updateTags(entity);
