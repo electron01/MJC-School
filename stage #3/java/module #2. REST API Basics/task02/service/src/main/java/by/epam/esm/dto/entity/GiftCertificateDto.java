@@ -6,7 +6,12 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**
+ * class GiftCertificateDto
+ * @see by.epam.esm.enity.GiftCertificate
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class GiftCertificateDto extends EntityDto {
     @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){3,})(?=(^[\\s\\S]{0,25}$)).*",
             message = "GiftCertificateService Name must be longer than 3 characters and shorter than 25 characters" +

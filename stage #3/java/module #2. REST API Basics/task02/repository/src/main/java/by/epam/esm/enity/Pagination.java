@@ -1,5 +1,11 @@
 package by.epam.esm.enity;
 
+/**
+ * class Pagination
+ * class contains two params startPosition and limit for list separation on page
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class Pagination {
     private Integer startPosition;
     private Integer limit;

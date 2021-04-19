@@ -52,6 +52,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     private GiftCertificateRowMapper giftCertificateRowMapper;
     private JdbcTemplate jdbcTemplate;
+    private CertificateSqlQueryAssembler certificateSqlQueryAssembler = new CertificateSqlQueryAssembler();
 
     @Autowired
     public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate) {
@@ -61,8 +62,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     @Override
     public List<GiftCertificate> findAll(GiftCertificateRequestParam giftCertificateRequestParam, Pagination pagination) {
-        CertificateSqlQueryAssembler certificateSqlQuery = new CertificateSqlQueryAssembler();
-        CertificateSqlQueryAssembler.SqlQuery sqlQuery = certificateSqlQuery.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
+        CertificateSqlQueryAssembler.SqlQuery sqlQuery = certificateSqlQueryAssembler.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
         return jdbcTemplate.query(sqlQuery.getSqlQuery(),
                 sqlQuery.getParams(),
                 giftCertificateRowMapper);
@@ -78,8 +78,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     @Override
     public GiftCertificate partUpdate(GiftCertificate entity) {
-        CertificateSqlQueryAssembler certificateSqlQuery = new CertificateSqlQueryAssembler();
-        CertificateSqlQueryAssembler.SqlQuery sqlUpdateRequest = certificateSqlQuery.createPartUpdateRequest(entity);
+        CertificateSqlQueryAssembler.SqlQuery sqlUpdateRequest = certificateSqlQueryAssembler.createPartUpdateRequest(entity);
         jdbcTemplate.update(sqlUpdateRequest.getSqlQuery(), sqlUpdateRequest.getParams());
         if (entity.getTags() != null) {
             updateTags(entity);

@@ -1,6 +1,5 @@
 rootProject.name = 'giftCertificate'
 
-
 include (":web")
 include (":repository")
 include (":service")

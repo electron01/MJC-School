@@ -6,8 +6,22 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+/**
+ * interface GiftCertificateMapper
+ * interface contains a method to convert a dto gift certificate to a gift certificate and vice versa
+ * @see GiftCertificate
+ * @see GiftCertificateDto
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 @Mapper(componentModel = "spring")
 public interface GiftCertificateMapper {
+    /**
+     * method giftCertificateToGiftCertificateDto
+     * method for convert gift certificate to gift certificate dto
+     * @param entity - gift certificate for convert
+     * @return gift certificate dto
+     */
     @Mappings({
             @Mapping(target = "id",source = "entity.id"),
             @Mapping(target = "name",source = "entity.name"),
@@ -19,6 +33,12 @@ public interface GiftCertificateMapper {
     })
     GiftCertificateDto giftCertificateToGiftCertificateDto(GiftCertificate entity);
 
+    /**
+     * method giftCertificateDtoToGiftCertificate
+     * method for convert gift certificate dto to gift certificate
+     * @param dto - gift certificate dto for convert
+     * @return gift certificate
+     */
     @Mappings({
             @Mapping(target = "id",source = "dto.id"),
             @Mapping(target = "name",source = "dto.name"),

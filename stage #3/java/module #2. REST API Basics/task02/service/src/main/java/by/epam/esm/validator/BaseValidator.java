@@ -14,7 +14,12 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
+/**
+ * class BaseValidator
+ * class contains method for validate dto
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 @Component
 public class BaseValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseValidator.class);
@@ -26,6 +31,11 @@ public class BaseValidator {
         this.validator = validator;
     }
 
+    /**
+     * method dtoValidator
+     * method for check all fields dto
+     * @param dto - dto for validate
+     */
     public void dtoValidator(Object dto) {
         boolean isUnCorrectDto = false;
         Set<ConstraintViolation<Object>> validate = validator.validate(dto);
@@ -46,6 +56,11 @@ public class BaseValidator {
         }
     }
 
+    /**
+     * method dtoValidatorForPartUpdate
+     * method got validate notNull field in dto
+     * @param dto dto for validate
+     */
     public void dtoValidatorForPartUpdate(Object dto) {
         boolean isUnCorrectDto = false;
         Set<ConstraintViolation<Object>> validate = validator.validate(dto);
@@ -71,6 +86,12 @@ public class BaseValidator {
         }
     }
 
+    /**
+     * method atLeastOneNonNullParameter
+     * method for check that not all dto fields is NULL
+     * @param dto - dto for check fields
+     * @return true if at least one field not null or throw ServiceException
+     */
     private boolean atLeastOneNonNullParameter(Object dto) {
         Field[] fields = dto.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -91,6 +112,14 @@ public class BaseValidator {
         return false;
     }
 
+    /**
+     * method createNewErrorMessage
+     * method for create new error message
+     * @param path - problem field
+     * @param unCorrectValue - in correct value
+     * @param message - error message
+     * @return new ErrorMessage
+     */
     private ErrorMessage createNewErrorMessage(String path, String unCorrectValue, String message) {
         ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setField(path);

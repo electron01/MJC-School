@@ -7,6 +7,13 @@ import by.epam.esm.enity.request.GiftCertificateRequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class CertificateSqlQueryAssembler
+ * implements BaseSqlQueryAssembler
+ * class contains methods for assemble sql query got gift certificate table
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class CertificateSqlQueryAssembler implements BaseSqlQueryAssembler {
     private static final String FULL_SELECT = "SELECT DISTINCT gift_certificate.gift_certificate_id, gift_certificate.name," +
             "gift_certificate.description, gift_certificate.price, gift_certificate.duration," +
@@ -41,7 +48,14 @@ public class CertificateSqlQueryAssembler implements BaseSqlQueryAssembler {
     private StringBuilder sqlQuery = new StringBuilder();
     private List<Object> params = new ArrayList<>();
 
+    private void initializationSqlQuery() {
+        params.clear();
+        sqlQuery.delete(0, sqlQuery.length());
+    }
+
+
     public SqlQuery createPartUpdateRequest(GiftCertificate giftCertificate) {
+        initializationSqlQuery();
         sqlQuery.append(START_PART_UPDATE_REQUEST);
         addParamIfNeed(giftCertificate.getName(), NAME);
         addParamIfNeed(giftCertificate.getDescription(), DESCRIPTION);
@@ -50,7 +64,7 @@ public class CertificateSqlQueryAssembler implements BaseSqlQueryAssembler {
         deleteLastComma();
         addWhereIdEqual(giftCertificate.getId());
         System.out.println(sqlQuery);
-        return new SqlQuery(sqlQuery.toString(),params.toArray());
+        return new SqlQuery(sqlQuery.toString(), params.toArray());
     }
 
     private void addParamIfNeed(Object param, String paramName) {
@@ -71,6 +85,7 @@ public class CertificateSqlQueryAssembler implements BaseSqlQueryAssembler {
 
 
     public SqlQuery createQueryForFindAllCertificate(GiftCertificateRequestParam giftCertificateRequestParam, Pagination pagination) {
+        initializationSqlQuery();
         sqlQuery.append(FULL_SELECT);
         addRequestParam(giftCertificateRequestParam.getName(), NAME);
         addRequestParam(giftCertificateRequestParam.getDescription(), DESCRIPTION);

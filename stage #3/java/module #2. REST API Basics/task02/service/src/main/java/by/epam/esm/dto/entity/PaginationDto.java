@@ -2,6 +2,12 @@ package by.epam.esm.dto.entity;
 
 import javax.validation.constraints.PositiveOrZero;
 
+/**
+ * class PaginationDto
+ * @see by.epam.esm.enity.Pagination
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class PaginationDto {
     @PositiveOrZero
     private Integer startPosition;

@@ -1,7 +1,12 @@
 package by.epam.esm.enity;
 
 import java.util.Objects;
-
+/**
+ * class Tag
+ * extends base entity class
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class Tag extends Entity {
 
     private String name;

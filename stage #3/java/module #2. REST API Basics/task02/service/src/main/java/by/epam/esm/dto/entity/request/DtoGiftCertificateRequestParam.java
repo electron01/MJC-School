@@ -2,6 +2,13 @@ package by.epam.esm.dto.entity.request;
 
 import javax.validation.constraints.Pattern;
 
+/**
+ * class DtoGiftCertificateRequestParam
+ * class contains request params for gift certificate dto
+ * @see by.epam.esm.enity.request.GiftCertificateRequestParam
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class DtoGiftCertificateRequestParam implements DtoEntityRequestParam {
     @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){1,})(?=(^[\\s\\S]{0,25}$)).*",
             message = "GiftCertificateService Name must be longer than 1 characters and shorter than 25 characters" +

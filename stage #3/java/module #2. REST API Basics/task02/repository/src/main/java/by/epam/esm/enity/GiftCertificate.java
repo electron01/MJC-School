@@ -5,7 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * class GiftCertificate
+ * extends base entity class
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class GiftCertificate extends Entity {
     private String name;
     private BigDecimal price;

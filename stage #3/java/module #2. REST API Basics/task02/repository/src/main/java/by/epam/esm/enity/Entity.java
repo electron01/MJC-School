@@ -2,6 +2,12 @@ package by.epam.esm.enity;
 
 import java.io.Serializable;
 
+/**
+ * class Entity
+ * base abstract entity class
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public abstract class Entity implements Serializable {
     private Integer id;
 

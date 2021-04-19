@@ -1,5 +1,10 @@
 package by.epam.esm.enity.request;
-
+/**
+ * class GiftCertificateRequestParam
+ * class contains request params for gift certificate
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class GiftCertificateRequestParam implements EntityRequestParam {
     private String name;
     private String description;
