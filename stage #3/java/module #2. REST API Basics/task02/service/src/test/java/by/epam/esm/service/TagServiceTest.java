@@ -54,7 +54,7 @@ public class TagServiceTest {
         // When method findAll will start executing with unCorrect pagination params
         Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(unCorrectPaginationDto);
         // Then get an exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> tagService.getAll(unCorrectPaginationDto));
+        Assertions.assertThrows(ServiceException.class, () -> tagService.findAll(unCorrectPaginationDto));
     }
 
     @Test
@@ -65,10 +65,9 @@ public class TagServiceTest {
         tag.setName(TAG_NAME);
         // When method findById will start executing with correct id
         Mockito.when(tagDao.findById(CORRECT_ID)).thenReturn(Optional.of(tag));
-        TagDto findById = tagService.getById(CORRECT_ID);
+        TagDto findById = tagService.findById(CORRECT_ID);
         //Then returned tag
         Assertions.assertEquals(tag.getName(), findById.getName());
-
     }
 
     @Test
@@ -77,8 +76,7 @@ public class TagServiceTest {
         // When method findById will start executing with unCorrect id
         Mockito.when(tagDao.findById(UN_CORRECT_ID)).thenReturn(Optional.empty());
         // Then get an exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> tagService.getById(UN_CORRECT_ID));
-
+        Assertions.assertThrows(ServiceException.class, () -> tagService.findById(UN_CORRECT_ID));
     }
 
     @Test
@@ -94,7 +92,6 @@ public class TagServiceTest {
         // Then returned new tag
         Assertions.assertEquals(correctTag.getName(), newTag.getName());
         Assertions.assertEquals(correctTag.getId(), newTag.getId());
-
     }
 
     @Test
@@ -131,7 +128,6 @@ public class TagServiceTest {
         Mockito.when(tagDao.findByName(TAG_NAME)).thenReturn(Optional.empty());
         // Then returned false
         Assertions.assertFalse(tagService.isTagByNameExist(tag.getName()));
-
     }
 
     @Test
@@ -158,7 +154,7 @@ public class TagServiceTest {
         // When method findByCertificateId will start executing with correct id
         Mockito.when(tagDao.findByCertificateId(CORRECT_ID)).thenReturn(tagList);
         //Then returned list should be contains tags related for certificate
-        Assertions.assertTrue(tagList.size() == tagService.getByGiftCertificateId(CORRECT_ID).size());
+        Assertions.assertTrue(tagList.size() == tagService.findByGiftCertificateId(CORRECT_ID).size());
     }
 
     @Test
@@ -167,7 +163,7 @@ public class TagServiceTest {
         // When method findByCertificateId will start executing with unCorrect id
         Mockito.when(tagDao.findByCertificateId(UN_CORRECT_ID)).thenReturn(List.of());
         //Then returned list should be empty
-        Assertions.assertTrue(tagService.getByGiftCertificateId(UN_CORRECT_ID).isEmpty());
+        Assertions.assertTrue(tagService.findByGiftCertificateId(UN_CORRECT_ID).isEmpty());
     }
 
     @Test
@@ -177,9 +173,6 @@ public class TagServiceTest {
         // When method findAll will start executing with default pagination params startPosition = 0 and Limit = 6
         Mockito.when(tagDao.findAll(Mockito.any(Pagination.class))).thenReturn(tagList);
         //Then a complete  tag list should be received with startPosition = 0 and Limit = 6
-        Assertions.assertTrue(tagList.size() == tagService.getAll(paginationDto).size());
-
+        Assertions.assertTrue(tagList.size() == tagService.findAll(paginationDto).size());
     }
-
-
 }

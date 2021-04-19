@@ -50,7 +50,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public GiftCertificateDto getById(Integer id) {
+    public GiftCertificateDto findById(Integer id) {
         GiftCertificateDto giftCertificateDto = giftCertificateDao.findById(id).stream()
                 .findAny()
                 .map(giftCertificateMapper::giftCertificateToGiftCertificateDto)
@@ -63,7 +63,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     private GiftCertificateDto setTagsForDto(GiftCertificateDto giftCertificateDto) {
-        giftCertificateDto.setTags(tagService.getByGiftCertificateId(giftCertificateDto.getId()));
+        giftCertificateDto.setTags(tagService.findByGiftCertificateId(giftCertificateDto.getId()));
         return giftCertificateDto;
 
     }
@@ -83,18 +83,20 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
         baseValidator.dtoValidator(giftCertificateDto);
         checkIsGiftCertificateNameExists(giftCertificateDto);
-        checkAndUpdateTags(giftCertificateDto.getTags());//update tags
-
         if (isGiftCertificateIdIsExists(giftCertificateDto.getId())) {
+            checkAndUpdateTags(giftCertificateDto.getTags());//update tags
             GiftCertificate updatedCertificate = giftCertificateDao
                     .update(giftCertificateMapper.giftCertificateDtoToGiftCertificate(giftCertificateDto));
             return setTagsForDto(giftCertificateMapper.giftCertificateToGiftCertificateDto(updatedCertificate));
         } else {
-            GiftCertificate newGiftCertificate = giftCertificateMapper.giftCertificateDtoToGiftCertificate(giftCertificateDto);
-            return setTagsForDto(giftCertificateMapper.giftCertificateToGiftCertificateDto(giftCertificateDao.save(newGiftCertificate)));
-
+            throw new ServiceException(ErrorCode.NOT_FIND_CERTIFICATE_BY_ID,
+                    ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage(),
+                    Set.of(new ErrorMessage(
+                            "id",
+                            String.valueOf(giftCertificateDto.getId()),
+                            ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage()
+                    )));
         }
-
     }
 
     @Override
@@ -104,15 +106,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                     ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage(),
                     Set.of(new ErrorMessage("id", String.valueOf(id), ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage()))
             );
-
         }
-
     }
 
 
     @Override
-    public List<GiftCertificateDto> getAll(DtoGiftCertificateRequestParam CertificateRequestDto,
-                                           PaginationDto paginationDto) {
+    public List<GiftCertificateDto> findAll(DtoGiftCertificateRequestParam CertificateRequestDto,
+                                            PaginationDto paginationDto) {
         baseValidator.dtoValidator(paginationDto);
         baseValidator.dtoValidator(CertificateRequestDto);
         GiftCertificateRequestParam giftCertificateRequestParam = giftCertificateRequestMapper.dtoGiftCertificateRequestToGiftCertificate(CertificateRequestDto);
@@ -123,7 +123,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 .collect(Collectors.toList());
         dtoList.forEach(this::setTagsForDto);
         return dtoList;
-
     }
 
     @Override
@@ -147,7 +146,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                     .filter(tagDto -> tagDto.getId() != null)
                     .forEach(tagDto ->
                     {
-                        TagDto tag = tagService.getById(tagDto.getId());
+                        TagDto tag = tagService.findById(tagDto.getId());
                         if (!(tag.getName().equals(tagDto.getName()))) {
                             throw new ServiceException(ErrorCode.NOT_FIND_TAG_BY_ID_WITH_THIS_NAME,
                                     ErrorCode.NOT_FIND_TAG_BY_ID_WITH_THIS_NAME.getMessage(),
@@ -155,37 +154,30 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                             Integer.toString(tagDto.getId()),
                                             ErrorCode.NOT_FIND_TAG_BY_ID_WITH_THIS_NAME.getMessage())));
                         }
-
                     });
-
         }
         checkTagsByNameAndSetId(listDto);
     }
 
-    //if user send only name
-    //if name is exist set id
-    //else create new tag
     private void checkTagsByNameAndSetId(List<TagDto> listDto) {
         if (listDto != null) {
-            listDto.stream()//todo check name?
+            listDto.stream()
                     .filter(tagDto -> tagDto.getId() == null)
                     .forEach(tagDto ->
                     {
                         if (tagService.isTagByNameExist(tagDto.getName())) {
-                            TagDto byName = tagService.getByName(tagDto.getName());
+                            TagDto byName = tagService.findByName(tagDto.getName());
                             tagDto.setId(byName.getId());
                         } else {
                             createNewTag(tagDto);
                         }
                     });
         }
-
     }
 
     private void createNewTag(TagDto newTagDto) {
         TagDto createdTag = tagService.add(newTagDto);
         newTagDto.setId(createdTag.getId());
-
     }
 
     private boolean isGiftCertificateIdIsExists(Integer id) {
@@ -194,7 +186,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private boolean isGiftCertificateNameIsExists(String name) {
         return giftCertificateDao.findByName(name).isPresent();
-
     }
 
     private void checkIsGiftCertificateNameExists(GiftCertificateDto dto) {
@@ -208,8 +199,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                     ));
         }
     }
-
-
 }
 
 

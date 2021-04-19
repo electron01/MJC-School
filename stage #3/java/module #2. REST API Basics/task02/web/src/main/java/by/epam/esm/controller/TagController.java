@@ -28,22 +28,19 @@ public class TagController {
     public List<TagDto> getAllTags(@RequestParam(required = false, defaultValue = DEFAULT_VALUE_START_POSITION) Integer startPosition,
                                    @RequestParam(required = false, defaultValue = DEFAULT_VALUE_LIMIT) Integer limit) {
         PaginationDto paginationDto = createPaginationDto(startPosition, limit);
-        return tagService.getAll(paginationDto);
-
+        return tagService.findAll(paginationDto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TagDto getTagById(@PathVariable Integer id) {
-        return tagService.getById(id);
-
+        return tagService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TagDto addNewTag(@RequestBody TagDto tagDto) {
         return tagService.add(tagDto);
-
     }
 
 
@@ -63,7 +60,6 @@ public class TagController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable Integer id) {
         tagService.delete(id);
-
     }
 
 
@@ -72,8 +68,5 @@ public class TagController {
         paginationDto.setStartPosition(startPosition);
         paginationDto.setLimit(limit);
         return paginationDto;
-
     }
-
-
 }

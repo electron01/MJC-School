@@ -8,7 +8,6 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface GiftCertificateMapper {
-
     @Mappings({
             @Mapping(target = "id",source = "entity.id"),
             @Mapping(target = "name",source = "entity.name"),
@@ -20,7 +19,6 @@ public interface GiftCertificateMapper {
     })
     GiftCertificateDto giftCertificateToGiftCertificateDto(GiftCertificate entity);
 
-
     @Mappings({
             @Mapping(target = "id",source = "dto.id"),
             @Mapping(target = "name",source = "dto.name"),
@@ -31,5 +29,4 @@ public interface GiftCertificateMapper {
             @Mapping(target = "tags",source = "dto.tags")
     })
     GiftCertificate giftCertificateDtoToGiftCertificate(GiftCertificateDto dto);
-
 }

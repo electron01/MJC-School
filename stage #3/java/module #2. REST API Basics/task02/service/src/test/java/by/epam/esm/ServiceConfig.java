@@ -78,8 +78,4 @@ public class ServiceConfig {
     public GiftCertificateMapper giftCertificateMapper(){
         return new GiftCertificateMapperImpl();
     }
-
-
-
-
 }

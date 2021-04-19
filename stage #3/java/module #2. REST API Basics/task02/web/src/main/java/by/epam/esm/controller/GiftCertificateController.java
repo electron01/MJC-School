@@ -24,7 +24,6 @@ public class GiftCertificateController {
     private static final String TAG = "tag";
     private static final String SORT = "sort";
 
-
     private GiftCertificateService giftCertificateService;
 
     @Autowired
@@ -37,16 +36,13 @@ public class GiftCertificateController {
     public List<GiftCertificateDto> getAllGiftCertificate(@RequestParam Map<String, Object> model) {
         PaginationDto paginationDto = createPaginationDto(model);
         DtoGiftCertificateRequestParam dtoGiftCertificateRequestParam = getGiftCertificateRequest(model);
-        return giftCertificateService.getAll(dtoGiftCertificateRequestParam, paginationDto);
-
-
+        return giftCertificateService.findAll(dtoGiftCertificateRequestParam, paginationDto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificateDto getById(@PathVariable Integer id) {
-        return giftCertificateService.getById(id);
-
+        return giftCertificateService.findById(id);
     }
 
 
@@ -54,7 +50,6 @@ public class GiftCertificateController {
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDto createNewGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
         return giftCertificateService.add(giftCertificateDto);
-
     }
 
     @PutMapping("/{id}")
@@ -69,8 +64,6 @@ public class GiftCertificateController {
     public GiftCertificateDto updatePartOfCertificate(@PathVariable Integer id, @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
         return giftCertificateService.partUpdate(giftCertificateDto);
-
-
     }
 
     private PaginationDto createPaginationDto(Map<String, Object> model) {
@@ -84,7 +77,6 @@ public class GiftCertificateController {
         paginationDto.setStartPosition(Integer.valueOf(startPosition));
         paginationDto.setLimit(Integer.valueOf(limit));
         return paginationDto;
-
     }
 
     private DtoGiftCertificateRequestParam getGiftCertificateRequest(Map<String, Object> model) {
@@ -95,5 +87,4 @@ public class GiftCertificateController {
         dtoGiftCertificateRequestParam.setSort(((String) model.get(SORT)));
         return dtoGiftCertificateRequestParam;
     }
-
 }

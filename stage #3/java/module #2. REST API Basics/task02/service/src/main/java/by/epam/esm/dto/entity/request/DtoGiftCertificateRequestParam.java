@@ -3,18 +3,18 @@ package by.epam.esm.dto.entity.request;
 import javax.validation.constraints.Pattern;
 
 public class DtoGiftCertificateRequestParam implements DtoEntityRequestParam {
-    @Pattern(regexp = "[^\\W]{1,25}",
+    @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){1,})(?=(^[\\s\\S]{0,25}$)).*",
             message = "GiftCertificateService Name must be longer than 1 characters and shorter than 25 characters" +
                     " and consist only of letters, numbers and an underscore ")
     private String name;
 
-    @Pattern(regexp = "[^\\W]{1,255}",
+    @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){1,})(?=(^[\\s\\S]{0,255}$)).*",
             message = "GiftCertificateService description must be longer than 1 characters and shorter than 255 characters" +
                     " and consist only of letters, numbers and an underscore ")
     private String description;
 
-    @Pattern(regexp = "[^\\W]{1,50}",
-            message = " Tag Name than 1 characters and shorter than 100 characters" +
+    @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){1,})(?=(^[\\s\\S]{0,25}$)).*",
+            message = " Tag Name than 1 characters and shorter than 25 characters" +
                     " and consist only of letters, numbers and an underscore ")
     private String tagName;
 
@@ -50,6 +50,4 @@ public class DtoGiftCertificateRequestParam implements DtoEntityRequestParam {
     public void setSort(String sort) {
         this.sort = sort;
     }
-
-
 }

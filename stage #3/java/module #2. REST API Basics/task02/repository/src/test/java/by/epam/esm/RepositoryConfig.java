@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 @Configuration
 public class RepositoryConfig {
     private static final String DB_SCRIPT = "classpath:DBScript.sql";
-
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -35,9 +34,6 @@ public class RepositoryConfig {
     private CrdTagDao tagDao;
     @Autowired
     private CrudGiftCertificateDao giftCertificateDao;
-
-
-
 
     @Bean
     public DataSource getDataSource() {
@@ -76,6 +72,4 @@ public class RepositoryConfig {
     public CrudGiftCertificateDao giftCertificateDao() {
         return new GiftCertificateDaoImpl(giftCertificateRowMapper(), jdbcTemplate);
     }
-
-
 }

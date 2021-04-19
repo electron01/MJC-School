@@ -68,7 +68,6 @@ public class BaseValidator {
         if (!(atLeastOneNonNullParameter(dto))) {
             throw new ServiceException(ErrorCode.ALL_FIELD_IS_NULL,
                     ErrorCode.ALL_FIELD_IS_NULL.getMessage());
-
         }
     }
 
@@ -88,11 +87,9 @@ public class BaseValidator {
             } finally {
                 field.setAccessible(false);
             }
-
         }
         return false;
     }
-
 
     private ErrorMessage createNewErrorMessage(String path, String unCorrectValue, String message) {
         ErrorMessage errorMessage = new ErrorMessage();
@@ -100,8 +97,5 @@ public class BaseValidator {
         errorMessage.setMessage(message);
         errorMessage.setUnCorrectValue(unCorrectValue);
         return errorMessage;
-
     }
-
-
 }

@@ -53,7 +53,7 @@ public class GiftCertificateTest {
         Mockito.when(giftCertificateDao.findAll(Mockito.any(GiftCertificateRequestParam.class),
                 Mockito.any(Pagination.class))).thenReturn(certificateList);
         // When method findAll will start executing with default pagination params startPosition = 0 and Limit = 6
-        List<GiftCertificateDto> foundList = giftCertificateService.getAll(new DtoGiftCertificateRequestParam(), new PaginationDto());
+        List<GiftCertificateDto> foundList = giftCertificateService.findAll(new DtoGiftCertificateRequestParam(), new PaginationDto());
         //Then a complete  certificate list should be received with startPosition = 0 and Limit = 6
         Assertions.assertTrue(foundList.size() == certificateList.size());
 
@@ -65,7 +65,7 @@ public class GiftCertificateTest {
         // When method findAll will start executing with uncCorrect pagination params
         Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(Mockito.any(PaginationDto.class));
         // Then get an exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.getAll(new DtoGiftCertificateRequestParam(), new PaginationDto()));
+        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.findAll(new DtoGiftCertificateRequestParam(), new PaginationDto()));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class GiftCertificateTest {
         // When method findAll will start executing with uncCorrect dto params
         Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(Mockito.any(GiftCertificateRequestParam.class));
         // Then get an exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.getAll(new DtoGiftCertificateRequestParam(), new PaginationDto()));
+        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.findAll(new DtoGiftCertificateRequestParam(), new PaginationDto()));
 
     }
 
@@ -83,7 +83,7 @@ public class GiftCertificateTest {
         // Given Request for findById gift certificate by id
         Mockito.when(giftCertificateDao.findById(CORRECT_ID)).thenReturn(Optional.of(correctGiftCertificate));
         // When method findById will start executing with correct id
-        GiftCertificateDto foundById = giftCertificateService.getById(CORRECT_ID);
+        GiftCertificateDto foundById = giftCertificateService.findById(CORRECT_ID);
         //Then returned giftCertificate
         Assertions.assertEquals(correctGiftCertificate.getId(), foundById.getId());
         Assertions.assertEquals(correctGiftCertificate.getName(), foundById.getName());
@@ -95,7 +95,7 @@ public class GiftCertificateTest {
         // When method findById will start executing with unCorrect id
         Mockito.when(giftCertificateDao.findById(UN_CORRECT_ID)).thenReturn(Optional.empty());
         //Then returned exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.getById(UN_CORRECT_ID));
+        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.findById(UN_CORRECT_ID));
     }
 
     @Test
@@ -197,6 +197,4 @@ public class GiftCertificateTest {
         //Then we get updated certificate
         Assertions.assertEquals(correctGiftCertificate.getName(), partUpdateDto.getName());
     }
-
-
 }

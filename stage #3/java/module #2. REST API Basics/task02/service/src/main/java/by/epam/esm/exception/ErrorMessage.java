@@ -1,7 +1,6 @@
 package by.epam.esm.exception;
 
 public class ErrorMessage {
-
     private String field;
     private String unCorrectValue;
     private String message;

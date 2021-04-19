@@ -23,6 +23,4 @@ public class PaginationDto {
     public void setLimit(Integer limit) {
         this.limit = limit;
     }
-
-
 }

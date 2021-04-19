@@ -66,8 +66,6 @@ public class ControllerAdvice {
     }
 
 
-
-
     private ResponseEntity<ErrorResponse> getResponseEntity(Throwable exception, ErrorCode errorCode, String message, Set<ErrorMessage> errorMessages) {
         ErrorResponse errorResponse = prepareErrorResponse(errorCode.getErrorCode(), message);
         errorResponse.setProblems(errorMessages);
@@ -90,5 +88,4 @@ public class ControllerAdvice {
     private void logException(ErrorCode errorCode, Throwable exception) {
         LOGGER.error(errorCode.getErrorCode(), errorCode.getMessage(), exception);
     }
-
 }

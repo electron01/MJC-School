@@ -19,7 +19,7 @@ public class GiftCertificateDto extends EntityDto {
     @NotNull(message = "Price can't be null")
     private BigDecimal price;
 
-    @Pattern(regexp = "^[A-Za-z0-9\\s]{3,255}$",
+    @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){5,})(?=(^[\\s\\S]{0,255}$)).*",
             message = "GiftCertificateService description must be longer than 5 characters and shorter than 255 characters" +
                     " and consist only of letters, numbers and an underscore ")
     @NotNull(message = "Description can't be null")

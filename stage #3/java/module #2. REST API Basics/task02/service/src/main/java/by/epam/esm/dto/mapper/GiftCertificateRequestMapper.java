@@ -8,7 +8,6 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface GiftCertificateRequestMapper {
-
     @Mappings({
             @Mapping(target = "name", source = "dto.name"),
             @Mapping(target = "description", source = "dto.description"),

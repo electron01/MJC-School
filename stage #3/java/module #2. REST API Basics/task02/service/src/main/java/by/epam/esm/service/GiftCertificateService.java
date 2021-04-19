@@ -7,6 +7,6 @@ import by.epam.esm.dto.entity.request.DtoGiftCertificateRequestParam;
 import java.util.List;
 
 public interface GiftCertificateService extends BaseService<GiftCertificateDto,Integer> {
-    List<GiftCertificateDto> getAll(DtoGiftCertificateRequestParam giftCertificateRequestParam, PaginationDto paginationDto);
+    List<GiftCertificateDto> findAll(DtoGiftCertificateRequestParam giftCertificateRequestParam, PaginationDto paginationDto);
     GiftCertificateDto partUpdate(GiftCertificateDto giftCertificateDto);
 }

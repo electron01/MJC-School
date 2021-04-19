@@ -52,7 +52,6 @@ public class TestTagDao {
         List<Tag> expectedTags = tags.subList(pagination.getStartPosition(), pagination.getLimit() + pagination.getStartPosition());
         //Then a complete tag list should be received with startPosition = 2 and Limit = 2
         Assertions.assertEquals(expectedTags, tagDao.findAll(pagination));
-
     }
 
     @Test
@@ -63,7 +62,6 @@ public class TestTagDao {
         Optional<Tag> tag = tagDao.findById(id);
         //Then returned Optional should be contains tag
         Assertions.assertEquals(Optional.of(tags.get(id)), tag);
-
     }
 
     @Test
@@ -74,7 +72,6 @@ public class TestTagDao {
         Optional<Tag> tag = tagDao.findById(id);
         //Then returned Optional should be empty
         Assertions.assertEquals(Optional.empty(), tag);
-
     }
 
     @Test
@@ -85,7 +82,6 @@ public class TestTagDao {
         List<Tag> tagByCertificateId = tagDao.findByCertificateId(id);
         //Then returned list should be contains tags related for certificate
         Assertions.assertEquals(certificateTags, tagByCertificateId);
-
     }
 
     @Test
@@ -96,7 +92,6 @@ public class TestTagDao {
         List<Tag> tagByCertificateId = tagDao.findByCertificateId(id);
         //Then returned list should be empty
         Assertions.assertTrue((tagByCertificateId).isEmpty());
-
     }
 
     @Test
@@ -155,11 +150,8 @@ public class TestTagDao {
             tag.setName(name);
             tags.add(tag);
         }
-
         certificateTags.add(tags.get(0));
         certificateTags.add(tags.get(1));
         certificateTags.add(tags.get(3));
-
     }
-
 }

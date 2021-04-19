@@ -18,6 +18,5 @@ public class ServiceConfig {
     public Validator createNewValidator() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         return factory.getValidator();
-
     }
 }

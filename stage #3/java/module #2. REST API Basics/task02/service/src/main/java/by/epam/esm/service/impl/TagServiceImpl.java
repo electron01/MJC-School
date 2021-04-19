@@ -35,11 +35,10 @@ public class TagServiceImpl implements TagService {
         this.baseValidator = baseValidator;
         this.tagMapper = tagMapper;
         this.paginationMapper = paginationMapper;
-
     }
 
     @Override
-    public List<TagDto> getByGiftCertificateId(Integer certificateId) {
+    public List<TagDto> findByGiftCertificateId(Integer certificateId) {
         return tagDao.findByCertificateId(certificateId)
                 .stream()
                 .map(tagMapper::tagToTagDTO)
@@ -52,7 +51,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDto getByName(String name) {
+    public TagDto findByName(String name) {
         return tagDao.findByName(name)
                 .stream()
                 .findAny()
@@ -61,22 +60,20 @@ public class TagServiceImpl implements TagService {
                         ErrorCode.NOT_FIND_TAG_BY_ID.getMessage(),
                         Set.of(new ErrorMessage("name", name, ErrorCode.NOT_FIND_TAG_BY_ID.getMessage())
                         )));
-
     }
 
     @Override
-    public List<TagDto> getAll(PaginationDto paginationDto) {
+    public List<TagDto> findAll(PaginationDto paginationDto) {
         baseValidator.dtoValidator(paginationDto);
         return tagDao
                 .findAll(paginationMapper.paginationDtoToPagination(paginationDto))
                 .stream()
                 .map(tagMapper::tagToTagDTO)
                 .collect(Collectors.toList());
-
     }
 
     @Override
-    public TagDto getById(Integer id) {
+    public TagDto findById(Integer id) {
         return tagDao.findById(id)
                 .stream()
                 .findAny()
@@ -99,8 +96,6 @@ public class TagServiceImpl implements TagService {
         Tag tag = tagMapper.tagDtoToTag(dto);
         Tag newTag = tagDao.save(tag);
         return tagMapper.tagToTagDTO(newTag);
-
-
     }
 
     @Override
@@ -116,9 +111,6 @@ public class TagServiceImpl implements TagService {
                     ErrorCode.NOT_FIND_TAG_BY_ID.getMessage(),
                     Set.of(new ErrorMessage("id", String.valueOf(id), ErrorCode.NOT_FIND_TAG_BY_ID.getMessage()))
             );
-
         }
-
-
     }
 }

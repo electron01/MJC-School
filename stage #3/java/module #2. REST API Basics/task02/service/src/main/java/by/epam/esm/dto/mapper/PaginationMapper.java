@@ -8,7 +8,6 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface PaginationMapper {
-
     @Mappings({
             @Mapping(target = "startPosition", source = "dto.startPosition"),
             @Mapping(target = "limit", source = "dto.limit"),

@@ -18,7 +18,6 @@ public enum  ErrorCode {
     MEDIA_TYPE_NOT_SUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE,"41503", "Media Type Not Support" ),
     SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"50001","Was Find Server Error");
 
-
     ErrorCode(HttpStatus httpStatus, String errorCode,String message) {
         this.httpStatus = httpStatus;
         this.errorCode = errorCode;

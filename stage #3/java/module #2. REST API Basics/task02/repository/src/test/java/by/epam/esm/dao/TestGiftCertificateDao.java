@@ -30,7 +30,6 @@ public class TestGiftCertificateDao {
         pagination.setStartPosition(0);
         pagination.setLimit(6);
         initCertificateList();
-
     }
 
     @Test
@@ -145,7 +144,6 @@ public class TestGiftCertificateDao {
         Optional<GiftCertificate> findById = giftCertificateDao.findById(id);
         //Then returned Optional should be contains certificate
         Assertions.assertEquals(Optional.of(certificateList.get(id)), findById);
-
     }
 
     @Test
@@ -156,7 +154,6 @@ public class TestGiftCertificateDao {
         Optional<GiftCertificate> findById = giftCertificateDao.findById(id);
         //Then returned Optional should be empty
         Assertions.assertEquals(Optional.empty(), findById);
-
     }
 
     @Test
@@ -226,8 +223,5 @@ public class TestGiftCertificateDao {
         certificateList.add(giftCertificate3);
         certificateList.add(giftCertificate4);
         certificateList.add(giftCertificate5);
-
     }
-
-
 }

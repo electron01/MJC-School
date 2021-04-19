@@ -12,5 +12,4 @@ public abstract class EntityDto implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
 }
