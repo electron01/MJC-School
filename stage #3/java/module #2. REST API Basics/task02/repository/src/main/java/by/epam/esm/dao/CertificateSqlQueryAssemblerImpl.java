@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * class CertificateSqlQueryAssemblerImpl
  * implements CertificateSqlQueryAssembler
- * class contains methods for assemble sql query got gift certificate table
+ * class contains impl methods for assemble sql query got gift certificate table
  * @author Aliaksei Tkachuk
  * @version 1.0
  */

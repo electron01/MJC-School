@@ -1,6 +1,6 @@
 package by.epam.esm.dao.impl;
 
-import by.epam.esm.dao.BaseSqlQueryAssembler;
+import by.epam.esm.dao.CertificateSqlQueryAssembler;
 import by.epam.esm.dao.CertificateSqlQueryAssemblerImpl;
 import by.epam.esm.dao.CrudGiftCertificateDao;
 import by.epam.esm.dao.mapper.GiftCertificateRowMapper;
@@ -53,10 +53,10 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     private GiftCertificateRowMapper giftCertificateRowMapper;
     private JdbcTemplate jdbcTemplate;
-    private BaseSqlQueryAssembler certificateSqlQueryAssembler;
+    private CertificateSqlQueryAssembler certificateSqlQueryAssembler;
 
     @Autowired
-    public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate,BaseSqlQueryAssembler certificateSqlQueryAssembler ) {
+    public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate,CertificateSqlQueryAssembler certificateSqlQueryAssembler ) {
         this.giftCertificateRowMapper = giftCertificateRowMapper;
         this.jdbcTemplate = jdbcTemplate;
         this.certificateSqlQueryAssembler=certificateSqlQueryAssembler;
