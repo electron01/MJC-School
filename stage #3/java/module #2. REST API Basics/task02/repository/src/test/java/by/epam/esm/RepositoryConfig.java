@@ -1,19 +1,17 @@
 package by.epam.esm;
 
 
-import by.epam.esm.dao.CertificateSqlQueryAssembler;
-import by.epam.esm.dao.CertificateSqlQueryAssemblerImpl;
+import by.epam.esm.dao.CertificateSqlQueryBuilder;
+import by.epam.esm.dao.CertificateSqlQueryBuilderImpl;
 import by.epam.esm.dao.CrdTagDao;
 import by.epam.esm.dao.CrudGiftCertificateDao;
 import by.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import by.epam.esm.dao.impl.TagDaoImpl;
 import by.epam.esm.dao.mapper.GiftCertificateRowMapper;
 import by.epam.esm.dao.mapper.TagRowMapper;
-import by.epam.esm.enity.request.GiftCertificateRequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -32,13 +30,13 @@ public class RepositoryConfig {
     @Autowired
     private GiftCertificateRowMapper giftCertificateRowMapper;
     @Autowired
-    private CertificateSqlQueryAssemblerImpl sqlQuery;
+    private CertificateSqlQueryBuilderImpl sqlQuery;
     @Autowired
     private CrdTagDao tagDao;
     @Autowired
     private CrudGiftCertificateDao giftCertificateDao;
     @Autowired
-    private CertificateSqlQueryAssembler sqlQueryAssembler;
+    private CertificateSqlQueryBuilder sqlQueryAssembler;
 
     @Bean
     public DataSource getDataSource() {
@@ -64,8 +62,8 @@ public class RepositoryConfig {
     }
 
     @Bean
-    public CertificateSqlQueryAssemblerImpl getSqlQuery() {
-        return new CertificateSqlQueryAssemblerImpl();
+    public CertificateSqlQueryBuilderImpl getSqlQuery() {
+        return new CertificateSqlQueryBuilderImpl();
     }
 
     @Bean

@@ -1,8 +1,8 @@
 package by.epam.esm.dao.impl;
 
-import by.epam.esm.dao.CertificateSqlQueryAssembler;
-import by.epam.esm.dao.CertificateSqlQueryAssemblerImpl;
+import by.epam.esm.dao.CertificateSqlQueryBuilder;
 import by.epam.esm.dao.CrudGiftCertificateDao;
+import by.epam.esm.dao.SqlQuery;
 import by.epam.esm.dao.mapper.GiftCertificateRowMapper;
 import by.epam.esm.enity.GiftCertificate;
 import by.epam.esm.enity.Pagination;
@@ -53,10 +53,10 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     private GiftCertificateRowMapper giftCertificateRowMapper;
     private JdbcTemplate jdbcTemplate;
-    private CertificateSqlQueryAssembler certificateSqlQueryAssembler;
+    private CertificateSqlQueryBuilder certificateSqlQueryAssembler;
 
     @Autowired
-    public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate,CertificateSqlQueryAssembler certificateSqlQueryAssembler ) {
+    public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate, CertificateSqlQueryBuilder certificateSqlQueryAssembler ) {
         this.giftCertificateRowMapper = giftCertificateRowMapper;
         this.jdbcTemplate = jdbcTemplate;
         this.certificateSqlQueryAssembler=certificateSqlQueryAssembler;
@@ -64,7 +64,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     @Override
     public List<GiftCertificate> findAll(GiftCertificateRequestParam giftCertificateRequestParam, Pagination pagination) {
-        CertificateSqlQueryAssemblerImpl.SqlQuery sqlQuery = certificateSqlQueryAssembler.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
+        SqlQuery sqlQuery = certificateSqlQueryAssembler.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
         return jdbcTemplate.query(sqlQuery.getSqlQuery(),
                 sqlQuery.getParams(),
                 giftCertificateRowMapper);
@@ -80,7 +80,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     @Override
     public GiftCertificate partUpdate(GiftCertificate entity) {
-        CertificateSqlQueryAssemblerImpl.SqlQuery sqlUpdateRequest = certificateSqlQueryAssembler.createPartUpdateRequest(entity);
+        SqlQuery sqlUpdateRequest = certificateSqlQueryAssembler.createPartUpdateRequest(entity);
         jdbcTemplate.update(sqlUpdateRequest.getSqlQuery(), sqlUpdateRequest.getParams());
         if (entity.getTags() != null) {
             updateTags(entity);
