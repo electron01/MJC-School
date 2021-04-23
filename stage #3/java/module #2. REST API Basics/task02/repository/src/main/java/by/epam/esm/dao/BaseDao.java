@@ -4,6 +4,7 @@ import by.epam.esm.enity.Entity;
 
 import java.io.Serializable;
 import java.util.Optional;
+
 /**
  * Interface BaseDao
  * interface contains basic methods for data access object
