@@ -20,6 +20,7 @@ import by.epam.esm.validator.BaseValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -85,6 +86,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         checkIsGiftCertificateNameExists(giftCertificateDto);
         if (isGiftCertificateIdIsExists(giftCertificateDto.getId())) {
             checkAndUpdateTags(giftCertificateDto.getTags());//update tags
+            if(giftCertificateDto.getTags()==null){
+                giftCertificateDto.setTags(new ArrayList<>());
+            }
             GiftCertificate updatedCertificate = giftCertificateDao
                     .update(giftCertificateMapper.giftCertificateDtoToGiftCertificate(giftCertificateDto));
             return setTagsForDto(giftCertificateMapper.giftCertificateToGiftCertificateDto(updatedCertificate));
@@ -134,7 +138,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         checkAndUpdateTags(giftCertificateDto.getTags());
         GiftCertificate certificateForUpdate = giftCertificateMapper.giftCertificateDtoToGiftCertificate(giftCertificateDto);
         GiftCertificateDto updatedCertificate = giftCertificateMapper.
-                giftCertificateToGiftCertificateDto(giftCertificateDao.partUpdate(certificateForUpdate));
+                giftCertificateToGiftCertificateDto(giftCertificateDao.update(certificateForUpdate));
         return setTagsForDto(updatedCertificate);
     }
 
@@ -142,12 +146,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private void checkAndUpdateTags(List<TagDto> listDto) {
         if (listDto != null) {
             listDto.stream()
-                    .filter(tagDto -> tagDto.getName() != null)
                     .filter(tagDto -> tagDto.getId() != null)
                     .forEach(tagDto ->
                     {
                         TagDto tag = tagService.findById(tagDto.getId());
-                        if (!(tag.getName().equals(tagDto.getName()))) {
+                        if (tagDto.getName()!=null && !(tag.getName().equals(tagDto.getName()))) {
                             throw new ServiceException(ErrorCode.NOT_FIND_TAG_BY_ID_WITH_THIS_NAME,
                                     ErrorCode.NOT_FIND_TAG_BY_ID_WITH_THIS_NAME.getMessage(),
                                     Set.of(new ErrorMessage("id",

@@ -62,7 +62,7 @@ public class BaseValidator {
      * @param dto dto for validate
      */
     public void dtoValidatorForPartUpdate(Object dto) {
-        boolean isUnCorrectDto = false;
+        boolean inCorrect = false;
         Set<ConstraintViolation<Object>> validate = validator.validate(dto);
         Set<ErrorMessage> errorMessages = new HashSet<>();
         for (ConstraintViolation constraintViolation : validate) {
@@ -72,10 +72,10 @@ public class BaseValidator {
             String message = constraintViolation.getMessage();
             if (value != "null") {
                 errorMessages.add(createNewErrorMessage(property, value.toString(), message));
-                isUnCorrectDto = true;
+                inCorrect = true;
             }
         }
-        if (isUnCorrectDto) {
+        if (inCorrect) {
             throw new ServiceException(ErrorCode.NOT_VALID_DATA,
                     ErrorCode.NOT_VALID_DATA.getMessage(),
                     errorMessages);

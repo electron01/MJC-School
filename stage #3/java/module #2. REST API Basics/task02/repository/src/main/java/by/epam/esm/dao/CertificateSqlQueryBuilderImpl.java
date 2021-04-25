@@ -31,6 +31,7 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
     private static final String LIKE = "LIKE ?";
     private static final String NAME = "gift_certificate.name ";
     private static final String DESCRIPTION = "gift_certificate.description ";
+    private static final String CREATE_DATE = "gift_certificate.create_date ";
     private static final String TAG_NAME = "tag.name ";
     private static final String AND = " AND ";
     private static final String ORDER_BY = " ORDER BY ";
@@ -64,13 +65,14 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
     }
 
     @Override
-    public SqlQuery createPartUpdateRequest(GiftCertificate giftCertificate) {
+    public SqlQuery createUpdateRequest(GiftCertificate giftCertificate) {
         initializationSqlQuery();
         query.append(START_PART_UPDATE_REQUEST);
         addParamIfNeed(giftCertificate.getName(), NAME);
         addParamIfNeed(giftCertificate.getDescription(), DESCRIPTION);
         addParamIfNeed(giftCertificate.getPrice(), PRICE);
         addParamIfNeed(giftCertificate.getDuration(), DURATION);
+        addParamIfNeed(giftCertificate.getCreateDate(), CREATE_DATE);
         deleteLastComma();
         addWhereIdEqual(giftCertificate.getId());
         sqlQuery.setSqlQuery(query.toString());
@@ -109,7 +111,7 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
     }
 
     private void addRequestParam(String requestParam, String column) {
-        if (checkingForEmptyString(requestParam)) {
+        if (checkForEmptyString(requestParam)) {
             String searchParam = REGEX + requestParam + REGEX;
             params.add(searchParam);
             query.append(AND + column + LIKE);
@@ -124,7 +126,7 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
 
 
     private void addSort(String sortRequest) {
-        if (checkingForEmptyString(sortRequest)) {
+        if (checkForEmptyString(sortRequest)) {
             String[] sortArray = sortRequest.split(ORDER_SEPARATOR);
             query.append(ORDER_BY);
             for (String sort : sortArray) {
@@ -141,7 +143,7 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
         query.deleteCharAt(query.lastIndexOf(ORDER_SEPARATOR));
     }
 
-    private boolean checkingForEmptyString(String str) {
+    private boolean checkForEmptyString(String str) {
         if (str != null && (!(str.isBlank()))) {
             return true;
         }

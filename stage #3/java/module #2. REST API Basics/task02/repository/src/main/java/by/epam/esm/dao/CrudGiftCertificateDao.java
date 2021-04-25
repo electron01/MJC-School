@@ -29,12 +29,4 @@ public interface CrudGiftCertificateDao extends BaseDao<GiftCertificate, Integer
      * @return Optional.of(certificate) or Optional.empty if certificate was not found
      */
     Optional<GiftCertificate> findByName(String name);
-
-    /**
-     * method partUpdate
-     * method for partial update certificate
-     * @param entity - certificate for update
-     * @return updated certificate
-     */
-    GiftCertificate partUpdate(GiftCertificate entity);
 }

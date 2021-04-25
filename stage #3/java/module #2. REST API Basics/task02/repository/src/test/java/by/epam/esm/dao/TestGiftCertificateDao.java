@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringJUnitConfig(RepositoryConfig.class)
+@ActiveProfiles("test")
 public class TestGiftCertificateDao {
     @Autowired
     private CrudGiftCertificateDao giftCertificateDao;

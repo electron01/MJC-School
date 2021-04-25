@@ -26,14 +26,13 @@ CREATE TABLE tag_gift_certificate
     FOREIGN KEY (tag_id) REFERENCES tag (tag_id)
 );
 
-
 INSERT INTO tag (name) VALUES('Extreme');
 INSERT INTO tag (name) VALUES('For him and for her');
 INSERT INTO tag (name) VALUES('Training');
 INSERT INTO tag (name) VALUES('Flying');
 INSERT INTO tag (name) VALUES('In another country');
 INSERT INTO tag (name) VALUES('Ride and Walk');
-
+-- --
 INSERT INTO gift_certificate (name,description,price,duration,create_date,last_update_date) VALUES
 (
 'Martial art training','Ten martial arts training sessions with the best trainers','70.00','100','2021-01-01 10:21:34','2021-02-20 19:25:16'
@@ -54,7 +53,6 @@ INSERT INTO gift_certificate (name,description,price,duration,create_date,last_u
 (
 'Quad biking','Quad biking for 3 people outside the city','80.00','70','2021-01-29 17:12:59','2021-03-05 23:21:28'
 );
-
 
 INSERT INTO tag_gift_certificate (gift_certificate_id, tag_id) VALUES (
 (SELECT gift_certificate_id FROM gift_certificate WHERE name ='Martial art training'), (SELECT tag_id FROM tag WHERE name = 'Training')
@@ -86,14 +84,10 @@ INSERT INTO tag_gift_certificate (gift_certificate_id, tag_id) VALUES (
 INSERT INTO tag_gift_certificate (gift_certificate_id, tag_id) VALUES (
 (SELECT gift_certificate_id FROM gift_certificate WHERE name ='Scuba diving'), (SELECT tag_id FROM tag WHERE name = 'In another country')
 );
-
+-- --
 INSERT INTO tag_gift_certificate (gift_certificate_id, tag_id) VALUES (
 (SELECT gift_certificate_id FROM gift_certificate WHERE name ='Quad biking'), (SELECT tag_id FROM tag WHERE name = 'Extreme')
 );
 INSERT INTO tag_gift_certificate (gift_certificate_id, tag_id) VALUES (
 (SELECT gift_certificate_id FROM gift_certificate WHERE name ='Quad biking'), (SELECT tag_id FROM tag WHERE name = 'Ride and Walk')
 );
-
-
-
-

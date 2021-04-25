@@ -11,7 +11,7 @@ import by.epam.esm.enity.request.GiftCertificateRequestParam;
  * @version 1.0
  */
 public interface CertificateSqlQueryBuilder {
-    SqlQuery createPartUpdateRequest (GiftCertificate certificate);
+    SqlQuery createUpdateRequest (GiftCertificate certificate);
     SqlQuery createQueryForFindAllCertificate (GiftCertificateRequestParam requestParam, Pagination pagination);
 
 }

@@ -53,18 +53,18 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     private GiftCertificateRowMapper giftCertificateRowMapper;
     private JdbcTemplate jdbcTemplate;
-    private CertificateSqlQueryBuilder certificateSqlQueryAssembler;
+    private CertificateSqlQueryBuilder certificateSqlQueryBuilder;
 
     @Autowired
-    public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate, CertificateSqlQueryBuilder certificateSqlQueryAssembler ) {
+    public GiftCertificateDaoImpl(GiftCertificateRowMapper giftCertificateRowMapper, JdbcTemplate jdbcTemplate, CertificateSqlQueryBuilder certificateSqlQueryAssembler) {
         this.giftCertificateRowMapper = giftCertificateRowMapper;
         this.jdbcTemplate = jdbcTemplate;
-        this.certificateSqlQueryAssembler=certificateSqlQueryAssembler;
+        this.certificateSqlQueryBuilder = certificateSqlQueryAssembler;
     }
 
     @Override
     public List<GiftCertificate> findAll(GiftCertificateRequestParam giftCertificateRequestParam, Pagination pagination) {
-        SqlQuery sqlQuery = certificateSqlQueryAssembler.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
+        SqlQuery sqlQuery = certificateSqlQueryBuilder.createQueryForFindAllCertificate(giftCertificateRequestParam, pagination);
         return jdbcTemplate.query(sqlQuery.getSqlQuery(),
                 sqlQuery.getParams(),
                 giftCertificateRowMapper);
@@ -79,24 +79,15 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
     }
 
     @Override
-    public GiftCertificate partUpdate(GiftCertificate entity) {
-        SqlQuery sqlUpdateRequest = certificateSqlQueryAssembler.createPartUpdateRequest(entity);
-        jdbcTemplate.update(sqlUpdateRequest.getSqlQuery(), sqlUpdateRequest.getParams());
+    public GiftCertificate update(GiftCertificate entity) {
+        SqlQuery sqlQuery = certificateSqlQueryBuilder.createUpdateRequest(entity);
+        jdbcTemplate.update(sqlQuery.getSqlQuery(), sqlQuery.getParams());
         if (entity.getTags() != null) {
             updateTags(entity);
         }
         return findById(entity.getId())
                 .orElseThrow(() -> new EmptyResultDataAccessException(1));
     }
-
-    @Override
-    public GiftCertificate update(GiftCertificate entity) {
-        jdbcTemplate.update(con -> getUpdateStatement(con, entity));
-        updateTags(entity);
-        return findById(entity.getId())
-                .orElseThrow(() -> new EmptyResultDataAccessException(1));
-    }
-
 
     @Override
     public Optional<GiftCertificate> findById(Integer id) {
@@ -140,17 +131,6 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         preparedStatement.setString(index++, entity.getDescription());
         preparedStatement.setBigDecimal(index++, entity.getPrice());
         preparedStatement.setInt(index, entity.getDuration());
-        return preparedStatement;
-    }
-
-    private PreparedStatement getUpdateStatement(Connection con, GiftCertificate entity) throws SQLException {
-        int index = 1;
-        PreparedStatement preparedStatement = con.prepareStatement(UPDATE_CERTIFICATE_REQUEST);
-        preparedStatement.setString(index++, entity.getName());
-        preparedStatement.setString(index++, entity.getDescription());
-        preparedStatement.setBigDecimal(index++, entity.getPrice());
-        preparedStatement.setInt(index++, entity.getDuration());
-        preparedStatement.setInt(index, entity.getId());
         return preparedStatement;
     }
 

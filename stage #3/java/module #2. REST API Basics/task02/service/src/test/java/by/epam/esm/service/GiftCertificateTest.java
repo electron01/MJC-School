@@ -1,51 +1,64 @@
 package by.epam.esm.service;
 
-import by.epam.esm.ServiceConfig;
-import by.epam.esm.dao.CrudGiftCertificateDao;
+import by.epam.esm.dao.impl.GiftCertificateDaoImpl;
 import by.epam.esm.dto.entity.GiftCertificateDto;
 import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.request.DtoGiftCertificateRequestParam;
+import by.epam.esm.dto.mapper.GiftCertificateMapperImpl;
+import by.epam.esm.dto.mapper.GiftCertificateRequestMapperImpl;
+import by.epam.esm.dto.mapper.PaginationMapperImpl;
 import by.epam.esm.enity.GiftCertificate;
 import by.epam.esm.enity.Pagination;
 import by.epam.esm.enity.request.GiftCertificateRequestParam;
 import by.epam.esm.exception.ServiceException;
+import by.epam.esm.service.impl.GiftCertificateServiceImpl;
+import by.epam.esm.service.impl.TagServiceImpl;
 import by.epam.esm.validator.BaseValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 import java.util.Optional;
 
-@SpringJUnitConfig(ServiceConfig.class)
+@ExtendWith(MockitoExtension.class)
 public class GiftCertificateTest {
     private static final String CERTIFICATE_NAME = "name";
     private static final Integer CORRECT_ID = 1;
     private static final Integer UN_CORRECT_ID = -1;
     private static GiftCertificate correctGiftCertificate = new GiftCertificate();
     private static List<GiftCertificate> certificateList;
-    @Autowired
-    private GiftCertificateService giftCertificateService;
-    @Autowired
-    private CrudGiftCertificateDao giftCertificateDao;
-    @Autowired
+    @Mock
     private BaseValidator baseValidator;
+    @Spy
+    private PaginationMapperImpl paginationMapper;
+    @Mock
+    private TagServiceImpl tagService;
+    @Spy
+    private GiftCertificateMapperImpl giftCertificateMapper;
+    @Mock
+    private GiftCertificateDaoImpl giftCertificateDao;
+    @Spy
+    private GiftCertificateRequestMapperImpl giftCertificateRequestMapper;
+    @InjectMocks
+    private GiftCertificateServiceImpl giftCertificateService;
+
 
     @BeforeAll
     public static void init() {
+
         correctGiftCertificate.setId(CORRECT_ID);
         correctGiftCertificate.setName(CERTIFICATE_NAME);
         certificateList = List.of(correctGiftCertificate, new GiftCertificate(), new GiftCertificate(), new GiftCertificate());
     }
 
-    @BeforeEach
-    void setUp() {
-        Mockito.reset(giftCertificateDao, baseValidator);
-    }
 
     @Test
     public void findAllCertificateWithCorrectDto() {
@@ -72,7 +85,8 @@ public class GiftCertificateTest {
     public void findAllCertificateWithUnCorrectDto() {
         // Given Request for find all gift certificate
         // When method findAll will start executing with uncCorrect dto params
-        Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(Mockito.any(GiftCertificateRequestParam.class));
+        Mockito.doNothing().when(baseValidator).dtoValidator(Mockito.any(PaginationDto.class));
+        Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(Mockito.any(DtoGiftCertificateRequestParam.class));
         // Then get an exception (ServiceException)
         Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.findAll(new DtoGiftCertificateRequestParam(), new PaginationDto()));
 
@@ -125,7 +139,6 @@ public class GiftCertificateTest {
     @Test
     public void addNewDuplicateCertificate() {
         // Given Request for create giftCertificate
-        Mockito.when(giftCertificateDao.save(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
         Mockito.when(giftCertificateDao.findByName(CERTIFICATE_NAME)).thenReturn(Optional.of(new GiftCertificate()));
         // When method add will start executing with duplicate certificate name
         GiftCertificateDto newGiftCertificate = new GiftCertificateDto();
@@ -137,10 +150,11 @@ public class GiftCertificateTest {
     @Test
     public void updateCorrectCertificate() {
         // Given Request for update giftCertificate
-        Mockito.when(giftCertificateDao.update(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
-        Mockito.when(giftCertificateDao.findByName(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(giftCertificateDao.findByName(Mockito.any())).thenReturn(Optional.empty());
         Mockito.when(giftCertificateDao.findById(Mockito.anyInt())).thenReturn(Optional.of(correctGiftCertificate));
+        Mockito.when(giftCertificateDao.update(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
         GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
+        giftCertificateDto.setId(correctGiftCertificate.getId());
         // When method update will start executing with correct params
         GiftCertificateDto updateCertificate = giftCertificateService.update(giftCertificateDto);
         //Then we get updated certificate
@@ -163,7 +177,7 @@ public class GiftCertificateTest {
     public void updateDuplicateCertificate() {
         // Given Request for update giftCertificate
         // When method update will start executing with duplicate certificate name
-        Mockito.when(giftCertificateDao.findByName(Mockito.anyString())).thenReturn(Optional.of(new GiftCertificate()));
+        Mockito.when(giftCertificateDao.findByName(Mockito.any())).thenReturn(Optional.of(new GiftCertificate()));
         //Then returned exception (ServiceException)
         Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.update(new GiftCertificateDto()));
     }
@@ -191,7 +205,7 @@ public class GiftCertificateTest {
     @Test
     public void partUpdateCorrectDtoTest() {
         // Given Request for update giftCertificate
-        Mockito.when(giftCertificateDao.partUpdate(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
+        Mockito.when(giftCertificateDao.update(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
         // When method deleteById will start executing with correct certificate dto
         GiftCertificateDto partUpdateDto = giftCertificateService.partUpdate(new GiftCertificateDto());
         //Then we get updated certificate

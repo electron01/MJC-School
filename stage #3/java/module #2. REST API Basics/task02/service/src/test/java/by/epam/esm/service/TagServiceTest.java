@@ -1,32 +1,42 @@
 package by.epam.esm.service;
 
-import by.epam.esm.ServiceConfig;
-import by.epam.esm.dao.CrdTagDao;
+import by.epam.esm.dao.impl.TagDaoImpl;
 import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.TagDto;
+import by.epam.esm.dto.mapper.PaginationMapperImpl;
+import by.epam.esm.dto.mapper.TagMapperImpl;
 import by.epam.esm.enity.Pagination;
 import by.epam.esm.enity.Tag;
 import by.epam.esm.exception.ServiceException;
+import by.epam.esm.service.impl.TagServiceImpl;
 import by.epam.esm.validator.BaseValidator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
 
-@SpringJUnitConfig(ServiceConfig.class)
+@ExtendWith(MockitoExtension.class)
 public class TagServiceTest {
-    @Autowired
-    private CrdTagDao tagDao;
-    @Autowired
+    @Mock
+    private TagDaoImpl tagDao;
+    @Mock
     private BaseValidator baseValidator;
-    @Autowired
-    private TagService tagService;
+    @Spy
+    private TagMapperImpl tagMapper;
+    @Spy
+    private PaginationMapperImpl paginationMapper;
+    @InjectMocks
+    private TagServiceImpl tagService;
+
+
     private static Tag correctTag = new Tag();
     private static final Integer CORRECT_ID = 1;
     private static final Integer UN_CORRECT_ID = -1;
@@ -40,12 +50,6 @@ public class TagServiceTest {
         correctTag.setName(TAG_NAME);
         tagList = List.of(new Tag(), new Tag(), new Tag());
     }
-
-    @BeforeEach
-    void setUp() {
-        Mockito.reset(tagDao, baseValidator);
-    }
-
 
     @Test
     public void testUnCorrectPaginationDtoTest() {
@@ -114,7 +118,6 @@ public class TagServiceTest {
         tag.setName(TAG_NAME);
         // When method add will start executing with duplicate tag name
         Mockito.when(tagDao.findByName(TAG_NAME)).thenReturn(Optional.of(new Tag()));
-        Mockito.when(tagDao.save(Mockito.any(Tag.class))).thenReturn(correctTag);
         // Then get an exception (ServiceException)
         Assertions.assertThrows(ServiceException.class, () -> tagService.add(tag));
     }
