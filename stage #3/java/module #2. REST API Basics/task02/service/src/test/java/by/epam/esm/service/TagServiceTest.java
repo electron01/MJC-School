@@ -38,8 +38,8 @@ public class TagServiceTest {
 
 
     private static Tag correctTag = new Tag();
-    private static final Integer CORRECT_ID = 1;
-    private static final Integer UN_CORRECT_ID = -1;
+    private static final Long CORRECT_ID = 1l;
+    private static final Long UN_CORRECT_ID = -1l;
     private static final String TAG_NAME = "tagName";
     private static List<Tag> tagList;
 

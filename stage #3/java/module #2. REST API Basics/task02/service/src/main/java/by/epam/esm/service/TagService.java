@@ -10,7 +10,7 @@ import java.util.List;
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
-public interface TagService extends BaseService<TagDto, Integer> {
+public interface TagService extends BaseService<TagDto, Long> {
     /**
      * method findAll
      * method for find all tags
@@ -25,7 +25,7 @@ public interface TagService extends BaseService<TagDto, Integer> {
      * @param certificateId - certificate id for find
      * @return Tags dto list
      */
-    List<TagDto> findByGiftCertificateId(Integer certificateId);
+    List<TagDto> findByGiftCertificateId(Long certificateId);
 
     /**
      * method isTagByNameExist

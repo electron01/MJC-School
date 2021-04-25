@@ -59,17 +59,17 @@ public class TestTagDao {
     @Test
     public void findTagByCorrectId() {
         // Given Request for find tag by id
-        Integer id = 1;
+        Long id = 1l;
         // When method find will start executing with correct id
         Optional<Tag> tag = tagDao.findById(id);
         //Then returned Optional should be contains tag
-        Assertions.assertEquals(Optional.of(tags.get(id)), tag);
+        Assertions.assertEquals(Optional.of(tags.get(id.intValue())), tag);
     }
 
     @Test
     public void findTagByUnCorrectId() {
         // Given Request for find tag by id
-        Integer id = -1;
+        Long id = -1l;
         // When method find will start executing with unCorrect id
         Optional<Tag> tag = tagDao.findById(id);
         //Then returned Optional should be empty
@@ -79,7 +79,7 @@ public class TestTagDao {
     @Test
     public void findTagByCorrectCertificateId() {
         // Given Request for find tag by certificate id
-        Integer id = 1;
+        Long id = 1l;
         // When method findByCertificateId will start executing with correct id
         List<Tag> tagByCertificateId = tagDao.findByCertificateId(id);
         //Then returned list should be contains tags related for certificate
@@ -89,7 +89,7 @@ public class TestTagDao {
     @Test
     public void findTagByUnCorrectCertificateId() {
         // Given Request for find tag by certificate id
-        Integer id = -1;
+        Long id = -1l;
         // When method findByCertificateId will start executing with unCorrect id
         List<Tag> tagByCertificateId = tagDao.findByCertificateId(id);
         //Then returned list should be empty
@@ -100,7 +100,7 @@ public class TestTagDao {
     public void addNewTag() {
         // Given Request for add new tag
         Tag tag = new Tag();
-        tag.setId(10);
+        tag.setId(10l);
         tag.setName("newTag");
         // When method save will start executing with correct tag
         Tag savedTag = tagDao.save(tag);
@@ -121,7 +121,7 @@ public class TestTagDao {
     void deleteTagByCorrectId() {
         // Given Request for delete tag by id
         Tag tag = new Tag();
-        tag.setId(11);
+        tag.setId(11l);
         tag.setName("tagNew12)");
         Tag savedTag = tagDao.save(tag);
         // When method deleteById will start executing with correct id
@@ -133,7 +133,7 @@ public class TestTagDao {
     @Test
     void deleteTagByUnCorrectId() {
         // Given Request for delete tag by id
-        Integer id = -1;
+        Long id = -1l;
         // When method deleteById will start executing with unCorrect id
         boolean deleteById = tagDao.deleteById(id);
         //Then certificate must be return false
@@ -144,7 +144,7 @@ public class TestTagDao {
     private static void initTagList() {
         tags = new ArrayList<>();
         certificateTags = new ArrayList<>();
-        Integer id = 0;
+        Long id = 0l;
         String[] names = {"Extreme", "For him and for her", "Training", "Flying", "In another country", "Ride and Walk"};
         for (String name : names) {
             Tag tag = new Tag();

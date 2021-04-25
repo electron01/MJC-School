@@ -51,14 +51,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public GiftCertificateDto findById(Integer id) {
+    public GiftCertificateDto findById(Long id) {
         GiftCertificateDto giftCertificateDto = giftCertificateDao.findById(id).stream()
                 .findAny()
                 .map(giftCertificateMapper::giftCertificateToGiftCertificateDto)
                 .orElseThrow(() -> new ServiceException(
                         ErrorCode.NOT_FIND_CERTIFICATE_BY_ID,
                         ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage(),
-                        Set.of(new ErrorMessage("id", Integer.toString(id), ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage()))
+                        Set.of(new ErrorMessage("id", Long.toString(id), ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage()))
                 ));
         return setTagsForDto(giftCertificateDto);
     }
@@ -72,7 +72,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificateDto add(GiftCertificateDto dto) {
         baseValidator.dtoValidator(dto);
-        checkIsGiftCertificateNameExists(dto);
+        checkIfGiftCertificateNameExists(dto);
         checkAndUpdateTags(dto.getTags());
         GiftCertificate newGiftCertificate = giftCertificateMapper.giftCertificateDtoToGiftCertificate(dto);
         GiftCertificateDto saveDto = giftCertificateMapper
@@ -83,7 +83,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
         baseValidator.dtoValidator(giftCertificateDto);
-        checkIsGiftCertificateNameExists(giftCertificateDto);
+        checkIfGiftCertificateNameExists(giftCertificateDto);
         if (isGiftCertificateIdIsExists(giftCertificateDto.getId())) {
             checkAndUpdateTags(giftCertificateDto.getTags());//update tags
             if(giftCertificateDto.getTags()==null){
@@ -104,7 +104,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         if (!(giftCertificateDao.deleteById(id))) {
             throw new ServiceException(ErrorCode.NOT_FIND_CERTIFICATE_BY_ID,
                     ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage(),
@@ -133,7 +133,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificateDto partUpdate(GiftCertificateDto giftCertificateDto) {
         baseValidator.dtoValidatorForPartUpdate(giftCertificateDto);
         if (giftCertificateDto.getName() != null) {
-            checkIsGiftCertificateNameExists(giftCertificateDto);
+            checkIfGiftCertificateNameExists(giftCertificateDto);
         }
         checkAndUpdateTags(giftCertificateDto.getTags());
         GiftCertificate certificateForUpdate = giftCertificateMapper.giftCertificateDtoToGiftCertificate(giftCertificateDto);
@@ -154,7 +154,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                             throw new ServiceException(ErrorCode.NOT_FIND_TAG_BY_ID_WITH_THIS_NAME,
                                     ErrorCode.NOT_FIND_TAG_BY_ID_WITH_THIS_NAME.getMessage(),
                                     Set.of(new ErrorMessage("id",
-                                            Integer.toString(tagDto.getId()),
+                                            Long.toString(tagDto.getId()),
                                             ErrorCode.NOT_FIND_TAG_BY_ID_WITH_THIS_NAME.getMessage())));
                         }
                     });
@@ -183,7 +183,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         newTagDto.setId(createdTag.getId());
     }
 
-    private boolean isGiftCertificateIdIsExists(Integer id) {
+    private boolean isGiftCertificateIdIsExists(Long id) {
         return giftCertificateDao.findById(id).isPresent();
     }
 
@@ -191,7 +191,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return giftCertificateDao.findByName(name).isPresent();
     }
 
-    private void checkIsGiftCertificateNameExists(GiftCertificateDto dto) {
+    private void checkIfGiftCertificateNameExists(GiftCertificateDto dto) {
         if (isGiftCertificateNameIsExists(dto.getName())) {
             throw new ServiceException(ErrorCode.CERTIFICATE_NAME_IS_ALREADY_EXISTS,
                     ErrorCode.CERTIFICATE_NAME_IS_ALREADY_EXISTS.getMessage(),

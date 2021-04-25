@@ -1,6 +1,7 @@
 package by.epam.esm.enity;
 
 import java.util.Objects;
+
 /**
  * class Tag
  * extends base entity class
@@ -10,8 +11,6 @@ import java.util.Objects;
 public class Tag extends Entity {
 
     private String name;
-
-
 
     public String getName() {
         return name;

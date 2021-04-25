@@ -48,7 +48,7 @@ public class TagDaoImpl implements CrdTagDao {
     }
 
     @Override
-    public List<Tag> findByCertificateId(Integer id) {
+    public List<Tag> findByCertificateId(Long id) {
         return jdbcTemplate.query(GET_LIST_TAG_BY_CERTIFICATE_ID,
                 new Object[]{id},
                 tagRowMapper);
@@ -62,7 +62,7 @@ public class TagDaoImpl implements CrdTagDao {
     }
 
     @Override
-    public Optional<Tag> findById(Integer id) {
+    public Optional<Tag> findById(Long id) {
         return jdbcTemplate.query(GET_TAG_BY_ID_REQUEST, new Object[]{id}, tagRowMapper)
                 .stream()
                 .findAny();
@@ -90,14 +90,14 @@ public class TagDaoImpl implements CrdTagDao {
 
     }
 
-    private Integer getGeneratedId(KeyHolder keyHolder) {
+    private Long getGeneratedId(KeyHolder keyHolder) {
         return Optional.ofNullable(keyHolder.getKey())
-                .map(Number::intValue)
+                .map(Number::longValue)
                 .orElseThrow(() -> new EmptyResultDataAccessException(1));
     }
 
     @Override
-    public boolean deleteById(Integer id) {
+    public boolean deleteById(Long id) {
         return jdbcTemplate.update(DELETE_TAG_BY_ID_REQUEST,
                 new Object[]{id}) == 1;
     }

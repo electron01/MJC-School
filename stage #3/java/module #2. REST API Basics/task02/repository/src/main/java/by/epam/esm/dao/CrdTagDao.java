@@ -12,7 +12,7 @@ import java.util.Optional;
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
-public interface CrdTagDao extends BaseDao<Tag, Integer> {
+public interface CrdTagDao extends BaseDao<Tag, Long> {
     /**
      * Method findAll
      * method for find tags list in database
@@ -33,5 +33,5 @@ public interface CrdTagDao extends BaseDao<Tag, Integer> {
      * @param id certificate identifier
      * @return Tags list
      */
-    List<Tag> findByCertificateId(Integer id);
+    List<Tag> findByCertificateId(Long id);
 }

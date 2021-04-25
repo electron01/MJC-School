@@ -133,7 +133,7 @@ public class TestGiftCertificateDao {
     public void deleteCertificateByUnCorrectIdTest() {
         // Given Request for delete gift certificate by id
         // When method deleteById will start executing with unCorrect id
-        boolean deleteById = giftCertificateDao.deleteById(-1);
+        boolean deleteById = giftCertificateDao.deleteById(-1l);
         //Then certificate must be removed and method delete must be return false
         Assertions.assertFalse(deleteById);
     }
@@ -141,17 +141,17 @@ public class TestGiftCertificateDao {
     @Test
     public void findCertificateByCorrectId() {
         // Given Request for find gift certificate by id
-        Integer id = 1;
+        Long id = 1l;
         // When method find will start executing with correct id
         Optional<GiftCertificate> findById = giftCertificateDao.findById(id);
         //Then returned Optional should be contains certificate
-        Assertions.assertEquals(Optional.of(certificateList.get(id)), findById);
+        Assertions.assertEquals(Optional.of(certificateList.get(id.intValue())), findById);
     }
 
     @Test
     public void findCertificateByUnCorrectId() {
         // Given Request for find gift certificate by id
-        Integer id = -1;
+        Long id = -1l;
         // When method find will start executing with unCorrect id
         Optional<GiftCertificate> findById = giftCertificateDao.findById(id);
         //Then returned Optional should be empty
@@ -173,7 +173,7 @@ public class TestGiftCertificateDao {
 
 
     private static void initCertificateList() {
-        Integer id = 0;
+        Long id = 0l;
         certificateList = new ArrayList<>();
         GiftCertificate giftCertificate = new GiftCertificate();
         giftCertificate.setId(id++);

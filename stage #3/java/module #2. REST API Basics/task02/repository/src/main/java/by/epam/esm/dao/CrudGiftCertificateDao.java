@@ -12,7 +12,7 @@ import java.util.Optional;
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
-public interface CrudGiftCertificateDao extends BaseDao<GiftCertificate, Integer> {
+public interface CrudGiftCertificateDao extends BaseDao<GiftCertificate, Long> {
     /**
      * method findAll
      * method for find certificates list in database

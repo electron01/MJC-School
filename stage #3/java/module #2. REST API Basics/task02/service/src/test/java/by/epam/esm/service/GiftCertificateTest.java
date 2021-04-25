@@ -31,8 +31,8 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 public class GiftCertificateTest {
     private static final String CERTIFICATE_NAME = "name";
-    private static final Integer CORRECT_ID = 1;
-    private static final Integer UN_CORRECT_ID = -1;
+    private static final Long CORRECT_ID = 1l;
+    private static final Long UN_CORRECT_ID = -1l;
     private static GiftCertificate correctGiftCertificate = new GiftCertificate();
     private static List<GiftCertificate> certificateList;
     @Mock
@@ -151,7 +151,7 @@ public class GiftCertificateTest {
     public void updateCorrectCertificate() {
         // Given Request for update giftCertificate
         Mockito.when(giftCertificateDao.findByName(Mockito.any())).thenReturn(Optional.empty());
-        Mockito.when(giftCertificateDao.findById(Mockito.anyInt())).thenReturn(Optional.of(correctGiftCertificate));
+        Mockito.when(giftCertificateDao.findById(Mockito.anyLong())).thenReturn(Optional.of(correctGiftCertificate));
         Mockito.when(giftCertificateDao.update(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
         GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         giftCertificateDto.setId(correctGiftCertificate.getId());

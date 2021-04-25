@@ -38,7 +38,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagDto> findByGiftCertificateId(Integer certificateId) {
+    public List<TagDto> findByGiftCertificateId(Long certificateId) {
         return tagDao.findByCertificateId(certificateId)
                 .stream()
                 .map(tagMapper::tagToTagDTO)
@@ -73,7 +73,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDto findById(Integer id) {
+    public TagDto findById(Long id) {
         return tagDao.findById(id)
                 .stream()
                 .findAny()
@@ -105,7 +105,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         if (!(tagDao.deleteById(id))) {
             throw new ServiceException(ErrorCode.NOT_FIND_TAG_BY_ID,
                     ErrorCode.NOT_FIND_TAG_BY_ID.getMessage(),

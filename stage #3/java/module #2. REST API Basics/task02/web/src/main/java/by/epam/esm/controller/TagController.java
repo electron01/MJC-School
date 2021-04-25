@@ -53,7 +53,7 @@ public class TagController {
      * @return found tag
      */
     @GetMapping("/{id}")
-    public ResponseEntity<TagDto> findTagById(@PathVariable Integer id) {
+    public ResponseEntity<TagDto> findTagById(@PathVariable Long id) {
         TagDto tag = tagService.findById(id);
         return ResponseEntity.ok(tag);
     }
@@ -80,7 +80,7 @@ public class TagController {
      * @return updated tag dto
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<TagDto> updatePartOfTag(@PathVariable Integer id, @RequestBody TagDto tagDto) {
+    public ResponseEntity<TagDto> updatePartOfTag(@PathVariable Long id, @RequestBody TagDto tagDto) {
         tagDto.setId(id);
         TagDto updatedTag = tagService.update(tagDto);
         return ResponseEntity.ok(updatedTag);
@@ -95,7 +95,7 @@ public class TagController {
      * @return updated tag dto
      */
     @PutMapping("/{id}")
-    public ResponseEntity<TagDto> updateTag(@PathVariable Integer id, @RequestBody TagDto tagDto) {
+    public ResponseEntity<TagDto> updateTag(@PathVariable Long id, @RequestBody TagDto tagDto) {
         tagDto.setId(id);
         TagDto updatedTag = tagService.update(tagDto);
         return ResponseEntity.ok(updatedTag);
@@ -108,7 +108,7 @@ public class TagController {
      * @param id - tag id for delete
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTag(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteTag(@PathVariable Long id) {
         tagService.delete(id);
         return ResponseEntity.noContent().build();
     }

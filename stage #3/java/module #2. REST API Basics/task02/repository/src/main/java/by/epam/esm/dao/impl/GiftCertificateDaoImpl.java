@@ -90,7 +90,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
     }
 
     @Override
-    public Optional<GiftCertificate> findById(Integer id) {
+    public Optional<GiftCertificate> findById(Long id) {
         return jdbcTemplate.query(GET_CERTIFICATE_BY_ID,
                 new Object[]{id},
                 giftCertificateRowMapper).stream()
@@ -108,7 +108,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
     }
 
     @Override
-    public boolean deleteById(Integer id) {
+    public boolean deleteById(Long id) {
         return jdbcTemplate.update(DELETE_CERTIFICATE_REQUEST, new Object[]{id}) == 1;
     }
 
@@ -134,9 +134,9 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         return preparedStatement;
     }
 
-    private Integer getGeneratedId(KeyHolder keyHolder) {
+    private Long getGeneratedId(KeyHolder keyHolder) {
         return Optional.ofNullable(keyHolder.getKey())
-                .map(Number::intValue)
+                .map(Number::longValue)
                 .orElseThrow(() -> new EmptyResultDataAccessException(1));
     }
 

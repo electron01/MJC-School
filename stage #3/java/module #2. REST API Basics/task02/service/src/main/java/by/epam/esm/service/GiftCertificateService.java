@@ -12,7 +12,7 @@ import java.util.List;
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
-public interface GiftCertificateService extends BaseService<GiftCertificateDto,Integer> {
+public interface GiftCertificateService extends BaseService<GiftCertificateDto,Long> {
     /**
      * method findAll
      * method for find all certificates dto

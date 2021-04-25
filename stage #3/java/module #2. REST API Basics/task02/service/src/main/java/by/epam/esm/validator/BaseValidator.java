@@ -80,36 +80,6 @@ public class BaseValidator {
                     ErrorCode.NOT_VALID_DATA.getMessage(),
                     errorMessages);
         }
-        if (!(atLeastOneNonNullParameter(dto))) {
-            throw new ServiceException(ErrorCode.ALL_FIELD_IS_NULL,
-                    ErrorCode.ALL_FIELD_IS_NULL.getMessage());
-        }
-    }
-
-    /**
-     * method atLeastOneNonNullParameter
-     * method for check that not all dto fields is NULL
-     * @param dto - dto for check fields
-     * @return true if at least one field not null or throw ServiceException
-     */
-    private boolean atLeastOneNonNullParameter(Object dto) {
-        Field[] fields = dto.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            try {
-                field.setAccessible(true);
-                if (field.get(dto) != null) {
-                    return true;
-                }
-            } catch (IllegalAccessException exception) {
-                throw new ServiceException(exception,
-                        ErrorCode.SERVER_ERROR,
-                        ErrorCode.SERVER_ERROR.getMessage());
-
-            } finally {
-                field.setAccessible(false);
-            }
-        }
-        return false;
     }
 
     /**

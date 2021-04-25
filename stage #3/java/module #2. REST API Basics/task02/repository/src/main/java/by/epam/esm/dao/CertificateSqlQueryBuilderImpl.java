@@ -91,7 +91,7 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
         query.deleteCharAt(query.lastIndexOf(COMMA));
     }
 
-    private void addWhereIdEqual(Integer id) {
+    private void addWhereIdEqual(Long id) {
         query.append(WHERE + ID + EQUALLY + EXCEPTED_VALUE);
         params.add(id);
     }

@@ -61,7 +61,7 @@ public class GiftCertificateController {
      * @return Gift Certificate dto
      */
     @GetMapping("/{id}")
-    public ResponseEntity<GiftCertificateDto> findById(@PathVariable Integer id) {
+    public ResponseEntity<GiftCertificateDto> findById(@PathVariable Long id) {
         GiftCertificateDto certificate = giftCertificateService.findById(id);
         return ResponseEntity.ok(certificate);
     }
@@ -87,7 +87,7 @@ public class GiftCertificateController {
      * @return updated Certificate dto
      */
     @PutMapping("/{id}")
-    public ResponseEntity<GiftCertificateDto> updateGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto, @PathVariable Integer id) {
+    public ResponseEntity<GiftCertificateDto> updateGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto, @PathVariable Long id) {
         giftCertificateDto.setId(id);
         GiftCertificateDto updatedCertificate = giftCertificateService.update(giftCertificateDto);
         return ResponseEntity.ok(updatedCertificate);
@@ -101,14 +101,14 @@ public class GiftCertificateController {
      * @return updated Certificate dto
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<GiftCertificateDto> updatePartOfCertificate(@PathVariable Integer id, @RequestBody GiftCertificateDto giftCertificateDto) {
+    public ResponseEntity<GiftCertificateDto> updatePartOfCertificate(@PathVariable Long id, @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
         GiftCertificateDto updatedCertificate = giftCertificateService.partUpdate(giftCertificateDto);
         return ResponseEntity.ok(updatedCertificate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         giftCertificateService.delete(id);
         return ResponseEntity.noContent().build();
     }
