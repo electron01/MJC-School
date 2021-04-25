@@ -69,9 +69,9 @@ public class TagDaoImpl implements CrdTagDao {
     }
 
     @Override
-    public Tag save(Tag entity) {
+    public Tag add(Tag entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> getSaveStatement(con, entity), keyHolder);
+        jdbcTemplate.update(con -> getAddNewTagStatement(con, entity), keyHolder);
         entity.setId(getGeneratedId(keyHolder));
         return findById(entity.getId())
                 .orElseThrow(() -> new EmptyResultDataAccessException(1));
@@ -83,7 +83,7 @@ public class TagDaoImpl implements CrdTagDao {
     }
 
 
-    private PreparedStatement getSaveStatement(Connection con, Tag entity) throws SQLException {
+    private PreparedStatement getAddNewTagStatement(Connection con, Tag entity) throws SQLException {
         PreparedStatement preparedStatement = con.prepareStatement(SAVE_TAG_REQUEST, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, entity.getName());
         return preparedStatement;

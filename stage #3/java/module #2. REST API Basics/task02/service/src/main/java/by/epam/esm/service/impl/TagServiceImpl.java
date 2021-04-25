@@ -13,6 +13,7 @@ import by.epam.esm.service.TagService;
 import by.epam.esm.validator.BaseValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -41,7 +42,7 @@ public class TagServiceImpl implements TagService {
     public List<TagDto> findByGiftCertificateId(Long certificateId) {
         return tagDao.findByCertificateId(certificateId)
                 .stream()
-                .map(tagMapper::tagToTagDTO)
+                .map(tagMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -55,7 +56,7 @@ public class TagServiceImpl implements TagService {
         return tagDao.findByName(name)
                 .stream()
                 .findAny()
-                .map(tagMapper::tagToTagDTO)
+                .map(tagMapper::toDto)
                 .orElseThrow(() -> new ServiceException(ErrorCode.NOT_FIND_TAG_BY_ID,
                         ErrorCode.NOT_FIND_TAG_BY_ID.getMessage(),
                         Set.of(new ErrorMessage("name", name, ErrorCode.NOT_FIND_TAG_BY_ID.getMessage())
@@ -66,9 +67,9 @@ public class TagServiceImpl implements TagService {
     public List<TagDto> findAll(PaginationDto paginationDto) {
         baseValidator.dtoValidator(paginationDto);
         return tagDao
-                .findAll(paginationMapper.paginationDtoToPagination(paginationDto))
+                .findAll(paginationMapper.toEntity(paginationDto))
                 .stream()
-                .map(tagMapper::tagToTagDTO)
+                .map(tagMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -77,7 +78,7 @@ public class TagServiceImpl implements TagService {
         return tagDao.findById(id)
                 .stream()
                 .findAny()
-                .map(tagMapper::tagToTagDTO)
+                .map(tagMapper::toDto)
                 .orElseThrow(() -> new ServiceException(ErrorCode.NOT_FIND_TAG_BY_ID,
                         ErrorCode.NOT_FIND_TAG_BY_ID.getMessage(),
                         Set.of(new ErrorMessage("id", String.valueOf(id), ErrorCode.NOT_FIND_TAG_BY_ID.getMessage())
@@ -85,6 +86,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public TagDto add(TagDto dto) {
         baseValidator.dtoValidator(dto);
         if (tagDao.findByName(dto.getName()).isPresent()) {
@@ -93,14 +95,14 @@ public class TagServiceImpl implements TagService {
                     Set.of(new ErrorMessage("name", dto.getName(), ErrorCode.NAME_TAG_IS_ALREADY_EXIST.getMessage())
                     ));
         }
-        Tag tag = tagMapper.tagDtoToTag(dto);
-        Tag newTag = tagDao.save(tag);
-        return tagMapper.tagToTagDTO(newTag);
+        Tag tag = tagMapper.toEntity(dto);
+        Tag newTag = tagDao.add(tag);
+        return tagMapper.toDto(newTag);
     }
 
     @Override
     public TagDto update(TagDto tagDto) {
-        tagDao.update(tagMapper.tagDtoToTag(tagDto));
+        tagDao.update(tagMapper.toEntity(tagDto));
         return null;
     }
 

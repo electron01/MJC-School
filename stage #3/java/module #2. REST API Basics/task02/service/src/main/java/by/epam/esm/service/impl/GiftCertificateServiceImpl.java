@@ -19,6 +19,7 @@ import by.epam.esm.service.TagService;
 import by.epam.esm.validator.BaseValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificateDto findById(Long id) {
         GiftCertificateDto giftCertificateDto = giftCertificateDao.findById(id).stream()
                 .findAny()
-                .map(giftCertificateMapper::giftCertificateToGiftCertificateDto)
+                .map(giftCertificateMapper::toDto)
                 .orElseThrow(() -> new ServiceException(
                         ErrorCode.NOT_FIND_CERTIFICATE_BY_ID,
                         ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage(),
@@ -70,17 +71,19 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
+    @Transactional
     public GiftCertificateDto add(GiftCertificateDto dto) {
         baseValidator.dtoValidator(dto);
         checkIfGiftCertificateNameExists(dto);
         checkAndUpdateTags(dto.getTags());
-        GiftCertificate newGiftCertificate = giftCertificateMapper.giftCertificateDtoToGiftCertificate(dto);
+        GiftCertificate newGiftCertificate = giftCertificateMapper.toEntity(dto);
         GiftCertificateDto saveDto = giftCertificateMapper
-                .giftCertificateToGiftCertificateDto(giftCertificateDao.save(newGiftCertificate));
+                .toDto(giftCertificateDao.add(newGiftCertificate));
         return setTagsForDto(saveDto);
     }
 
     @Override
+    @Transactional
     public GiftCertificateDto update(GiftCertificateDto giftCertificateDto) {
         baseValidator.dtoValidator(giftCertificateDto);
         checkIfGiftCertificateNameExists(giftCertificateDto);
@@ -90,8 +93,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 giftCertificateDto.setTags(new ArrayList<>());
             }
             GiftCertificate updatedCertificate = giftCertificateDao
-                    .update(giftCertificateMapper.giftCertificateDtoToGiftCertificate(giftCertificateDto));
-            return setTagsForDto(giftCertificateMapper.giftCertificateToGiftCertificateDto(updatedCertificate));
+                    .update(giftCertificateMapper.toEntity(giftCertificateDto));
+            return setTagsForDto(giftCertificateMapper.toDto(updatedCertificate));
         } else {
             throw new ServiceException(ErrorCode.NOT_FIND_CERTIFICATE_BY_ID,
                     ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage(),
@@ -119,26 +122,28 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                             PaginationDto paginationDto) {
         baseValidator.dtoValidator(paginationDto);
         baseValidator.dtoValidator(CertificateRequestDto);
-        GiftCertificateRequestParam giftCertificateRequestParam = giftCertificateRequestMapper.dtoGiftCertificateRequestToGiftCertificate(CertificateRequestDto);
-        Pagination pagination = paginationMapper.paginationDtoToPagination(paginationDto);
+        GiftCertificateRequestParam giftCertificateRequestParam = giftCertificateRequestMapper.toEntity(CertificateRequestDto);
+        Pagination pagination = paginationMapper.toEntity(paginationDto);
         List<GiftCertificateDto> dtoList = giftCertificateDao.findAll(giftCertificateRequestParam, pagination)
                 .stream()
-                .map(giftCertificateMapper::giftCertificateToGiftCertificateDto)
+                .map(giftCertificateMapper::toDto)
                 .collect(Collectors.toList());
         dtoList.forEach(this::setTagsForDto);
         return dtoList;
     }
 
+
     @Override
+    @Transactional
     public GiftCertificateDto partUpdate(GiftCertificateDto giftCertificateDto) {
         baseValidator.dtoValidatorForPartUpdate(giftCertificateDto);
         if (giftCertificateDto.getName() != null) {
             checkIfGiftCertificateNameExists(giftCertificateDto);
         }
         checkAndUpdateTags(giftCertificateDto.getTags());
-        GiftCertificate certificateForUpdate = giftCertificateMapper.giftCertificateDtoToGiftCertificate(giftCertificateDto);
+        GiftCertificate certificateForUpdate = giftCertificateMapper.toEntity(giftCertificateDto);
         GiftCertificateDto updatedCertificate = giftCertificateMapper.
-                giftCertificateToGiftCertificateDto(giftCertificateDao.update(certificateForUpdate));
+                toDto(giftCertificateDao.update(certificateForUpdate));
         return setTagsForDto(updatedCertificate);
     }
 

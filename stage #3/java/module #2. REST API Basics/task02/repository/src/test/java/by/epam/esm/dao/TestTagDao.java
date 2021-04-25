@@ -102,8 +102,8 @@ public class TestTagDao {
         Tag tag = new Tag();
         tag.setId(10l);
         tag.setName("newTag");
-        // When method save will start executing with correct tag
-        Tag savedTag = tagDao.save(tag);
+        // When method add will start executing with correct tag
+        Tag savedTag = tagDao.add(tag);
         // Then new tag must be saved with an autoIncrement identifier
         Assertions.assertEquals(tag.getName(), savedTag.getName());
         Assertions.assertNotNull(savedTag.getId());
@@ -123,7 +123,7 @@ public class TestTagDao {
         Tag tag = new Tag();
         tag.setId(11l);
         tag.setName("tagNew12)");
-        Tag savedTag = tagDao.save(tag);
+        Tag savedTag = tagDao.add(tag);
         // When method deleteById will start executing with correct id
         boolean deleteById = tagDao.deleteById(savedTag.getId());
         //Then certificate must be removed and method delete must be return true

@@ -18,7 +18,7 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface PaginationMapper {
     /**
-     * method paginationDtoToPagination
+     * method toEntity
      * method for convert pagination dto to pagination
      * @param dto - pagination dto for convert
      * @return pagination
@@ -27,5 +27,5 @@ public interface PaginationMapper {
             @Mapping(target = "startPosition", source = "dto.startPosition"),
             @Mapping(target = "limit", source = "dto.limit"),
     })
-    Pagination paginationDtoToPagination(PaginationDto dto);
+    Pagination toEntity(PaginationDto dto);
 }

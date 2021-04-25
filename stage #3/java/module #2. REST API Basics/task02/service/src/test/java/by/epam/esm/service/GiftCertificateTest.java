@@ -23,7 +23,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 import java.util.Optional;
@@ -115,7 +114,7 @@ public class GiftCertificateTest {
     @Test
     public void addNewCorrectCertificate() {
         // Given Request for create giftCertificate
-        Mockito.when(giftCertificateDao.save(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
+        Mockito.when(giftCertificateDao.add(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
         Mockito.when(giftCertificateDao.findByName(CERTIFICATE_NAME)).thenReturn(Optional.empty());
         GiftCertificateDto newGiftCertificate = new GiftCertificateDto();
         newGiftCertificate.setName(CERTIFICATE_NAME);

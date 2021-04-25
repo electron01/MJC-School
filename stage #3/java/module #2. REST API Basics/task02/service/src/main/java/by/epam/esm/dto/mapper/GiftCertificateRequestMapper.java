@@ -17,7 +17,7 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface GiftCertificateRequestMapper {
     /**
-     * method dtoGiftCertificateRequestToGiftCertificate
+     * method toEntity
      * method for convert dto gift certificate request params to gift certificate request param
      * @param dto - dto gift certificate request params for convert
      * @return gift certificate request param
@@ -28,5 +28,5 @@ public interface GiftCertificateRequestMapper {
             @Mapping(target = "tagName", source = "dto.tagName"),
             @Mapping(target = "sort", source = "dto.sort")
     })
-    GiftCertificateRequestParam dtoGiftCertificateRequestToGiftCertificate(DtoGiftCertificateRequestParam dto);
+    GiftCertificateRequestParam toEntity(DtoGiftCertificateRequestParam dto);
 }

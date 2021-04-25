@@ -90,7 +90,7 @@ public class TagServiceTest {
         tag.setId(CORRECT_ID);
         tag.setName(TAG_NAME);
         Mockito.when(tagDao.findByName(TAG_NAME)).thenReturn(Optional.empty());
-        Mockito.when(tagDao.save(Mockito.any(Tag.class))).thenReturn(correctTag);
+        Mockito.when(tagDao.add(Mockito.any(Tag.class))).thenReturn(correctTag);
         // When method add will start executing with correct params
         TagDto newTag = tagService.add(tag);
         // Then returned new tag

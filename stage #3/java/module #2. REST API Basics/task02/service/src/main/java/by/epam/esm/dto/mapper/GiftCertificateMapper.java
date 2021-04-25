@@ -17,7 +17,7 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface GiftCertificateMapper {
     /**
-     * method giftCertificateToGiftCertificateDto
+     * method toDto
      * method for convert gift certificate to gift certificate dto
      * @param entity - gift certificate for convert
      * @return gift certificate dto
@@ -31,10 +31,10 @@ public interface GiftCertificateMapper {
             @Mapping(target = "updateDate",source = "entity.updateDate"),
             @Mapping(target = "tags",source = "entity.tags")
     })
-    GiftCertificateDto giftCertificateToGiftCertificateDto(GiftCertificate entity);
+    GiftCertificateDto toDto(GiftCertificate entity);
 
     /**
-     * method giftCertificateDtoToGiftCertificate
+     * method toEntity
      * method for convert gift certificate dto to gift certificate
      * @param dto - gift certificate dto for convert
      * @return gift certificate
@@ -48,5 +48,5 @@ public interface GiftCertificateMapper {
             @Mapping(target = "updateDate",source = "dto.updateDate"),
             @Mapping(target = "tags",source = "dto.tags")
     })
-    GiftCertificate giftCertificateDtoToGiftCertificate(GiftCertificateDto dto);
+    GiftCertificate toEntity(GiftCertificateDto dto);
 }

@@ -17,7 +17,7 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = "spring")
 public interface TagMapper {
     /**
-     * method tagToTagDTO
+     * method toDto
      * method for convert tag to tag dto
      * @param entity - tag for convert
      * @return tag dto
@@ -26,10 +26,10 @@ public interface TagMapper {
             @Mapping(target = "id", source = "entity.id"),
             @Mapping(target = "name", source = "entity.name")
     })
-    TagDto tagToTagDTO(Tag entity);
+    TagDto toDto(Tag entity);
 
     /**
-     * method tagToTagDTO
+     * method toDto
      * method for convert tag dto to tag
      * @param dto - tag dto for convert
      * @return tag
@@ -39,5 +39,5 @@ public interface TagMapper {
             @Mapping(target = "id", source = "dto.id"),
             @Mapping(target = "name", source = "dto.name")
     })
-    Tag tagDtoToTag(TagDto dto);
+    Tag toEntity(TagDto dto);
 }

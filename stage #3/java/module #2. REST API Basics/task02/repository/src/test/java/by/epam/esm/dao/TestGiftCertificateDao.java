@@ -105,8 +105,8 @@ public class TestGiftCertificateDao {
         giftCertificate.setPrice(BigDecimal.valueOf(123.00).setScale(2));
         giftCertificate.setCreateDate(LocalDateTime.parse("2021-01-01T10:21:34"));
         giftCertificate.setUpdateDate(LocalDateTime.parse("2021-02-20T19:25:16"));
-        // When method save will start executing with correct certificate
-        GiftCertificate savedCertificate = giftCertificateDao.save(giftCertificate);
+        // When method add will start executing with correct certificate
+        GiftCertificate savedCertificate = giftCertificateDao.add(giftCertificate);
         // Then new certificate must be saved  with an autoIncrement identifier
         Assertions.assertEquals(savedCertificate.getName(), giftCertificate.getName());
         Assertions.assertNotNull(savedCertificate.getId());
@@ -122,7 +122,7 @@ public class TestGiftCertificateDao {
         giftCertificate.setPrice(BigDecimal.valueOf(123.00).setScale(2));
         giftCertificate.setCreateDate(LocalDateTime.parse("2021-01-01T10:21:34"));
         giftCertificate.setUpdateDate(LocalDateTime.parse("2021-02-20T19:25:16"));
-        GiftCertificate savedCertificate = giftCertificateDao.save(giftCertificate);
+        GiftCertificate savedCertificate = giftCertificateDao.add(giftCertificate);
         // When method deleteById will start executing with correct id
         boolean deleteById = giftCertificateDao.deleteById(savedCertificate.getId());
         //Then certificate must be removed and method delete must be return true

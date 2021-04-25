@@ -21,8 +21,8 @@ public interface BaseService<E extends EntityDto,ID extends Serializable> {
 
     /**
      * method add
-     * method for save new entity
-     * @param dto - entity dto for save
+     * method for add new entity
+     * @param dto - entity dto for add
      * @return new entity
      */
     E add(E dto);

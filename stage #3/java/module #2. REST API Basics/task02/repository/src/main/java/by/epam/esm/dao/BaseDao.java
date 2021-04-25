@@ -21,12 +21,12 @@ public interface BaseDao<T extends Entity, ID extends Serializable> {
     Optional<T> findById(ID id);
 
     /**
-     * Method save
+     * Method add
      * method saves new entity in database
-     * @param entity - entity for save
+     * @param entity - entity for add
      * @return the same entity
      */
-    T save(T entity);
+    T add(T entity);
 
     /**
      * Method update

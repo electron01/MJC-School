@@ -98,9 +98,9 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
     }
 
     @Override
-    public GiftCertificate save(GiftCertificate entity) {
+    public GiftCertificate add(GiftCertificate entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> getSaveStatement(con, entity), keyHolder);
+        jdbcTemplate.update(con -> getAddNewCertificateStatement(con, entity), keyHolder);
         entity.setId(getGeneratedId(keyHolder));
         addToTagGiftCertificate(entity);
         return findById(entity.getId())
@@ -124,7 +124,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         jdbcTemplate.update(DELETE_TAG_GIFT_CERTIFICATE, new Object[]{giftCertificate.getId()});
     }
 
-    private PreparedStatement getSaveStatement(Connection con, GiftCertificate entity) throws SQLException {
+    private PreparedStatement getAddNewCertificateStatement(Connection con, GiftCertificate entity) throws SQLException {
         int index = 1;
         PreparedStatement preparedStatement = con.prepareStatement(SAVE_CERTIFICATE_REQUEST, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(index++, entity.getName());
