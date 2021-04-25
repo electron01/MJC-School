@@ -21,14 +21,6 @@ public class Tag extends Entity {
     }
 
     @Override
-    public String toString() {
-        return "Tag{" +
-                "id=" + getId() + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

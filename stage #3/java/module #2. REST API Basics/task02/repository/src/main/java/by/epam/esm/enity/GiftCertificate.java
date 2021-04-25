@@ -20,20 +20,6 @@ public class GiftCertificate extends Entity {
     private LocalDateTime updateDate;
     private List<Tag> tags;
 
-    @Override
-    public String toString() {
-        return "GiftCertificate{" +
-                "id=" + getId() + '\'' +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", description='" + description + '\'' +
-                ", duration=" + duration +
-                ", createDate=" + createDate +
-                ", updateDate=" + updateDate +
-                ", tags=" + tags +
-                '}';
-    }
-
     public String getName() {
         return name;
     }

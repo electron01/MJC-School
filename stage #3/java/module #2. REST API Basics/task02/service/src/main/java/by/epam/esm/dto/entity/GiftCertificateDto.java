@@ -98,17 +98,4 @@ public class GiftCertificateDto extends EntityDto {
         this.tags = tags;
     }
 
-    @Override
-    public String toString() {
-        return "GiftCertificateDto{" +
-                "id=" + getId() + '\'' +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", description='" + description + '\'' +
-                ", duration=" + duration +
-                ", createDate=" + createDate +
-                ", updateDate=" + updateDate +
-                ", tags=" + tags +
-                '}';
-    }
 }

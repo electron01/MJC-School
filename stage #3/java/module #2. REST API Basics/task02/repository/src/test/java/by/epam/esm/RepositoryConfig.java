@@ -16,11 +16,13 @@ import javax.sql.DataSource;
 @Profile("test")
 public class RepositoryConfig {
     private static final String DB_SCRIPT = "classpath:DBScript.sql";
+    private static final String DATA_FOR_TEST = "classpath:DataForTest.sql";
     @Bean
     public DataSource getDataSource() {
         EmbeddedDatabaseBuilder embeddedDatabaseBuilder = new EmbeddedDatabaseBuilder();
         embeddedDatabaseBuilder.setType(EmbeddedDatabaseType.HSQL)
-                .addScript(DB_SCRIPT);
+                .addScript(DB_SCRIPT)
+                .addScript(DATA_FOR_TEST);
         return embeddedDatabaseBuilder.build();
     }
 
