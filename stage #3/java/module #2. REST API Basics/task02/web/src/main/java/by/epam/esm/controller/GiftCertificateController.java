@@ -5,7 +5,7 @@ import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.request.DtoGiftCertificateRequestParam;
 import by.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,11 +46,11 @@ public class GiftCertificateController {
      * @return Certificates list
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<GiftCertificateDto> findAllGiftCertificate(@RequestParam Map<String, Object> model) {
+    public ResponseEntity<List<GiftCertificateDto>> findAllGiftCertificate(@RequestParam Map<String, Object> model) {
         PaginationDto paginationDto = createPaginationDto(model);
         DtoGiftCertificateRequestParam dtoGiftCertificateRequestParam = getGiftCertificateRequest(model);
-        return giftCertificateService.findAll(dtoGiftCertificateRequestParam, paginationDto);
+        List<GiftCertificateDto> giftCertificates = giftCertificateService.findAll(dtoGiftCertificateRequestParam, paginationDto);
+        return ResponseEntity.ok(giftCertificates);
     }
 
     /**
@@ -61,9 +61,9 @@ public class GiftCertificateController {
      * @return Gift Certificate dto
      */
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto findById(@PathVariable Integer id) {
-        return giftCertificateService.findById(id);
+    public ResponseEntity<GiftCertificateDto> findById(@PathVariable Integer id) {
+        GiftCertificateDto certificate = giftCertificateService.findById(id);
+        return ResponseEntity.ok(certificate);
     }
 
     /**
@@ -74,42 +74,43 @@ public class GiftCertificateController {
      * @return - new Gift Certificate dto
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto createNewGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
-        return giftCertificateService.add(giftCertificateDto);
+    public ResponseEntity<GiftCertificateDto> createNewGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) {
+        GiftCertificateDto newCertificate = giftCertificateService.add(giftCertificateDto);
+        return ResponseEntity.ok(newCertificate);
     }
 
     /**
      * method updateGiftCertificate
      * put mapping
      * @param giftCertificateDto - dto for update
-     * @param id - id for found
+     * @param id                 - id for found
      * @return updated Certificate dto
      */
     @PutMapping("/{id}")
-    public GiftCertificateDto updateGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto, @PathVariable Integer id) {
+    public ResponseEntity<GiftCertificateDto> updateGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto, @PathVariable Integer id) {
         giftCertificateDto.setId(id);
-        return giftCertificateService.update(giftCertificateDto);
+        GiftCertificateDto updatedCertificate = giftCertificateService.update(giftCertificateDto);
+        return ResponseEntity.ok(updatedCertificate);
     }
 
     /**
      * method updatePartOfCertificate
      * patch mapping
      * @param giftCertificateDto - dto for part update
-     * @param id - id for found
+     * @param id                 - id for found
      * @return updated Certificate dto
      */
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDto updatePartOfCertificate(@PathVariable Integer id, @RequestBody GiftCertificateDto giftCertificateDto) {
+    public ResponseEntity<GiftCertificateDto> updatePartOfCertificate(@PathVariable Integer id, @RequestBody GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setId(id);
-        return giftCertificateService.partUpdate(giftCertificateDto);
+        GiftCertificateDto updatedCertificate = giftCertificateService.partUpdate(giftCertificateDto);
+        return ResponseEntity.ok(updatedCertificate);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
         giftCertificateService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     /**

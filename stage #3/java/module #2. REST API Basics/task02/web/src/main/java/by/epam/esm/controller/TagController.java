@@ -5,7 +5,7 @@ import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.TagDto;
 import by.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,15 +34,15 @@ public class TagController {
      * get mapping
      * method for find Tags list
      * @param startPosition - offset for found
-     * @param limit - limit for found
+     * @param limit         - limit for found
      * @return Tags list
      */
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<TagDto> findAllTags(@RequestParam(required = false, defaultValue = DEFAULT_VALUE_START_POSITION) Integer startPosition,
-                                   @RequestParam(required = false, defaultValue = DEFAULT_VALUE_LIMIT) Integer limit) {
+    public ResponseEntity<List<TagDto>> findAllTags(@RequestParam(required = false, defaultValue = DEFAULT_VALUE_START_POSITION) Integer startPosition,
+                                                    @RequestParam(required = false, defaultValue = DEFAULT_VALUE_LIMIT) Integer limit) {
         PaginationDto paginationDto = createPaginationDto(startPosition, limit);
-        return tagService.findAll(paginationDto);
+        List<TagDto> tags = tagService.findAll(paginationDto);
+        return ResponseEntity.ok(tags);
     }
 
     /**
@@ -53,9 +53,9 @@ public class TagController {
      * @return found tag
      */
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public TagDto findTagById(@PathVariable Integer id) {
-        return tagService.findById(id);
+    public ResponseEntity<TagDto> findTagById(@PathVariable Integer id) {
+        TagDto tag = tagService.findById(id);
+        return ResponseEntity.ok(tag);
     }
 
     /**
@@ -66,36 +66,39 @@ public class TagController {
      * @return created tag dto
      */
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public TagDto addNewTag(@RequestBody TagDto tagDto) {
-        return tagService.add(tagDto);
+    public ResponseEntity<TagDto> addNewTag(@RequestBody TagDto tagDto) {
+        TagDto newTag = tagService.add(tagDto);
+        return ResponseEntity.ok(newTag);
     }
 
     /**
      * method updatePartOfTag
      * patch mapping
      * method for update part info of tag
-     * @param id - tag id for update
+     * @param id     - tag id for update
      * @param tagDto - tag dto for update
      * @return updated tag dto
      */
     @PatchMapping("/{id}")
-    public TagDto updatePartOfTag(@PathVariable Integer id, @RequestBody TagDto tagDto) {
+    public ResponseEntity<TagDto> updatePartOfTag(@PathVariable Integer id, @RequestBody TagDto tagDto) {
         tagDto.setId(id);
-        return tagService.update(tagDto);
+        TagDto updatedTag = tagService.update(tagDto);
+        return ResponseEntity.ok(updatedTag);
     }
+
     /**
      * method updatePartOfTag
      * put mapping
      * method for update tag
-     * @param id - tag id for update
+     * @param id     - tag id for update
      * @param tagDto - tag dto for update
      * @return updated tag dto
      */
     @PutMapping("/{id}")
-    public TagDto updateTag(@PathVariable Integer id, @RequestBody TagDto tagDto) {
+    public ResponseEntity<TagDto> updateTag(@PathVariable Integer id, @RequestBody TagDto tagDto) {
         tagDto.setId(id);
-        return tagService.update(tagDto);
+        TagDto updatedTag = tagService.update(tagDto);
+        return ResponseEntity.ok(updatedTag);
     }
 
     /**
@@ -105,16 +108,16 @@ public class TagController {
      * @param id - tag id for delete
      */
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTag(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteTag(@PathVariable Integer id) {
         tagService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     /**
      * method createPaginationDto
      * method create new pagination dto with param
      * @param startPosition - offset for found
-     * @param limit - limit for found
+     * @param limit         - limit for found
      * @return new Pagination dto
      */
     private PaginationDto createPaginationDto(Integer startPosition, Integer limit) {
