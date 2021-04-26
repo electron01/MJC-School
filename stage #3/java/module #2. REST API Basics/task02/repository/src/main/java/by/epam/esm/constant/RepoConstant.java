@@ -1,5 +1,11 @@
 package by.epam.esm.constant;
 
+/**
+ * class RepoConstant
+ * class contains the necessary constants such as the path to files and queries to the database
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public final class RepoConstant {
     private RepoConstant() {
     }
@@ -25,14 +31,13 @@ public final class RepoConstant {
     public static final String GET_CERTIFICATE_BY_NAME = SELECT_ALL_COLUMNS_FROM_GIFT_CERTIFICATE_TABLE +
             FROM_GIFT_CERTIFICATE +
             "WHERE name = ? AND remove = FALSE ";
-
     public static final String DELETE_CERTIFICATE_REQUEST =
             "UPDATE gift_certificate set remove = TRUE " +
                     "WHERE gift_certificate_id = ?";
-
-
     public static final String FIND_ALL_TAG_REQUEST = "SELECT tag_id, name FROM tag WHERE remove=FALSE LIMIT ?, ?";
+
     public static final String SAVE_TAG_REQUEST = "INSERT INTO tag (name) VALUES(?)";
+
     public static final String GET_TAG_BY_ID_REQUEST = "SELECT tag_id,name FROM tag WHERE tag_id = ? AND remove=FALSE";
     public static final String DELETE_TAG_BY_ID_REQUEST = "UPDATE tag SET remove = TRUE WHERE tag_id = ? AND remove = FALSE";
     public static final String GET_TAG_NY_NAME = "SELECT tag_id, name FROM tag WHERE name = ? AND remove=FALSE";
@@ -70,5 +75,4 @@ public final class RepoConstant {
     public static final String COMMA = ", ";
     public static final String EQUALLY = " =";
     public static final String START_PART_UPDATE_CERTIFICATE_REQUEST = "UPDATE gift_certificate SET last_update_date = now(), ";
-
 }

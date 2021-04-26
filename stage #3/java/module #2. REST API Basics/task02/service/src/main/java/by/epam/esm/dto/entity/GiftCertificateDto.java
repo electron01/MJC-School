@@ -97,5 +97,4 @@ public class GiftCertificateDto extends EntityDto {
     public void setTags(List<TagDto> tags) {
         this.tags = tags;
     }
-
 }

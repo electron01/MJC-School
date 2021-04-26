@@ -75,7 +75,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> getAddNewCertificateStatement(con, entity), keyHolder);
         entity.setId(getGeneratedId(keyHolder));
-        addToTagGiftCertificate(entity);
+        addTagToGiftCertificate(entity);
         return findById(entity.getId())
                 .orElseThrow(() -> new EmptyResultDataAccessException(1));
     }
@@ -85,7 +85,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         return jdbcTemplate.update(RepoConstant.DELETE_CERTIFICATE_REQUEST, new Object[]{id}) == 1;
     }
 
-    private void addToTagGiftCertificate(GiftCertificate giftCertificate) {
+    private void addTagToGiftCertificate(GiftCertificate giftCertificate) {
         if (giftCertificate.getTags() != null) {
             giftCertificate.getTags().stream()
                     .forEach(tag -> jdbcTemplate.update(RepoConstant.UPDATE_TAG_GIFT_CERTIFICATE, giftCertificate.getId(), tag.getId()));
@@ -115,6 +115,6 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
 
     private void updateTags(GiftCertificate giftCertificate) {
         deleteFromGiftCertificate(giftCertificate);
-        addToTagGiftCertificate(giftCertificate);
+        addTagToGiftCertificate(giftCertificate);
     }
 }

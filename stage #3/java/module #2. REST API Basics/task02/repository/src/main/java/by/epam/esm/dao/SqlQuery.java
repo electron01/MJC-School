@@ -1,7 +1,12 @@
 package by.epam.esm.dao;
 
 import org.springframework.stereotype.Component;
-
+/**
+ * class SqlQuery
+ * class contains sql request and params for request
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 @Component
 public class SqlQuery {
     private String sqlQuery;

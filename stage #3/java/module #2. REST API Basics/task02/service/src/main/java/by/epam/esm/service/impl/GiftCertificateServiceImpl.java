@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
-
     private GiftCertificateMapper giftCertificateMapper;
     private CrudGiftCertificateDao giftCertificateDao;
     private BaseValidator baseValidator;

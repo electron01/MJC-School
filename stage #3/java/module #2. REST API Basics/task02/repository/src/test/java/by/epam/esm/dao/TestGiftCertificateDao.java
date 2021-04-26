@@ -22,6 +22,7 @@ import java.util.Optional;
 @SpringJUnitConfig(RepositoryConfig.class)
 @ActiveProfiles("test")
 public class TestGiftCertificateDao {
+
     @Autowired
     private CrudGiftCertificateDao giftCertificateDao;
     private static Pagination pagination = new Pagination();

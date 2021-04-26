@@ -9,7 +9,6 @@ import java.util.Objects;
  * @version 1.0
  */
 public class Tag extends Entity {
-
     private String name;
 
     public String getName() {

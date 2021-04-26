@@ -30,6 +30,4 @@ public class RepositoryConfig {
     public JdbcTemplate getJdbcTemplate() {
         return new JdbcTemplate(getDataSource());
     }
-
-
 }

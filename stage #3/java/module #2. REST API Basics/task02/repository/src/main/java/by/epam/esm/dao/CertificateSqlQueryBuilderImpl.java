@@ -28,7 +28,6 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
         this.sqlQuery = sqlQuery;
     }
 
-
     private void initializationSqlQuery() {
         params.clear();
         query.delete(0, query.length());
@@ -119,5 +118,4 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
         }
         return false;
     }
-
 }

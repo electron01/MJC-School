@@ -12,7 +12,6 @@ public enum  ErrorCode {
     NOT_FIND_TAG_BY_ID(HttpStatus.NOT_FOUND,"40401","Not find tag by this id"),
     NOT_FIND_CERTIFICATE_BY_ID(HttpStatus.NOT_FOUND,"40402","Not find certificate by this id"),
     NOT_FIND_TAG_BY_ID_WITH_THIS_NAME(HttpStatus.NOT_FOUND,"40403","Not find tag by this id with this name"),
-    ALL_FIELD_IS_NULL(HttpStatus.BAD_REQUEST,"42205","All field is Null"),
     METHOD_NOT_SUPPORTED( HttpStatus.METHOD_NOT_ALLOWED,"40501","Method not support"),
     UNSUPPORTED_OPERATION(HttpStatus.METHOD_NOT_ALLOWED,"40502","UnSupport operation" ),
     MEDIA_TYPE_NOT_SUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE,"41503", "Media Type Not Support" ),
