@@ -1,7 +1,6 @@
 package by.epam.esm.dto.entity;
 
 import javax.validation.constraints.Pattern;
-
 /**
  * class Tag
  * @see by.epam.esm.enity.Tag

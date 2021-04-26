@@ -34,6 +34,7 @@ public interface TagService extends BaseService<TagDto, Long> {
      * @return true if name already is exists
      */
     boolean isTagByNameExist(String name);
+
     /**
      * method got find tag by name
      * @param name - tag name for find

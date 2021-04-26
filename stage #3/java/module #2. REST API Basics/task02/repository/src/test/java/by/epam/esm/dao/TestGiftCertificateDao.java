@@ -1,6 +1,5 @@
 package by.epam.esm.dao;
 
-
 import by.epam.esm.RepositoryConfig;
 import by.epam.esm.enity.GiftCertificate;
 import by.epam.esm.enity.Pagination;

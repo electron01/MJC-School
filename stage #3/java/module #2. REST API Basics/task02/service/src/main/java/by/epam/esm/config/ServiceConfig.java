@@ -9,7 +9,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-
 @Configuration
 @ComponentScan("by.epam.esm")
 @Import(RepoConfig.class)

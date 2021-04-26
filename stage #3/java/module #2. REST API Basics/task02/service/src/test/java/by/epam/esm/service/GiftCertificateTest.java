@@ -68,7 +68,6 @@ public class GiftCertificateTest {
         List<GiftCertificateDto> foundList = giftCertificateService.findAll(new DtoGiftCertificateRequestParam(), new PaginationDto());
         //Then a complete  certificate list should be received with startPosition = 0 and Limit = 6
         Assertions.assertTrue(foundList.size() == certificateList.size());
-
     }
 
     @Test
@@ -158,7 +157,6 @@ public class GiftCertificateTest {
         GiftCertificateDto updateCertificate = giftCertificateService.update(giftCertificateDto);
         //Then we get updated certificate
         Assertions.assertEquals(correctGiftCertificate.getName(), updateCertificate.getName());
-
     }
 
 
@@ -169,7 +167,6 @@ public class GiftCertificateTest {
         Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(Mockito.any(GiftCertificateDto.class));
         //Then returned exception (ServiceException)
         Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.update(new GiftCertificateDto()));
-
     }
 
     @Test
@@ -188,7 +185,6 @@ public class GiftCertificateTest {
         Mockito.when(giftCertificateDao.deleteById(CORRECT_ID)).thenReturn(true);
         // Then we not have does exception
         Assertions.assertDoesNotThrow(() -> giftCertificateService.delete(CORRECT_ID));
-
     }
 
     @Test
@@ -198,7 +194,6 @@ public class GiftCertificateTest {
         Mockito.when(giftCertificateDao.deleteById(UN_CORRECT_ID)).thenReturn(false);
         //Then returned exception (ServiceException)
         Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.delete(UN_CORRECT_ID));
-
     }
 
     @Test

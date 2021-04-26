@@ -86,7 +86,6 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @Transactional
     public TagDto add(TagDto dto) {
         baseValidator.dtoValidator(dto);
         if (tagDao.findByName(dto.getName()).isPresent()) {

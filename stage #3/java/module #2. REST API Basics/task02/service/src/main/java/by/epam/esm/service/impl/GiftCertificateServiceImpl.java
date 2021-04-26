@@ -66,7 +66,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private GiftCertificateDto setTagsForDto(GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.setTags(tagService.findByGiftCertificateId(giftCertificateDto.getId()));
         return giftCertificateDto;
-
     }
 
     @Override
@@ -130,7 +129,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         dtoList.forEach(this::setTagsForDto);
         return dtoList;
     }
-
 
     @Override
     @Transactional
