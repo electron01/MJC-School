@@ -1,0 +1,17 @@
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+
+spring:
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/Gift_Certificates?serverTimezone=UTC&useSSL=false
+      maximum-pool-size: 25
+      password: lexa75910
+      username: root
+    url: jdbc:mysql://localhost:3306/Gift_Certificates?serverTimezone=UTC&useSSL=false
+
+

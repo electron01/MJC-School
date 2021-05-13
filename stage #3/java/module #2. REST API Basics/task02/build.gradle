@@ -1,5 +1,7 @@
 plugins {
     id 'war'
+    id 'org.springframework.boot' version "2.4.5"
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 group 'by.epam.esm'
@@ -8,6 +10,15 @@ version '1.0-SNAPSHOT'
 
 
 allprojects() {
+    configurations {
+      
+        // spring-boot-logging brought in logback and log4j-to-slf4j which I don't want
+        //   since I am using org.springframework.boot:spring-boot-starter-log4j2
+        compile.exclude(group: 'ch.qos.logback')
+        compile.exclude(group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j')
+    }
+
+ 
     sourceCompatibility = 12
     targetCompatibility = 12
     apply plugin: 'java'
@@ -22,9 +33,9 @@ allprojects() {
             testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.1"
             testImplementation "org.junit.jupiter:junit-jupiter-engine:5.7.1"
             testImplementation "org.junit.jupiter:junit-jupiter-params:5.7.1"
-         
             testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.8.0'
             testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.8.0'
+            implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.3'
             
             
         }

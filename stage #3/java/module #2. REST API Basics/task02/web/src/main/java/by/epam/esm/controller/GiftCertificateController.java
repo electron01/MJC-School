@@ -1,35 +1,31 @@
 package by.epam.esm.controller;
 
+import by.epam.esm.constant.WebConstant;
 import by.epam.esm.dto.entity.GiftCertificateDto;
 import by.epam.esm.dto.entity.PaginationDto;
-import by.epam.esm.dto.entity.request.DtoGiftCertificateRequestParam;
 import by.epam.esm.service.GiftCertificateService;
+import by.epam.esm.util.LinkUtil;
+import by.epam.esm.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * class GiftCertificateController
  * this class is a rest controller with request mapping "/app/gift-certificate"
  * this rest controller contains GET,POST,PUT,PATCH,DELETE Mapping
+ *
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
 @RestController
 @RequestMapping("/app/gift-certificate")
-public class GiftCertificateController {
-    private static final String DEFAULT_VALUE_START_POSITION = "0";
-    private static final String DEFAULT_VALUE_LIMIT = "6";
-    private static final String START_POSITION = "startPosition";
-    private static final String LIMIT = "limit";
-    private static final String NAME = "name";
-    private static final String DESCRIPTION = "description";
-    private static final String TAG = "tag";
-    private static final String SORT = "sort";
+public class GiftCertificateController implements PaginationController {
 
     private GiftCertificateService giftCertificateService;
 
@@ -42,27 +38,34 @@ public class GiftCertificateController {
      * method getAllGiftCertificate
      * get mapping
      * method for find all gift certificate
-     * @param model -  request model
+     *
+     * @param webRequest -  request model
      * @return Certificates list
      */
     @GetMapping
-    public ResponseEntity<List<GiftCertificateDto>> findAllGiftCertificate(@RequestParam Map<String, Object> model) {
-        PaginationDto paginationDto = createPaginationDto(model);
-        DtoGiftCertificateRequestParam dtoGiftCertificateRequestParam = getGiftCertificateRequest(model);
-        List<GiftCertificateDto> giftCertificates = giftCertificateService.findAll(dtoGiftCertificateRequestParam, paginationDto);
-        return ResponseEntity.ok(giftCertificates);
+    public ResponseEntity<PagedModel<GiftCertificateDto>> findAll(WebRequest webRequest,
+                                                                  @RequestParam(required = false, defaultValue = WebConstant.PAGE_DEFAULT_VALUE) Integer page,
+                                                                  @RequestParam(required = false, defaultValue = WebConstant.LIMIT_DEFAULT_VALUE) Integer limit
+    ) {
+        Map<String, String[]> parameterMap = webRequest.getParameterMap();
+        PaginationDto paginationDto = PaginationUtil.getPaginationDto(page, limit);
+        List<GiftCertificateDto> giftCertificates = giftCertificateService.findAll(parameterMap, paginationDto);
+        LinkUtil.addCertificateLinks(giftCertificates);
+        return ResponseEntity.ok(getPagedModel(giftCertificates, paginationDto, webRequest, page));
     }
 
     /**
      * method findById
      * get mapping
      * method find certificate by id
+     *
      * @param id - id for found
      * @return Gift Certificate dto
      */
     @GetMapping("/{id}")
     public ResponseEntity<GiftCertificateDto> findById(@PathVariable Long id) {
         GiftCertificateDto certificate = giftCertificateService.findById(id);
+        LinkUtil.addTagLinks(certificate.getTags());
         return ResponseEntity.ok(certificate);
     }
 
@@ -70,6 +73,7 @@ public class GiftCertificateController {
      * method createNewGiftCertificate
      * post mapping
      * method for create a new  certificate
+     *
      * @param giftCertificateDto - dto for create certificate
      * @return - new Gift Certificate dto
      */
@@ -82,6 +86,7 @@ public class GiftCertificateController {
     /**
      * method updateGiftCertificate
      * put mapping
+     *
      * @param giftCertificateDto - dto for update
      * @param id                 - id for found
      * @return updated Certificate dto
@@ -96,6 +101,7 @@ public class GiftCertificateController {
     /**
      * method updatePartOfCertificate
      * patch mapping
+     *
      * @param giftCertificateDto - dto for part update
      * @param id                 - id for found
      * @return updated Certificate dto
@@ -109,41 +115,21 @@ public class GiftCertificateController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        giftCertificateService.delete(id);
-        return ResponseEntity.noContent().build();
+        boolean wasDeleted = giftCertificateService.delete(id);
+        if(wasDeleted){
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok().build();
+        }
     }
 
-    /**
-     * method createPaginationDto
-     * method for create new Pagination dto with startPosition and limit
-     * @param model - request model
-     * @return new Pagination dto
-     */
-    private PaginationDto createPaginationDto(Map<String, Object> model) {
-        String startPosition = (String) Optional.ofNullable(model.get(START_POSITION))
-                .orElse(DEFAULT_VALUE_START_POSITION);
-
-        String limit = (String) Optional.ofNullable(model.get(LIMIT))
-                .orElse(DEFAULT_VALUE_LIMIT);
-
-        PaginationDto paginationDto = new PaginationDto();
-        paginationDto.setStartPosition(Integer.valueOf(startPosition));
-        paginationDto.setLimit(Integer.valueOf(limit));
-        return paginationDto;
+    private PagedModel<GiftCertificateDto> getPagedModel(List<GiftCertificateDto> certificateList, PaginationDto paginationDto, WebRequest webRequest, int page) {
+        Map<String, String[]> params = webRequest.getParameterMap();
+        int countOfElements = giftCertificateService.getCountCountOfElements(params);
+        PagedModel.PageMetadata pageMetadata = PaginationUtil.getPageMetaData(paginationDto, countOfElements);
+        PagedModel<GiftCertificateDto> certificates = PagedModel.of(certificateList, pageMetadata);
+        LinkUtil.addPageLinks(certificates, GiftCertificateController.class, webRequest, paginationDto, page);
+        return certificates;
     }
 
-    /**
-     * method getGiftCertificateRequest
-     * method for create dto gift certificate request params
-     * @param model - request model
-     * @return new dtoGiftCertificateRequestParam
-     */
-    private DtoGiftCertificateRequestParam getGiftCertificateRequest(Map<String, Object> model) {
-        DtoGiftCertificateRequestParam dtoGiftCertificateRequestParam = new DtoGiftCertificateRequestParam();
-        dtoGiftCertificateRequestParam.setName((String) model.get(NAME));
-        dtoGiftCertificateRequestParam.setDescription((String) model.get(DESCRIPTION));
-        dtoGiftCertificateRequestParam.setTagName((String) model.get(TAG));
-        dtoGiftCertificateRequestParam.setSort(((String) model.get(SORT)));
-        return dtoGiftCertificateRequestParam;
-    }
 }

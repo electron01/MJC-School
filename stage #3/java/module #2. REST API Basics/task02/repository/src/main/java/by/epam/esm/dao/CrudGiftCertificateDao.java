@@ -14,15 +14,6 @@ import java.util.Optional;
  */
 public interface CrudGiftCertificateDao extends BaseDao<GiftCertificate, Long> {
     /**
-     * method findAll
-     * method for find certificates list in database
-     * @param giftCertificateRequestParam - search parameters from user
-     * @param pagination - offset and limit for find
-     * @return Certificates list
-     */
-    List<GiftCertificate> findAll(GiftCertificateRequestParam giftCertificateRequestParam, Pagination pagination);
-
-    /**
      * method findByName
      * method for find certificate by name
      * @param name - gift certificate name

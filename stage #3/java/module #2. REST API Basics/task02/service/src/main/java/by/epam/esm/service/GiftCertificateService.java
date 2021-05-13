@@ -14,15 +14,6 @@ import java.util.List;
  */
 public interface GiftCertificateService extends BaseService<GiftCertificateDto,Long> {
     /**
-     * method findAll
-     * method for find all certificates dto
-     * @param giftCertificateRequestParam - request param for find
-     * @param paginationDto - offset and limit for find
-     * @return Certificates dto list
-     */
-    List<GiftCertificateDto> findAll(DtoGiftCertificateRequestParam giftCertificateRequestParam, PaginationDto paginationDto);
-
-    /**
      * method partUpdate
      * method for partial update certificate
      * @param giftCertificateDto - certificate dto for update

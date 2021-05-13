@@ -1,7 +1,13 @@
 package by.epam.esm.enity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -11,13 +17,29 @@ import java.util.Objects;
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
-public class GiftCertificate extends Entity {
+@Entity
+@Audited
+@Table(name = "gift_certificate")
+public class GiftCertificate extends BaseEntity{
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
+    @Column(name = "description", nullable = false)
     private String description;
+    @Column(name = "duration", nullable = false)
     private Integer duration;
+    @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
+    @Column(name = "last_update_date", nullable = false)
     private LocalDateTime updateDate;
+    @Column(name = "remove",nullable = false)
+    private Boolean remove=false;
+    @NotAudited
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tag_gift_certificate",
+            joinColumns = @JoinColumn(name = "gift_certificate_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags;
 
     public String getName() {
@@ -91,6 +113,14 @@ public class GiftCertificate extends Entity {
                 Objects.equals(tags, that.tags);
     }
 
+
+    public Boolean getRemove() {
+        return remove;
+    }
+
+    public void setRemove(Boolean remove) {
+        this.remove = remove;
+    }
     @Override
     public int hashCode() {
         return Objects.hash(getId(),name, price, description, duration, createDate, updateDate, tags);

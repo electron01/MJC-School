@@ -5,6 +5,7 @@ import by.epam.esm.enity.GiftCertificate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import org.springframework.stereotype.Component;
 
 /**
  * interface GiftCertificateMapper
@@ -15,6 +16,7 @@ import org.mapstruct.Mappings;
  * @version 1.0
  */
 @Mapper(componentModel = "spring")
+@Component
 public interface GiftCertificateMapper {
     /**
      * method toDto

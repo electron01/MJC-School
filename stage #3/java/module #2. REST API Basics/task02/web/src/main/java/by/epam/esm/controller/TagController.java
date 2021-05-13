@@ -1,27 +1,32 @@
 package by.epam.esm.controller;
 
 
+import by.epam.esm.constant.WebConstant;
 import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.TagDto;
 import by.epam.esm.service.TagService;
+import by.epam.esm.util.LinkUtil;
+import by.epam.esm.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * class TagController
  * this class is a rest controller with request mapping "/app/tags"
  * this rest controller contains GET,POST,PUT,PATCH,DELETE Mapping
+ *
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
 @RestController
 @RequestMapping("/app/tags")
-public class TagController {
-    private static final String DEFAULT_VALUE_START_POSITION = "0";
-    private static final String DEFAULT_VALUE_LIMIT = "6";
+public class TagController implements PaginationController {
     private TagService tagService;
 
     @Autowired
@@ -33,16 +38,19 @@ public class TagController {
      * method findAllTags
      * get mapping
      * method for find Tags list
-     * @param startPosition - offset for found
-     * @param limit         - limit for found
+     * @param page  - number of page
+     * @param limit - limit for one page
      * @return Tags list
      */
     @GetMapping
-    public ResponseEntity<List<TagDto>> findAllTags(@RequestParam(required = false, defaultValue = DEFAULT_VALUE_START_POSITION) Integer startPosition,
-                                                    @RequestParam(required = false, defaultValue = DEFAULT_VALUE_LIMIT) Integer limit) {
-        PaginationDto paginationDto = createPaginationDto(startPosition, limit);
-        List<TagDto> tags = tagService.findAll(paginationDto);
-        return ResponseEntity.ok(tags);
+    public ResponseEntity<PagedModel<TagDto>> findAll(WebRequest webRequest,
+                                                      @RequestParam(required = false, defaultValue = WebConstant.PAGE_DEFAULT_VALUE) Integer page,
+                                                      @RequestParam(required = false, defaultValue = WebConstant.LIMIT_DEFAULT_VALUE) Integer limit) {
+        PaginationDto paginationDto = PaginationUtil.getPaginationDto(page, limit);
+        Map<String, String[]> webRequestParameter = webRequest.getParameterMap();
+        List<TagDto> tags = tagService.findAll(webRequestParameter, paginationDto);
+        LinkUtil.addTagLinks(tags);
+        return ResponseEntity.ok(getPagedModel(tags, paginationDto, webRequest, page));
     }
 
     /**
@@ -90,6 +98,7 @@ public class TagController {
      * method updatePartOfTag
      * put mapping
      * method for update tag
+     *
      * @param id     - tag id for update
      * @param tagDto - tag dto for update
      * @return updated tag dto
@@ -105,25 +114,34 @@ public class TagController {
      * method deleteTag
      * delete mapping
      * method for delete tag by id
+     *
      * @param id - tag id for delete
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTag(@PathVariable Long id) {
-        tagService.delete(id);
-        return ResponseEntity.noContent().build();
+        boolean wasDeleted = tagService.delete(id);
+        if (wasDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok().build();
+        }
+
     }
 
     /**
      * method createPaginationDto
      * method create new pagination dto with param
-     * @param startPosition - offset for found
-     * @param limit         - limit for found
+     *
      * @return new Pagination dto
      */
-    private PaginationDto createPaginationDto(Integer startPosition, Integer limit) {
-        PaginationDto paginationDto = new PaginationDto();
-        paginationDto.setStartPosition(startPosition);
-        paginationDto.setLimit(limit);
-        return paginationDto;
+    private PagedModel<TagDto> getPagedModel(List<TagDto> tagList, PaginationDto paginationDto, WebRequest webRequest, int page) {
+        Map<String, String[]> params = webRequest.getParameterMap();
+        int countOfElements = tagService.getCountCountOfElements(params);
+        PagedModel.PageMetadata pageMetadata = PaginationUtil.getPageMetaData(paginationDto, countOfElements);
+        PagedModel<TagDto> tagsPagedModel = PagedModel.of(tagList, pageMetadata);
+        LinkUtil.addPageLinks(tagsPagedModel, TagController.class, webRequest, paginationDto, page);
+        return tagsPagedModel;
     }
+
+
 }

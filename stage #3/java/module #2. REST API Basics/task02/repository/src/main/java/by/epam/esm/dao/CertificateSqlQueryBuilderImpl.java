@@ -37,7 +37,7 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
     public SqlQuery createUpdateRequest(GiftCertificate giftCertificate) {
         initializationSqlQuery();
         query.append(RepoConstant.START_PART_UPDATE_CERTIFICATE_REQUEST);
-        addParamIfNeed(giftCertificate.getName(), RepoConstant.CERTIFICATE_NAME);
+//        addParamIfNeed(giftCertificate.getName(), RepoConstant.CERTIFICATE_NAME);
         addParamIfNeed(giftCertificate.getDescription(), RepoConstant.CERTIFICATE_DESCRIPTION);
         addParamIfNeed(giftCertificate.getPrice(), RepoConstant.CERTIFICATE_PRICE);
         addParamIfNeed(giftCertificate.getDuration(),RepoConstant.CERTIFICATE_DURATION);
@@ -61,7 +61,7 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
     }
 
     private void addWhereIdEqual(Long id) {
-        query.append(RepoConstant.WHERE + RepoConstant.CERTIFICATE_ID + RepoConstant.EQUALLY + RepoConstant.EXCEPTED_VALUE);
+        query.append(RepoConstant.WHERE + RepoConstant.EQUALLY + RepoConstant.EXCEPTED_VALUE);
         params.add(id);
     }
 
@@ -69,9 +69,9 @@ public class CertificateSqlQueryBuilderImpl implements CertificateSqlQueryBuilde
     public SqlQuery createQueryForFindAllCertificate(GiftCertificateRequestParam giftCertificateRequestParam, Pagination pagination) {
         initializationSqlQuery();
         query.append(RepoConstant.FULL_SELECT);
-        addRequestParam(giftCertificateRequestParam.getName(), RepoConstant.CERTIFICATE_NAME);
+//        addRequestParam(giftCertificateRequestParam.getName(), RepoConstant.CERTIFICATE_NAME);
         addRequestParam(giftCertificateRequestParam.getDescription(), RepoConstant.CERTIFICATE_DESCRIPTION);
-        addRequestParam(giftCertificateRequestParam.getTagName(), RepoConstant.TAG_NAME);
+        addRequestParam(giftCertificateRequestParam.getTagName(), RepoConstant.TAGS_NAME);
         addSort(giftCertificateRequestParam.getSort());
         addPagination(pagination);
         sqlQuery.setSqlQuery(query.toString());

@@ -4,6 +4,8 @@ import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.TagDto;
 
 import java.util.List;
+import java.util.Map;
+
 /**
  * class TagService
  * interface extends BaseService and contains methods for tag
@@ -11,14 +13,6 @@ import java.util.List;
  * @version 1.0
  */
 public interface TagService extends BaseService<TagDto, Long> {
-    /**
-     * method findAll
-     * method for find all tags
-     * @param paginationDto - offset and limit for find
-     * @return Tags dto list
-     */
-    List<TagDto> findAll(PaginationDto paginationDto);
-
     /**
      * method findByGiftCertificateId
      * method for find tags list related for certificate
@@ -41,4 +35,5 @@ public interface TagService extends BaseService<TagDto, Long> {
      * @return found tag dto
      */
     TagDto findByName(String name);
+
 }

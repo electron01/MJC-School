@@ -1,15 +1,36 @@
 package by.epam.esm.enity;
 
+import org.hibernate.envers.Audited;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 /**
  * class Tag
  * extends base entity class
+ *
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
-public class Tag extends Entity {
+
+@Entity
+@Table(name = "tag")
+@Audited
+public class Tag extends BaseEntity {
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "remove")
+    private Boolean remove=false;
+
+    public Boolean getRemove() {
+        return remove;
+    }
+
+    public void setRemove(Boolean remove) {
+        this.remove = remove;
+    }
 
     public String getName() {
         return name;

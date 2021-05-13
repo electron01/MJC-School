@@ -7,16 +7,16 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Component
-public class TagRowMapper implements RowMapper<Tag> {
-    private final static String TAG_ID = "tag_id";
-    private final static String TAG_NAME = "name";
-
-    @Override
-    public Tag mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Tag tag = new Tag();
-        tag.setId(rs.getLong(TAG_ID));
-        tag.setName(rs.getString(TAG_NAME));
-        return tag;
-    }
-}
+//@Component
+//public class TagRowMapper implements RowMapper<Tag> {
+//    private final static String TAG_ID = "id";
+//    private final static String TAG_NAME = "name";
+//
+//    @Override
+//    public Tag mapRow(ResultSet rs, int rowNum) throws SQLException {
+//        Tag tag = new Tag();
+//        tag.setId(rs.getLong(TAG_ID));
+//        tag.setName(rs.getString(TAG_NAME));
+//        return tag;
+//    }
+//}
