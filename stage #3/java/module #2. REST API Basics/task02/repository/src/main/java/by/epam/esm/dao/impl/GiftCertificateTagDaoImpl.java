@@ -2,7 +2,6 @@ package by.epam.esm.dao.impl;
 
 import by.epam.esm.constant.RepoConstant;
 import by.epam.esm.dao.GiftCertificateTagDao;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

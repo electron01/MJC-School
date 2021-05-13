@@ -33,7 +33,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private BaseValidator baseValidator;
     private PaginationMapper paginationMapper;
     private TagService tagService;
-    private TagMapper tagMapper;
     private GiftCertificateTagDao giftCertificateTagDao;
 
     @Autowired
@@ -42,12 +41,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                                       BaseValidator baseValidator,
                                       PaginationMapper paginationMapper,
                                       GiftCertificateTagDao giftCertificateTagDao,
-                                      TagMapper tagMapper,
                                       TagService tagService) {
         this.giftCertificateMapper = giftCertificateMapper;
         this.giftCertificateDao = giftCertificateDao;
         this.giftCertificateTagDao = giftCertificateTagDao;
-        this.tagMapper = tagMapper;
         this.baseValidator = baseValidator;
         this.paginationMapper = paginationMapper;
         this.tagService = tagService;
@@ -63,11 +60,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                         ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage(),
                         Set.of(new ErrorMessage("id", Long.toString(id), ErrorCode.NOT_FIND_CERTIFICATE_BY_ID.getMessage()))
                 ));
-    }
-
-    private GiftCertificateDto setTagsForDto(GiftCertificateDto giftCertificateDto) {
-        giftCertificateDto.setTags(tagService.findByGiftCertificateId(giftCertificateDto.getId()));
-        return giftCertificateDto;
     }
 
     @Override
@@ -133,14 +125,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public List<GiftCertificateDto> findAll(Map<String, String[]> params, PaginationDto paginationDto) {
         baseValidator.dtoValidator(paginationDto);
-//        baseValidator.dtoValidator(CertificateRequestDto);
-//        GiftCertificateRequestParam giftCertificateRequestParam = giftCertificateRequestMapper.toEntity(CertificateRequestDto);
         Pagination pagination = paginationMapper.toEntity(paginationDto);
         return giftCertificateDao.findAll(params, pagination)
                 .stream()
                 .map(giftCertificateMapper::toDto)
                 .collect(Collectors.toList());
-//        dtoList.forEach(this::setTagsForDto);
     }
 
     @Override

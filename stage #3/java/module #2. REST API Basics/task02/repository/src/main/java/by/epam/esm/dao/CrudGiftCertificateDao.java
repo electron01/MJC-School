@@ -1,10 +1,7 @@
 package by.epam.esm.dao;
 
 import by.epam.esm.enity.GiftCertificate;
-import by.epam.esm.enity.Pagination;
-import by.epam.esm.enity.request.GiftCertificateRequestParam;
 
-import java.util.List;
 import java.util.Optional;
 /**
  * interface CrudGiftCertificateDao
