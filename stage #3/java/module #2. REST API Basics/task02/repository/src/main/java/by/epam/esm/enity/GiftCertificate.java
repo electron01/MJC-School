@@ -36,7 +36,7 @@ public class GiftCertificate extends BaseEntity{
     @Column(name = "remove",nullable = false)
     private Boolean remove=false;
     @NotAudited
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "tag_gift_certificate",
             joinColumns = @JoinColumn(name = "gift_certificate_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))

@@ -1,9 +1,12 @@
 package by.epam.esm.constant;
 
 public class WebConstant {
+
+
     private WebConstant(){
 
     }
+    public static final String ORDERS = "Orders";
     public static final String PAGE_DEFAULT_VALUE = "1";
     public static final String LIMIT_DEFAULT_VALUE = "6";
     private static final String START_POSITION = "startPosition";

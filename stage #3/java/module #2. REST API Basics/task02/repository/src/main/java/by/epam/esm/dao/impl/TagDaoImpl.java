@@ -48,7 +48,7 @@ public class TagDaoImpl implements CrdTagDao {
     @Override
     public List<Tag> findByCertificateId(Long id) {
         Query nativeQuery = entityManager.createNativeQuery(RepoConstant.GET_LIST_TAG_BY_CERTIFICATE_ID, Tag.class);
-        nativeQuery.setParameter("gift_certificate_id", id);
+        nativeQuery.setParameter(RepoConstant.CERTIFICATE_ID, id);
         List resultList = nativeQuery.getResultList();
         return resultList;
 
@@ -84,15 +84,14 @@ public class TagDaoImpl implements CrdTagDao {
 
     @Override
     public Tag update(Tag entity) {
-        throw new UnsupportedOperationException("Update");
+        throw new UnsupportedOperationException(RepoConstant.UPDATE);
     }
 
 
     @Override
     public boolean deleteById(Long id) {
-        Tag tag = entityManager.getReference(Tag.class, id);
         Query query = entityManager.createNativeQuery(RepoConstant.DELETE_TAG_BY_ID_REQUEST)
-                .setParameter(RepoConstant.ENTITY_ID, tag.getId());
+                .setParameter(RepoConstant.ENTITY_ID, id);
         return query.executeUpdate() == 1;
     }
 

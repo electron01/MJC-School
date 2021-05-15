@@ -9,7 +9,7 @@ import by.epam.esm.dto.entity.GiftCertificateDto;
  * @version 1.0
  */
 public interface GiftCertificateService extends BaseService<GiftCertificateDto,Long> {
-    /**xz
+    /**
      * method partUpdate
      * method for partial update certificate
      * @param giftCertificateDto - certificate dto for update

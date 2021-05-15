@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
  * @version 1.0
  */
 @Mapper(componentModel = "spring")
-@Component
 public interface GiftCertificateMapper {
     /**
      * method toDto

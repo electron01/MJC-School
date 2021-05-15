@@ -30,13 +30,19 @@ public final class RepoConstant {
             "WHERE name = ? AND remove = FALSE ";
     public static final String DELETE_CERTIFICATE_REQUEST =
             "UPDATE gift_certificate SET remove = TRUE " +
-                    "WHERE gift_certificate_id = :id AND remove = FALSE";
+                    "WHERE id = :id AND remove = FALSE";
+    public static final String DELETE_USER_REQUEST =
+            "UPDATE users SET remove = TRUE " +
+                    "WHERE id = :id AND remove = FALSE";
+
     public static final String FIND_ALL_TAG_REQUEST ="FROM tag WHERE remove=FALSE";
 
     public static final String SAVE_TAG_REQUEST = "INSERT INTO tag (name) VALUES(?)";
 
+    public static final String GET_USER_BY_ID_REQUEST = "FROM User WHERE remove = FALSE AND id = :id";
     public static final String GET_TAG_BY_ID_REQUEST = "FROM Tag WHERE remove = FALSE AND id = :id";
     public static final String DELETE_TAG_BY_ID_REQUEST = "UPDATE tag SET remove = TRUE WHERE id = :id AND remove = FALSE";
+    public static final String DELETE_ORDER_BY_ID_REQUEST = "Delete from orders WHERE id =:id";
     public static final String GET_TAG_NY_NAME = "SELECT tag_id, name FROM tag WHERE name = ? AND remove=FALSE";
     public static final String GET_LIST_TAG_BY_CERTIFICATE_ID =
             "SELECT tag.id,tag.name, tag.remove " +
@@ -71,6 +77,8 @@ public final class RepoConstant {
     public static final String COMMA = ", ";
     public static final String EQUALLY = " =";
     public static final String START_PART_UPDATE_CERTIFICATE_REQUEST = "UPDATE gift_certificate SET last_update_date = now(), ";
+    public static final String USER_UPDATE_EXCEPTION = "For now User Entity not support update";
+    public static final String UPDATE = "Update";
 
 
     //Builder
@@ -80,6 +88,11 @@ public final class RepoConstant {
     public static final String SORT_ASC = "asc";
     public static final String ENTITY_ID = "id";
     public static final String ENTITY_NAME = "name";
+    public static final String USER_LOGIN = "login";
+    public static final String USER_EMAIL = "email";
     public static final String PAGE = "page";
+    public static final String USER_ENTITY = "user";
+    public static final String CERTIFICATE_ID = "gift_certificate_id";
+
 
 }

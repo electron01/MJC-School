@@ -1,7 +1,6 @@
 package by.epam.esm.enity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * class BaseEntity
