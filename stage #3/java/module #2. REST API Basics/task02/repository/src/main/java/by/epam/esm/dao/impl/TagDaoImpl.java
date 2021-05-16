@@ -34,6 +34,14 @@ public class TagDaoImpl implements CrdTagDao {
 
 
     @Override
+    public Optional<Tag> mostWidelyUsedTag() {
+        Query nativeQuery = entityManager.createNativeQuery(RepoConstant.MOST_WIDELY_USED_TAG, Tag.class);
+        return nativeQuery.getResultList()
+                .stream()
+                .findAny();
+    }
+
+    @Override
     public Optional<Tag> findByName(String tagName) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tag> query = criteriaBuilder.createQuery(Tag.class);
@@ -101,6 +109,9 @@ public class TagDaoImpl implements CrdTagDao {
         CriteriaQuery<Tag> criteriaQuery = tagQueryBuilder.createCriteriaQuery(params, criteriaBuilder);
         TypedQuery<Tag> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList()
+                .stream()
+                .distinct()
+                .collect(Collectors.toList())
                 .size();
     }
 }

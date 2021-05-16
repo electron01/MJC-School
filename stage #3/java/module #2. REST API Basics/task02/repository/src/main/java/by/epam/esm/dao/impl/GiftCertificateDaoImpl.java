@@ -4,14 +4,9 @@ import by.epam.esm.constant.RepoConstant;
 import by.epam.esm.dao.CrudGiftCertificateDao;
 import by.epam.esm.enity.GiftCertificate;
 import by.epam.esm.enity.Pagination;
-import by.epam.esm.enity.Tag;
 import by.epam.esm.query.GiftCertificateQueryBuilder;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,15 +15,10 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Repository
@@ -111,6 +101,9 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         CriteriaQuery<GiftCertificate> criteriaQuery = giftCertificateQueryBuilder.createCriteriaQuery(params, criteriaBuilder);
         TypedQuery<GiftCertificate> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList()
+                .stream()
+                .distinct()
+                .collect(Collectors.toList())
                 .size();
     }
 

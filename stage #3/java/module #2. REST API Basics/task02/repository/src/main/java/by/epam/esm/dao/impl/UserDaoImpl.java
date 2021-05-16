@@ -80,6 +80,9 @@ public class UserDaoImpl implements UserDao {
         CriteriaQuery<User> criteriaQuery = userQueryBuilder.createCriteriaQuery(params, criteriaBuilder);
         TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList()
+                .stream()
+                .distinct()
+                .collect(Collectors.toList())
                 .size();
     }
 

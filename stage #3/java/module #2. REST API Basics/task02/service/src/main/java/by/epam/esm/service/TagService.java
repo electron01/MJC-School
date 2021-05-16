@@ -2,9 +2,11 @@ package by.epam.esm.service;
 
 import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.TagDto;
+import by.epam.esm.enity.Tag;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * class TagService
@@ -13,6 +15,8 @@ import java.util.Map;
  * @version 1.0
  */
 public interface TagService extends BaseService<TagDto, Long> {
+
+     TagDto mostWidelyUsedTag();
     /**
      * method findByGiftCertificateId
      * method for find tags list related for certificate

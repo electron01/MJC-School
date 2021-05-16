@@ -66,6 +66,13 @@ public class TagController implements PaginationController {
         return ResponseEntity.ok(tag);
     }
 
+    @GetMapping("/most-widely-tag")
+    public ResponseEntity<TagDto> findTagById() {
+        TagDto tagDto = tagService.mostWidelyUsedTag();
+        return ResponseEntity.ok(tagDto);
+
+    }
+
     /**
      * method addNewTag
      * post mapping

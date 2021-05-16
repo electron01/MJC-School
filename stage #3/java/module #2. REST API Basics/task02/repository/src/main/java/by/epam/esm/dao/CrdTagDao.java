@@ -14,6 +14,8 @@ import java.util.Optional;
  * @version 1.0
  */
 public interface CrdTagDao extends BaseDao<Tag, Long> {
+
+    Optional<Tag> mostWidelyUsedTag();
     /**
      * method findByName
      * method for find tag ny name

@@ -1,10 +1,13 @@
 package by.epam.esm.dto.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderDto extends EntityDto {
     private BigDecimal allCost;
+
+    private LocalDateTime creationDate;
     private UserDto user;
     private List<GiftCertificateDto> giftCertificateList;
 
@@ -30,5 +33,13 @@ public class OrderDto extends EntityDto {
 
     public void setUser(UserDto user) {
         this.user = user;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
     }
 }

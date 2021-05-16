@@ -1,11 +1,14 @@
 package by.epam.esm.enity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
+@Audited
 public class User extends BaseEntity {
     @Column(name = "login", nullable = false)
     private String login;

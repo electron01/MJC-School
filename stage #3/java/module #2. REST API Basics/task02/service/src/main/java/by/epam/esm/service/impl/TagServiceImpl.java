@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,15 @@ public class TagServiceImpl implements TagService {
         this.baseValidator = baseValidator;
         this.tagMapper = tagMapper;
         this.paginationMapper = paginationMapper;
+    }
+
+    @Override
+    public TagDto mostWidelyUsedTag() {
+        return tagDao.mostWidelyUsedTag()
+                .stream()
+                .findAny()
+                .map(tagMapper::toDto)
+                .orElse(null);
     }
 
     @Override

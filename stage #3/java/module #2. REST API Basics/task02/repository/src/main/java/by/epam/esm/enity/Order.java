@@ -1,25 +1,38 @@
 package by.epam.esm.enity;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Audited
 public class Order extends BaseEntity {
     @Column(name = "all_cost",nullable = false)
     private BigDecimal allCost;
+
+    @CreationTimestamp
+    @Column(name = "creation_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP",
+            nullable = false, updatable = false)
+    private LocalDateTime creationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "users_orders",
             joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @NotAudited
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "certificates_orders",
             joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "gift_certificate_id", referencedColumnName = "id"))
+    @NotAudited
     private List<GiftCertificate> giftCertificateList;
 
     public List<GiftCertificate> getGiftCertificateList() {
@@ -45,4 +58,12 @@ public class Order extends BaseEntity {
     public void setUser(User user) {
         this.user = user;
     }
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
 }
