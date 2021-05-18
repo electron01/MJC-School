@@ -1,12 +1,8 @@
 package by.epam.esm.service;
 
-import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.TagDto;
-import by.epam.esm.enity.Tag;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * class TagService
@@ -38,6 +34,5 @@ public interface TagService extends BaseService<TagDto, Long> {
      * @param name - tag name for find
      * @return found tag dto
      */
-
     TagDto findByName(String name);
 }

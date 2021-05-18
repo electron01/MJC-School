@@ -66,6 +66,10 @@ public class TagController implements PaginationController {
         return ResponseEntity.ok(tag);
     }
 
+    /**
+     * Get the most widely used tag of a user with the highest cost of all orders
+     * @return most widely used tag
+     */
     @GetMapping("/most-widely-tag")
     public ResponseEntity<TagDto> findTagById() {
         TagDto tagDto = tagService.mostWidelyUsedTag();
@@ -105,7 +109,6 @@ public class TagController implements PaginationController {
      * method updatePartOfTag
      * put mapping
      * method for update tag
-     *
      * @param id     - tag id for update
      * @param tagDto - tag dto for update
      * @return updated tag dto
@@ -121,7 +124,6 @@ public class TagController implements PaginationController {
      * method deleteTag
      * delete mapping
      * method for delete tag by id
-     *
      * @param id - tag id for delete
      */
     @DeleteMapping("/{id}")
@@ -132,13 +134,16 @@ public class TagController implements PaginationController {
         } else {
             return ResponseEntity.ok().build();
         }
-
     }
 
     /**
-     * method createPaginationDto
-     * method create new pagination dto with param
-     *
+     * method getPagedModel
+     * @param page number of page
+     * @param paginationDto - pagination dto
+     * @param tagList - list for pagination
+     * @param webRequest - web parameters
+     * method creates pagination
+     * @see by.epam.esm.dto.entity.PaginationDto
      * @return new Pagination dto
      */
     private PagedModel<TagDto> getPagedModel(List<TagDto> tagList, PaginationDto paginationDto, WebRequest webRequest, int page) {

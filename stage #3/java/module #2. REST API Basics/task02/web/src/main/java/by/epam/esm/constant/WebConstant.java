@@ -1,5 +1,11 @@
 package by.epam.esm.constant;
 
+/**
+ * class WebConstant
+ * class contains the necessary constants such as the request type and names
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class WebConstant {
 
     private WebConstant(){
@@ -8,12 +14,6 @@ public class WebConstant {
     public static final String ORDERS = "Orders";
     public static final String PAGE_DEFAULT_VALUE = "1";
     public static final String LIMIT_DEFAULT_VALUE = "6";
-    private static final String START_POSITION = "startPosition";
-    private static final String LIMIT = "limit";
-    private static final String NAME = "name";
-    private static final String DESCRIPTION = "description";
-    private static final String TAG = "tag";
-    private static final String SORT = "sort";
 
     public static final String NEXT_PAGE = "nextPage";
     public static final String PREVIOUS_PAGE = "previousPage";

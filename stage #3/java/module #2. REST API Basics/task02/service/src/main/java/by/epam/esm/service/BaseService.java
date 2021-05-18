@@ -55,5 +55,11 @@ public interface BaseService<E extends EntityDto,ID extends Serializable> {
      */
     boolean delete(ID id);
 
+    /**
+     * getCountCountOfElements
+     * method for find count of element
+     * @param params - params for find
+     * @return count
+     */
     Integer getCountCountOfElements(Map<String,String[]> params);
 }

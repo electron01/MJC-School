@@ -19,7 +19,6 @@ import java.util.Map;
  * class GiftCertificateController
  * this class is a rest controller with request mapping "/app/gift-certificate"
  * this rest controller contains GET,POST,PUT,PATCH,DELETE Mapping
- *
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
@@ -101,7 +100,6 @@ public class GiftCertificateController implements PaginationController {
     /**
      * method updatePartOfCertificate
      * patch mapping
-     *
      * @param giftCertificateDto - dto for part update
      * @param id                 - id for found
      * @return updated Certificate dto
@@ -113,6 +111,12 @@ public class GiftCertificateController implements PaginationController {
         return ResponseEntity.ok(updatedCertificate);
     }
 
+
+    /**
+     * method delete by id
+     * delete mapping
+     * @param id  for delete
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         boolean wasDeleted = giftCertificateService.delete(id);
@@ -123,6 +127,16 @@ public class GiftCertificateController implements PaginationController {
         }
     }
 
+    /**
+     * method getPagedModel
+     * @param page number of page
+     * @param paginationDto - pagination dto
+     * @param certificateList - list for pagination
+     * @param webRequest - web parameters
+     * method creates pagination
+     * @see by.epam.esm.dto.entity.PaginationDto
+     * @return new Pagination dto
+     */
     private PagedModel<GiftCertificateDto> getPagedModel(List<GiftCertificateDto> certificateList, PaginationDto paginationDto, WebRequest webRequest, int page) {
         Map<String, String[]> params = webRequest.getParameterMap();
         int countOfElements = giftCertificateService.getCountCountOfElements(params);

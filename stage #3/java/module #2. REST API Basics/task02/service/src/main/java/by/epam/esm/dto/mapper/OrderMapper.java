@@ -6,9 +6,22 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+/**
+ * interface OrderMapper
+ * interface contains a method to convert a dto order to a order and vice versa
+ * @see Order
+ * @see OrderDto
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
-
+    /**
+     * method toDto
+     * method for convert order to order dto
+     * @param entity - order for convert
+     * @return order dto
+     */
     @Mappings({
             @Mapping(target = "id", source = "entity.id"),
             @Mapping(target = "allCost", source = "entity.allCost"),
@@ -18,6 +31,12 @@ public interface OrderMapper {
     })
     OrderDto toDto(Order entity);
 
+    /**
+     * method toEntity
+     * method for convert orderDto to order
+     * @param dto - order dto for convert
+     * @return order
+     */
     @Mappings({
             @Mapping(target = "id", source = "dto.id"),
             @Mapping(target = "allCost", source = "dto.allCost"),

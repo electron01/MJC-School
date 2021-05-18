@@ -7,14 +7,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * class BaseQueryBuilder
+ * base abstract query builder
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public abstract class BaseQueryBuilder<T> {
     private List<Predicate> predicateList = new ArrayList<>();
     private CriteriaBuilder criteriaBuilder;
 
+    /**
+     * addParamRemoveFalseToQuery
+     * add param remove = false to query
+     * @param root - A root type in the from clause.
+     */
     public void addParamRemoveFalseToQuery(Root root) {
         predicateList.add(criteriaBuilder.equal(root.get(RepoConstant.REMOVED), 0));
     }
 
+    /**
+     * addParamToQuery
+     * add param to query
+     * @param param - parameter
+     * @param attributeName - attribute name
+     * @param column - name of column
+     */
     public void addParamToQuery(String param, Expression<String> attributeName, String column) {
         if (param != null && !param.isBlank()) {
             checkCorrectColumnName(column);
@@ -23,6 +41,13 @@ public abstract class BaseQueryBuilder<T> {
         }
     }
 
+    /**
+     * addEqualParamToQuery
+     * add equal param to query
+     * @param param - parameter
+     * @param attributeName - attribute name
+     * @param column - name of column
+     */
     public void addEqualParamToQuery(String param, Expression<String> attributeName, String column) {
         if (param != null && !param.isBlank()) {
             checkCorrectColumnName(column);
@@ -31,6 +56,13 @@ public abstract class BaseQueryBuilder<T> {
         }
     }
 
+    /**
+     * addJoinParamToQuery
+     * add join param to query
+     * @param param - parameter
+     * @param root - A root type in the from clause.
+     * @param column - name of column
+     */
     public void addJoinParamToQuery(String param, Root<T> root, String joinEntity, String column) {
         if (param != null && !param.isBlank()) {
             predicateList.add(criteriaBuilder.like(root.join(joinEntity).get(column),
@@ -38,7 +70,13 @@ public abstract class BaseQueryBuilder<T> {
         }
 
     }
-
+    /**
+     * addSortToQuery
+     * add sort param to query
+     * @param criteriaQuery - query
+     * @param root - A root type in the from clause
+     * @param columnForSort - name column for sort
+     */
     public void addSortToQuery(CriteriaQuery criteriaQuery, Root root, String[] columnForSort) {
         if (columnForSort == null || columnForSort.length == 0) {
             return;
@@ -67,6 +105,12 @@ public abstract class BaseQueryBuilder<T> {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * create criteria query
+     * @param params - params for query
+     * @param criteriaBuilder
+     * @return new criteria query
+     */
     public abstract CriteriaQuery<T> createCriteriaQuery(Map<String, String[]> params, CriteriaBuilder criteriaBuilder);
 
     public abstract List<String> getTableColumns();

@@ -3,7 +3,13 @@ package by.epam.esm.dto.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**
+ * class OrderDto
+ * base abstract entity data transfer object class
+ * @see EntityDto
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class OrderDto extends EntityDto {
     private BigDecimal allCost;
 

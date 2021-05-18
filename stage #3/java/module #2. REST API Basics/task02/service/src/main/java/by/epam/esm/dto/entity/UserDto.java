@@ -2,7 +2,13 @@ package by.epam.esm.dto.entity;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
+/**
+ * class UserDto
+ * base abstract entity data transfer object class
+ * @see EntityDto
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class UserDto extends EntityDto{
     @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){3,})(?=(^[\\s\\S]{0,25}$)).*",
             message = "User login must be longer than 3 characters and shorter than 25 characters" +

@@ -9,25 +9,57 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 
+/**
+ * class LinkUtil
+ * class contains methods for create link
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 public class LinkUtil {
-
+    /**
+     * addTagLinks
+     * method add links to tag list
+     * @param tagList - list of tag
+     */
     public static void addTagLinks(List<TagDto> tagList) {
         for (TagDto tagDto : tagList) {
             getTagLinks(tagDto);
         }
     }
 
+    /**
+     * addTagLinks
+     * method add links to order list
+     * @param orderList - list of order
+     */
     public static void addOrderLinks(List<OrderDto> orderList) {
         for (OrderDto order : orderList) {
             getOrderLinks(order);
         }
     }
 
-
+    /**
+     * addUserLinks
+     * method add links to user list
+     * @param userList - list of user
+     */
     public static void addUserLinks(List<UserDto> userList) {
         for (UserDto userDto : userList) {
             getUserLinks(userDto);
         }
+    }
+
+    /**
+     * addUserLinks
+     * method add links to certificateList
+     * @param certificateList - list of certificates
+     */
+    public static void addCertificateLinks(List<GiftCertificateDto> certificateList) {
+        for (GiftCertificateDto certificate : certificateList) {
+            getCertificateLinks(certificate);
+        }
+        certificateList.stream()
+                .forEach(certificate -> addTagLinks(certificate.getTags()));
     }
 
     private static void getUserLinks(UserDto userDto) {
@@ -55,14 +87,16 @@ public class LinkUtil {
 
     }
 
-    public static void addCertificateLinks(List<GiftCertificateDto> certificateList) {
-        for (GiftCertificateDto certificate : certificateList) {
-            getCertificateLinks(certificate);
-        }
-        certificateList.stream()
-                .forEach(certificate -> addTagLinks(certificate.getTags()));
-    }
-
+    /**
+     * addPageLinks
+     * method creates link to pages
+     * @param pagedModel - page meta data
+     * @param controllerClass - rest controller
+     * @param webRequest - request parameters
+     * @param paginationDto - pagination dto
+     * @see by.epam.esm.dto.entity.PaginationDto
+     * @param page - number of page
+     */
     public static void addPageLinks(PagedModel pagedModel, Class<? extends PaginationController> controllerClass, WebRequest webRequest, PaginationDto paginationDto, int page) {
         addNextPageLink(pagedModel, controllerClass, webRequest, paginationDto, page);
         addPreviousPageLink(pagedModel, controllerClass, webRequest, paginationDto, page);

@@ -28,10 +28,17 @@ public class UserController implements PaginationController {
     public UserController(UserService userService, OrderService orderService) {
         this.userService = userService;
         this.orderService = orderService;
-
     }
 
-
+    /**
+     * findAll
+     * method for find User list
+     * get mapping
+     * @param webRequest - web parameters
+     * @param page - number of page
+     * @param limit - limit
+     * @return user list
+     */
     @Override
     @GetMapping
     public ResponseEntity<PagedModel<UserDto>> findAll(WebRequest webRequest,
@@ -44,6 +51,12 @@ public class UserController implements PaginationController {
         return ResponseEntity.ok(getPagedModel(userDtoList, paginationDto, webRequest, page));
     }
 
+    /**
+     * findById
+     * method find user by id
+     * @param userId - id for find
+     * @return UserDto
+     */
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> findById(@PathVariable Long userId) {
         UserDto userDto = userService.findById(userId);
@@ -51,13 +64,25 @@ public class UserController implements PaginationController {
         return ResponseEntity.ok(userDto);
     }
 
+    /**
+     * addNewUser
+     * method for create new user
+     * PostMapping
+     * @param userDto - UserDto for request
+     * @return new User
+     */
     @PostMapping
     public ResponseEntity<UserDto> addNewUser(@RequestBody UserDto userDto) {
         UserDto newUser = userService.add(userDto);
         return ResponseEntity.ok(newUser);
-
     }
 
+    /**
+     * deleteById
+     * method for delete user by id
+     * DeleteMapping
+     * @param userId - id for delete
+     */
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteById(@PathVariable Long userId) {
         boolean wasDeleted = userService.delete(userId);
@@ -68,6 +93,12 @@ public class UserController implements PaginationController {
         }
     }
 
+    /**
+     *
+     * GetMapping
+     * @param userId - find orders user
+     * @return order list
+     */
     @GetMapping("/{userId}/order")
     public ResponseEntity<List<OrderDto>> getOrders(@PathVariable Long userId){
         List<OrderDto> orders = orderService.findByUserId(userId);
@@ -75,13 +106,30 @@ public class UserController implements PaginationController {
         return ResponseEntity.ok(orders);
     }
 
+    /**
+     * addOrder
+     * PostMapping
+     * method for create new order
+     * @param userId - user id
+     * @param orderInfoList - interaction information
+     * @return new Order
+     */
     @PostMapping("/{userId}/order")
     public ResponseEntity<OrderDto> addOrder(@PathVariable Long userId, @RequestBody List<OrderInfoDto>  orderInfoList){
         OrderDto orderDto = orderService.add(orderInfoList, userId);
         return ResponseEntity.ok(orderDto);
-
     }
 
+    /**
+     * method getPagedModel
+     * @param page number of page
+     * @param paginationDto - pagination dto
+     * @param userDtoList - list for pagination
+     * @param webRequest - web parameters
+     * method creates pagination
+     * @see by.epam.esm.dto.entity.PaginationDto
+     * @return new Pagination dto
+     */
     private PagedModel<UserDto> getPagedModel(List<UserDto> userDtoList, PaginationDto paginationDto, WebRequest webRequest, int page) {
         Map<String, String[]> params = webRequest.getParameterMap();
         int countOfElements = userService.getCountCountOfElements(params);

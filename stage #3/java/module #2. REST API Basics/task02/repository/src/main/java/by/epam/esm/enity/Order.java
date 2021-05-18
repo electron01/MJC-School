@@ -8,8 +8,13 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
+/**
+ * class Order
+ * extends base entity class
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 @Entity
 @Table(name = "orders")
 @Audited

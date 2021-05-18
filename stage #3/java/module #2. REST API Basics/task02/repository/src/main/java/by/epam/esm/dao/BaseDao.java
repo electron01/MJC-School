@@ -56,5 +56,11 @@ public interface BaseDao<T extends BaseEntity, ID extends Serializable> {
      */
     boolean deleteById(ID id);
 
+    /**
+     * getCountCountOfElements
+     * method for find count of element
+     * @param params - params for find
+     * @return count
+     */
     Integer getCountOfElements(Map<String,String[]> params);
 }

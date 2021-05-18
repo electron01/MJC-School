@@ -1,10 +1,8 @@
 package by.epam.esm.dao;
 
-import by.epam.esm.enity.Pagination;
 import by.epam.esm.enity.Tag;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -22,6 +20,7 @@ public interface CrdTagDao extends BaseDao<Tag, Long> {
      * @param tagName - tag name
      * @return Optional.of(tag) or Optional.empty if tag was not found
      */
+
     Optional<Tag> findByName(String tagName);
     /**
      * method findByCertificateId

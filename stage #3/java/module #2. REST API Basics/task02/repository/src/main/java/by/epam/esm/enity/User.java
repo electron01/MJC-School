@@ -7,6 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Objects;
 
+/**
+ * class User
+ * extends base entity class
+ * @author Aliaksei Tkachuk
+ * @version 1.0
+ */
 @Entity
 @Table(name = "users")
 @Audited
