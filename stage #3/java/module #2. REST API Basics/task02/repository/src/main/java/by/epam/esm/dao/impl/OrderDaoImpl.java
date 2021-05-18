@@ -39,7 +39,8 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public boolean deleteById(Long id) {
-        Query query = entityManager.createQuery(RepoConstant.DELETE_ORDER_BY_ID_REQUEST);
+        Query query = entityManager.createQuery(RepoConstant.DELETE_ORDER_BY_ID_REQUEST)
+                .setParameter(RepoConstant.ENTITY_ID, id);
         return query.executeUpdate() == 1;
     }
 

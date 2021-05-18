@@ -71,7 +71,6 @@ public class TagDaoImpl implements CrdTagDao {
         query.setMaxResults(pagination.getLimit());
         return query.getResultList()
                 .stream()
-                .distinct()
                 .collect(Collectors.toList());
     }
 
@@ -110,7 +109,6 @@ public class TagDaoImpl implements CrdTagDao {
         TypedQuery<Tag> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList()
                 .stream()
-                .distinct()
                 .collect(Collectors.toList())
                 .size();
     }

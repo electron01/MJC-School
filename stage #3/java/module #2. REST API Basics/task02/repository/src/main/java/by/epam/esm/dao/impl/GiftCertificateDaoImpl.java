@@ -40,9 +40,8 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         TypedQuery<GiftCertificate> query = entityManager.createQuery(criteriaQuery);
         query.setFirstResult(pagination.getStartPosition());
         query.setMaxResults(pagination.getLimit());
-        return query.getResultList()
+       return query.getResultList()
                 .stream()
-                .distinct()
                 .collect(Collectors.toList());
     }
 
@@ -102,7 +101,6 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         TypedQuery<GiftCertificate> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList()
                 .stream()
-                .distinct()
                 .collect(Collectors.toList())
                 .size();
     }

@@ -22,6 +22,7 @@ public class GiftCertificateQueryBuilder extends BaseQueryBuilder<GiftCertificat
         addParamRemoveFalseToQuery(root);
         addParams(params, root, criteriaQuery);
         criteriaQuery.select(root).where(getPredicateList().toArray(Predicate[]::new));
+        criteriaQuery.distinct(true);
         return criteriaQuery;
     }
 
@@ -45,7 +46,7 @@ public class GiftCertificateQueryBuilder extends BaseQueryBuilder<GiftCertificat
             ) {
                 addEqualParamToQuery(params.get(paramKey)[0], root.get(paramKey), paramKey);
             } else {
-                addParamToQuery(params.get(paramKey)[0], root.get(paramKey), paramKey);  //like for string (name,tags,description)
+                addParamToQuery(params.get(paramKey)[0], root.get(paramKey), paramKey);  //like for string (name,description)
             }
 
         }

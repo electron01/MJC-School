@@ -41,7 +41,6 @@ public class UserDaoImpl implements UserDao {
         query.setMaxResults(pagination.getLimit());
         return query.getResultList()
                 .stream()
-                .distinct()
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +80,6 @@ public class UserDaoImpl implements UserDao {
         TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList()
                 .stream()
-                .distinct()
                 .collect(Collectors.toList())
                 .size();
     }

@@ -73,8 +73,6 @@ public class UserController implements PaginationController {
         List<OrderDto> orders = orderService.findByUserId(userId);
         LinkUtil.addOrderLinks(orders);
         return ResponseEntity.ok(orders);
-
-
     }
 
     @PostMapping("/{userId}/order")

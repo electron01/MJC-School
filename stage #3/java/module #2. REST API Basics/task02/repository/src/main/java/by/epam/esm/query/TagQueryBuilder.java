@@ -23,6 +23,7 @@ public class TagQueryBuilder extends BaseQueryBuilder<Tag> {
         addParamRemoveFalseToQuery(root);
         addParams(params, root, criteriaQuery);
         criteriaQuery.select(root).where(getPredicateList().toArray(Predicate[]::new));
+        criteriaQuery.distinct(true);
         return criteriaQuery;
     }
 

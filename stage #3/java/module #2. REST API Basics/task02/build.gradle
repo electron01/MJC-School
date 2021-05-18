@@ -36,8 +36,6 @@ allprojects() {
             testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.8.0'
             testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.8.0'
             implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.3'
-            
-            
         }
 
         test {

@@ -105,26 +105,26 @@ public class LinkUtil {
     private static void addNextPageLink(PagedModel pagedModel, Class<? extends PaginationController> controllerClass, WebRequest webRequest, PaginationDto paginationDto, int page) {
         long nextPage = pagedModel.getMetadata().getNumber() + 1;
         if (nextPage <= pagedModel.getMetadata().getTotalPages()) {
-            pagedModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(controllerClass).findAll(webRequest, page + 1, paginationDto.getLimit())).withRel(WebConstant.NEXT_PAGE));
+            pagedModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(controllerClass).findAll(webRequest,page+1,paginationDto.getLimit())).slash(UrlBuilder.buildParams(webRequest.getParameterMap())).withRel(WebConstant.NEXT_PAGE));
         }
     }
 
     private static void addPreviousPageLink(PagedModel pagedModel, Class<? extends PaginationController> controllerClass, WebRequest webRequest, PaginationDto paginationDto, int page) {
         long nextPage = pagedModel.getMetadata().getNumber() - 1;
         if (nextPage > 0 && page <= pagedModel.getMetadata().getTotalPages()) {
-            pagedModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(controllerClass).findAll(webRequest, page - 1, paginationDto.getLimit())).withRel(WebConstant.PREVIOUS_PAGE));
+            pagedModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(controllerClass).findAll(webRequest,page-1,paginationDto.getLimit())).slash(UrlBuilder.buildParams(webRequest.getParameterMap())).withRel(WebConstant.PREVIOUS_PAGE));
         }
     }
 
     private static void addFirstPageLink(PagedModel pagedModel, Class<? extends PaginationController> controllerClass, WebRequest webRequest, PaginationDto paginationDto, int page) {
         if (page != 1 && page <= pagedModel.getMetadata().getTotalPages()) {
-            pagedModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(controllerClass).findAll(webRequest, 1, paginationDto.getLimit())).withRel(WebConstant.FIRST_PAGE));
+            pagedModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(controllerClass).findAll(webRequest,1,paginationDto.getLimit())).slash(UrlBuilder.buildParams(webRequest.getParameterMap())).withRel(WebConstant.FIRST_PAGE));
         }
     }
 
     private static void addLastPageLink(PagedModel pagedModel, Class<? extends PaginationController> controllerClass, WebRequest webRequest, PaginationDto paginationDto, int page) {
         if (page < pagedModel.getMetadata().getTotalPages()) {
-            pagedModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(controllerClass).findAll(webRequest, (int) pagedModel.getMetadata().getTotalPages(), paginationDto.getLimit())).withRel(WebConstant.LAST_PAGE));
+            pagedModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(controllerClass).findAll(webRequest, (int) pagedModel.getMetadata().getTotalPages(), paginationDto.getLimit())).slash(UrlBuilder.buildParams(webRequest.getParameterMap())).withRel(WebConstant.LAST_PAGE));
         }
     }
 }
