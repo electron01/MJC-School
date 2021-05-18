@@ -51,9 +51,6 @@ public class OrderDaoImpl implements OrderDao {
         Root<Order> root = query.from(Order.class);
         query.where(criteriaBuilder.equal(root.join(RepoConstant.USER_ENTITY), userId));
         TypedQuery<Order> typedQuery = entityManager.createQuery(query);
-
         return typedQuery.getResultList();
-
     }
-
 }

@@ -74,8 +74,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         entity.setName(entity.getName().trim());
         GiftCertificateDto newCertificateDto = giftCertificateMapper.toDto(giftCertificateDao.add(entity));
         newCertificateDto.getTags().addAll(tagsFromDb);
-        giftCertificateTagDao.addCertificateTags(newCertificateDto.getId(),
-                tagsFromDb.stream().map(TagDto::getId).collect(Collectors.toList()));
+
         return newCertificateDto;
     }
 
