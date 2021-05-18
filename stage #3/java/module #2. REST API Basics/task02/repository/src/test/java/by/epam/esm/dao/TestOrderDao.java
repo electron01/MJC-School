@@ -49,8 +49,6 @@ public class TestOrderDao {
         Assertions.assertNotNull(newOrder.getId());
     }
 
-//
-
     private Order createOrder(){
         Order order = new Order();
         order.setAllCost(BigDecimal.valueOf(80.00).setScale(2));

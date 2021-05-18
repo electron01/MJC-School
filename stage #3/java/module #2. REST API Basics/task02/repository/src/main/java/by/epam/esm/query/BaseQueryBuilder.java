@@ -119,7 +119,6 @@ public abstract class BaseQueryBuilder<T> {
         return predicateList;
     }
 
-
     public void setCriteriaBuilder(CriteriaBuilder criteriaBuilder) {
         this.criteriaBuilder = criteriaBuilder;
     }

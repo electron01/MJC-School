@@ -19,12 +19,10 @@ import java.util.*;
 @ActiveProfiles("test")
 @Transactional
 public class TestGiftCertificateDao {
-
     @Autowired
     private CrudGiftCertificateDao giftCertificateDao;
 
     private static Pagination pagination;
-
 
     @BeforeAll
     public static void initBeforeTest() {

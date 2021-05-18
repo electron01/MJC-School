@@ -9,7 +9,6 @@ package by.epam.esm.constant;
 public class WebConstant {
 
     private WebConstant(){
-
     }
     public static final String ORDERS = "Orders";
     public static final String PAGE_DEFAULT_VALUE = "1";

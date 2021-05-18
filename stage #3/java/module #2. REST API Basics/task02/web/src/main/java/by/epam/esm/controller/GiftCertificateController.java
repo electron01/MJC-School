@@ -25,7 +25,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/app/gift-certificate")
 public class GiftCertificateController implements PaginationController {
-
     private GiftCertificateService giftCertificateService;
 
     @Autowired
@@ -37,7 +36,6 @@ public class GiftCertificateController implements PaginationController {
      * method getAllGiftCertificate
      * get mapping
      * method for find all gift certificate
-     *
      * @param webRequest -  request model
      * @return Certificates list
      */
@@ -57,7 +55,6 @@ public class GiftCertificateController implements PaginationController {
      * method findById
      * get mapping
      * method find certificate by id
-     *
      * @param id - id for found
      * @return Gift Certificate dto
      */
