@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -75,8 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto findById(Long id) {
-        Optional<Order> byId = orderDao.findById(id);
-        return byId.stream()
+        return orderDao.findById(id).stream()
                 .findAny()
                 .map(orderMapper::toDto)
                 .orElseThrow(() -> new ServiceException(

@@ -11,9 +11,6 @@ version '1.0-SNAPSHOT'
 
 allprojects() {
     configurations {
-      
-        // spring-boot-logging brought in logback and log4j-to-slf4j which I don't want
-        //   since I am using org.springframework.boot:spring-boot-starter-log4j2
         compile.exclude(group: 'ch.qos.logback')
         compile.exclude(group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j')
     }

@@ -29,5 +29,6 @@ public interface CrdTagDao extends BaseDao<Tag, Long> {
      * @param id certificate identifier
      * @return Tags list
      */
+
     List<Tag> findByCertificateId(Long id);
 }

@@ -48,7 +48,6 @@ public class GiftCertificateQueryBuilder extends BaseQueryBuilder<GiftCertificat
             } else {
                 addParamToQuery(params.get(paramKey)[0], root.get(paramKey), paramKey);  //like for string (name,description)
             }
-
         }
     }
 
@@ -59,8 +58,6 @@ public class GiftCertificateQueryBuilder extends BaseQueryBuilder<GiftCertificat
         for (String tagName : tagNames) {
             addJoinParamToQuery(tagName, root, RepoConstant.TAGS_NAME, RepoConstant.ENTITY_NAME);
         }
-
-
     }
 
     @Override

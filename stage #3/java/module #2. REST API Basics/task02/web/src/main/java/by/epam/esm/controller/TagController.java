@@ -149,6 +149,4 @@ public class TagController implements PaginationController {
         LinkUtil.addPageLinks(tagsPagedModel, TagController.class, webRequest, paginationDto, page);
         return tagsPagedModel;
     }
-
-
 }

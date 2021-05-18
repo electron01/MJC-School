@@ -41,7 +41,6 @@ public final class RepoConstant {
             "UPDATE users SET remove = TRUE " +
                     "WHERE id = :id AND remove = FALSE";
 
-
     public static final String GET_USER_BY_ID_REQUEST = "FROM User WHERE remove = FALSE AND id = :id";
 
     public static final String GET_TAG_BY_ID_REQUEST = "FROM Tag WHERE remove = FALSE AND id = :id";
@@ -57,7 +56,6 @@ public final class RepoConstant {
                     "WHERE tag_gift_certificate.gift_certificate_id = :gift_certificate_id " +
                     "AND tag.remove = FALSE AND gift_certificate.remove = FALSE";
 
-
     //Entity Table
     public static final String CERTIFICATE_DESCRIPTION = "description";
     public static final String CERTIFICATE_CREATE_DATE = "createDate";
@@ -68,7 +66,6 @@ public final class RepoConstant {
     public static final String REGEX = "%";
     public static final String USER_UPDATE_EXCEPTION = "For now User Entity not support update";
     public static final String UPDATE = "Update";
-
 
     //Builder
     public static final String LIMIT_PARAM = "limit";
@@ -83,6 +80,4 @@ public final class RepoConstant {
     public static final String PAGE = "page";
     public static final String USER_ENTITY = "user";
     public static final String CERTIFICATE_ID = "gift_certificate_id";
-
-
 }

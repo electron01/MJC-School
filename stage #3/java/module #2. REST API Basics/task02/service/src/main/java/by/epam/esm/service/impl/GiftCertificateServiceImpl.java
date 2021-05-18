@@ -238,7 +238,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         if (giftCertificateDto.getPrice() == null) {
             giftCertificateDto.setPrice(giftCertificateFromDb.getPrice());
         }
-
     }
 }
 

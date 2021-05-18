@@ -44,7 +44,6 @@ public class TagQueryBuilder extends BaseQueryBuilder<Tag> {
             } else {
                 addParamToQuery(params.get(paramKey)[0], root.get(paramKey), paramKey);
             }
-
         }
     }
 

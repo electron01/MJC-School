@@ -131,5 +131,4 @@ public class GiftCertificateController implements PaginationController {
         LinkUtil.addPageLinks(certificates, GiftCertificateController.class, webRequest, paginationDto, page);
         return certificates;
     }
-
 }

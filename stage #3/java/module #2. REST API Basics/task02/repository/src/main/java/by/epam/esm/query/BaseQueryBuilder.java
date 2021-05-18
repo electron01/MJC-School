@@ -71,7 +71,6 @@ public abstract class BaseQueryBuilder<T> {
 
     public abstract List<String> getTableColumns();
 
-
     public List<Predicate> getPredicateList() {
         return predicateList;
     }

@@ -2,8 +2,6 @@ package by.epam.esm.dao;
 
 import by.epam.esm.RepositoryConfig;
 import by.epam.esm.enity.Order;
-import by.epam.esm.enity.User;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +55,5 @@ public class TestOrderDao {
         Order order = new Order();
         order.setAllCost(BigDecimal.valueOf(80.00).setScale(2));
         return orderDao.add(order);
-
     }
 }

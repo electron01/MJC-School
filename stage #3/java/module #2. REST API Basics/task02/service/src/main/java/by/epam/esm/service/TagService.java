@@ -38,6 +38,6 @@ public interface TagService extends BaseService<TagDto, Long> {
      * @param name - tag name for find
      * @return found tag dto
      */
-    TagDto findByName(String name);
 
+    TagDto findByName(String name);
 }

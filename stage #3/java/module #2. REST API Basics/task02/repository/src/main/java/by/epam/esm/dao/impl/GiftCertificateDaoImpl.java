@@ -74,7 +74,7 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
         TypedQuery<GiftCertificate> tagTypedQuery = entityManager.createQuery(RepoConstant.GET_CERTIFICATE_BY_ID, GiftCertificate.class)
                 .setParameter(RepoConstant.ENTITY_ID, id);
         Optional<GiftCertificate> certificate = tagTypedQuery.getResultStream().findAny();
-//        certificate.ifPresent(entityManager::detach);//todo : ??? 2 select without join
+//        certificate.ifPresent(entityManager::detach);//todo : why two select ?
         return certificate;
     }
 
@@ -104,5 +104,4 @@ public class GiftCertificateDaoImpl implements CrudGiftCertificateDao {
                 .collect(Collectors.toList())
                 .size();
     }
-
 }

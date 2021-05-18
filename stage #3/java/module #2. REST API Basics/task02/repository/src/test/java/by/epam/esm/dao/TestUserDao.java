@@ -98,5 +98,4 @@ public class TestUserDao {
         user.setEmail("user@test.com");
         return userDao.add(user);
     }
-
 }

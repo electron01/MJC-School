@@ -17,6 +17,4 @@ public class PaginationUtil {
         int page = paginationDto.getStartPosition() / paginationDto.getLimit() + 1;
         return new  PagedModel.PageMetadata(paginationDto.getLimit(),page,countOfElements);
     }
-
-
 }

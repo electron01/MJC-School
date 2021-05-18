@@ -2,7 +2,6 @@ package by.epam.esm.constant;
 
 public class WebConstant {
 
-
     private WebConstant(){
 
     }
