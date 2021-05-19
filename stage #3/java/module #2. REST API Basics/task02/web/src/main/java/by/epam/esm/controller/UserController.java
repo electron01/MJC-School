@@ -7,8 +7,9 @@ import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.UserDto;
 import by.epam.esm.service.OrderService;
 import by.epam.esm.service.UserService;
-import by.epam.esm.util.LinkUtil;
 import by.epam.esm.util.PaginationUtil;
+import by.epam.esm.util.link.OrderLinkUtil;
+import by.epam.esm.util.link.UserLinkUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +24,15 @@ import java.util.Map;
 public class UserController implements PaginationController {
     private UserService userService;
     private OrderService orderService;
+    private UserLinkUtil userLinkUtil;
+    private OrderLinkUtil orderLinkUtil;
 
     @Autowired
-    public UserController(UserService userService, OrderService orderService) {
+    public UserController(UserService userService, OrderService orderService,UserLinkUtil userLinkUtil,OrderLinkUtil orderLinkUtil) {
         this.userService = userService;
         this.orderService = orderService;
+        this.userLinkUtil = userLinkUtil;
+        this.orderLinkUtil = orderLinkUtil;
     }
 
     /**
@@ -47,7 +52,7 @@ public class UserController implements PaginationController {
         PaginationDto paginationDto = PaginationUtil.getPaginationDto(page, limit);
         Map<String, String[]> parameterMap = webRequest.getParameterMap();
         List<UserDto> userDtoList = userService.findAll(parameterMap, paginationDto);
-        LinkUtil.addUserLinks(userDtoList);
+        userLinkUtil.addLinks(userDtoList);
         return ResponseEntity.ok(getPagedModel(userDtoList, paginationDto, webRequest, page));
     }
 
@@ -60,7 +65,7 @@ public class UserController implements PaginationController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> findById(@PathVariable Long userId) {
         UserDto userDto = userService.findById(userId);
-        LinkUtil.addUserLinks(List.of(userDto));
+        userLinkUtil.addLinks(List.of(userDto));
         return ResponseEntity.ok(userDto);
     }
 
@@ -100,10 +105,13 @@ public class UserController implements PaginationController {
      * @return order list
      */
     @GetMapping("/{userId}/order")
-    public ResponseEntity<List<OrderDto>> getOrders(@PathVariable Long userId){
-        List<OrderDto> orders = orderService.findByUserId(userId);
-        LinkUtil.addOrderLinks(orders);
-        return ResponseEntity.ok(orders);
+    public ResponseEntity<PagedModel<OrderDto>> getOrders(@PathVariable Long userId,
+                                                    @RequestParam(required = false, defaultValue = WebConstant.PAGE_DEFAULT_VALUE) Integer page,
+                                                    @RequestParam(required = false, defaultValue = WebConstant.LIMIT_DEFAULT_VALUE) Integer limit){
+        PaginationDto paginationDto = PaginationUtil.getPaginationDto(page, limit);
+        List<OrderDto> orders = orderService.findByUserId(userId,paginationDto);
+        orderLinkUtil.addLinks(orders);
+        return ResponseEntity.ok(getOrderPagedModel(orders,paginationDto,page,userId));
     }
 
     /**
@@ -128,14 +136,32 @@ public class UserController implements PaginationController {
      * @param webRequest - web parameters
      * method creates pagination
      * @see by.epam.esm.dto.entity.PaginationDto
-     * @return new Pagination dto
+     * @return PageModel<UserDto>
      */
     private PagedModel<UserDto> getPagedModel(List<UserDto> userDtoList, PaginationDto paginationDto, WebRequest webRequest, int page) {
         Map<String, String[]> params = webRequest.getParameterMap();
         int countOfElements = userService.getCountCountOfElements(params);
         PagedModel.PageMetadata pageMetadata = PaginationUtil.getPageMetaData(paginationDto, countOfElements);
         PagedModel<UserDto> tagsPagedModel = PagedModel.of(userDtoList, pageMetadata);
-        LinkUtil.addPageLinks(tagsPagedModel, UserController.class, webRequest, paginationDto, page);
+        userLinkUtil.addPageLinks(tagsPagedModel, UserController.class, webRequest, paginationDto, page);
+        return tagsPagedModel;
+    }
+
+    /**
+     * method getOrderPagedModel
+     * @param page number of page
+     * @param paginationDto - pagination dto
+     * @param orderList - list for pagination
+     * @param userId - web parameter
+     * method creates pagination
+     * @see by.epam.esm.dto.entity.PaginationDto
+     * @return PageModel<OrderDto>
+     */
+    private PagedModel<OrderDto> getOrderPagedModel(List<OrderDto> orderList, PaginationDto paginationDto, int page,Long userId) {
+        int countOfElements = orderService.getCountCountOrderByUserId(userId);
+        PagedModel.PageMetadata pageMetadata = PaginationUtil.getPageMetaData(paginationDto, countOfElements);
+        PagedModel<OrderDto> tagsPagedModel = PagedModel.of(orderList, pageMetadata);
+        userLinkUtil.addUserOrdersPagination(tagsPagedModel, UserController.class, paginationDto, page,userId);
         return tagsPagedModel;
     }
 }

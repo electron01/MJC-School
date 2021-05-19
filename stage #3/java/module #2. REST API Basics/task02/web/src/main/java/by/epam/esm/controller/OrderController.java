@@ -2,7 +2,7 @@ package by.epam.esm.controller;
 
 import by.epam.esm.dto.entity.OrderDto;
 import by.epam.esm.service.OrderService;
-import by.epam.esm.util.LinkUtil;
+import by.epam.esm.util.link.OrderLinkUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +20,12 @@ import java.util.List;
 @RequestMapping("/app/orders")
 public class OrderController {
     private OrderService orderService;
+    private OrderLinkUtil orderLinkUtil;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService,OrderLinkUtil orderLinkUtil) {
         this.orderService = orderService;
+        this.orderLinkUtil=orderLinkUtil;
     }
 
     /**
@@ -36,7 +38,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> findById(@PathVariable Long id) {
         OrderDto order = orderService.findById(id);
-        LinkUtil.addOrderLinks(List.of(order));
+        orderLinkUtil.addLinks(List.of(order));
         return ResponseEntity.ok(order);
     }
 

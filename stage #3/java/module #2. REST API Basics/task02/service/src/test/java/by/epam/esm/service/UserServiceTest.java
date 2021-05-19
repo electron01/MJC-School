@@ -4,10 +4,7 @@ import by.epam.esm.dao.UserDao;
 import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.UserDto;
 import by.epam.esm.dto.mapper.PaginationMapper;
-import by.epam.esm.dto.mapper.UserMapper;
 import by.epam.esm.dto.mapper.UserMapperImpl;
-import by.epam.esm.enity.Pagination;
-import by.epam.esm.enity.Tag;
 import by.epam.esm.enity.User;
 import by.epam.esm.exception.ServiceException;
 import by.epam.esm.service.impl.UserServiceImpl;
@@ -22,7 +19,10 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {

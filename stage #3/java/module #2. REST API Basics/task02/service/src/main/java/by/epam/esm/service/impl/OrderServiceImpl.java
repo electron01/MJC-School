@@ -1,21 +1,21 @@
 package by.epam.esm.service.impl;
 
 import by.epam.esm.dao.OrderDao;
-import by.epam.esm.dto.entity.GiftCertificateDto;
-import by.epam.esm.dto.entity.OrderDto;
-import by.epam.esm.dto.entity.OrderInfoDto;
-import by.epam.esm.dto.entity.UserDto;
+import by.epam.esm.dto.entity.*;
 import by.epam.esm.dto.mapper.GiftCertificateMapper;
 import by.epam.esm.dto.mapper.OrderMapper;
+import by.epam.esm.dto.mapper.PaginationMapper;
 import by.epam.esm.dto.mapper.UserMapper;
 import by.epam.esm.enity.GiftCertificate;
 import by.epam.esm.enity.Order;
+import by.epam.esm.enity.Pagination;
 import by.epam.esm.exception.ErrorCode;
 import by.epam.esm.exception.ErrorMessage;
 import by.epam.esm.exception.ServiceException;
 import by.epam.esm.service.GiftCertificateService;
 import by.epam.esm.service.OrderService;
 import by.epam.esm.service.UserService;
+import by.epam.esm.validator.BaseValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,18 +34,23 @@ public class OrderServiceImpl implements OrderService {
     private GiftCertificateService giftCertificateService;
     private GiftCertificateMapper giftCertificateMapper;
     private UserMapper userMapper;
+    private PaginationMapper paginationMapper;
+    private BaseValidator baseValidator;
 
     @Autowired
     public OrderServiceImpl(OrderMapper orderMapper, OrderDao orderDao,
                             UserService userService, GiftCertificateService giftCertificateService,
                             GiftCertificateMapper giftCertificateMapper,
-                            UserMapper userMapper) {
+                            UserMapper userMapper,PaginationMapper paginationMapper,
+                            BaseValidator baseValidator) {
         this.orderMapper = orderMapper;
         this.orderDao = orderDao;
         this.userService = userService;
         this.giftCertificateService = giftCertificateService;
         this.giftCertificateMapper = giftCertificateMapper;
         this.userMapper = userMapper;
+        this.paginationMapper = paginationMapper;
+        this.baseValidator = baseValidator;
     }
 
 
@@ -85,8 +90,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> findByUserId(Long userId) {
-        List<Order> orderList = orderDao.findByUserId(userId);
+    public List<OrderDto> findByUserId(Long userId, PaginationDto paginationDto) {
+        baseValidator.dtoValidator(paginationDto);
+        Pagination pagination = paginationMapper.toEntity(paginationDto);
+        List<Order> orderList = orderDao.findByUserId(userId,pagination);
         return orderList.stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
@@ -95,5 +102,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean delete(Long id) {
         return orderDao.deleteById(id);
+    }
+
+    @Override
+    public Integer getCountCountOrderByUserId(Long userId) {
+        return orderDao.getCountCountOfElements(userId);
     }
 }

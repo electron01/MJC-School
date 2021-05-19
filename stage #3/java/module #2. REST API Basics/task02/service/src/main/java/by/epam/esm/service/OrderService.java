@@ -2,8 +2,10 @@ package by.epam.esm.service;
 
 import by.epam.esm.dto.entity.OrderDto;
 import by.epam.esm.dto.entity.OrderInfoDto;
+import by.epam.esm.dto.entity.PaginationDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * class OrderService
@@ -33,9 +35,10 @@ public interface OrderService {
      * method findById
      * method for find Orders by userId
      * @param userId - search identifier
+     * @param paginationDto - offset and limit for find
      * @return found Order
      */
-    List<OrderDto> findByUserId(Long userId);
+    List<OrderDto> findByUserId(Long userId, PaginationDto paginationDto);
 
     /**
      * method delete
@@ -43,4 +46,12 @@ public interface OrderService {
      * @param id
      */
     boolean delete(Long id);
+
+    /**
+     * getCountCountOfElements
+     * method for find count of element
+     * @param userId - params for find
+     * @return count
+     */
+    Integer getCountCountOrderByUserId(Long userId);
 }

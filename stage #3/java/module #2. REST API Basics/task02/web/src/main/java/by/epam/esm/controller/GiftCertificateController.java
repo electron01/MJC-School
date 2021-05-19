@@ -4,8 +4,9 @@ import by.epam.esm.constant.WebConstant;
 import by.epam.esm.dto.entity.GiftCertificateDto;
 import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.service.GiftCertificateService;
-import by.epam.esm.util.LinkUtil;
 import by.epam.esm.util.PaginationUtil;
+import by.epam.esm.util.link.GIftCertificateLinkUtil;
+import by.epam.esm.util.link.TagLinkUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +27,14 @@ import java.util.Map;
 @RequestMapping("/app/gift-certificate")
 public class GiftCertificateController implements PaginationController {
     private GiftCertificateService giftCertificateService;
+    private GIftCertificateLinkUtil certificateLinkUtil;
+    private TagLinkUtil tagLinkUtil;
 
     @Autowired
-    public GiftCertificateController(GiftCertificateService giftCertificateService) {
+    public GiftCertificateController(GiftCertificateService giftCertificateService,GIftCertificateLinkUtil certificateLinkUtil,TagLinkUtil tagLinkUtil) {
         this.giftCertificateService = giftCertificateService;
+        this.certificateLinkUtil=certificateLinkUtil;
+        this.tagLinkUtil=tagLinkUtil;
     }
 
     /**
@@ -47,7 +52,7 @@ public class GiftCertificateController implements PaginationController {
         Map<String, String[]> parameterMap = webRequest.getParameterMap();
         PaginationDto paginationDto = PaginationUtil.getPaginationDto(page, limit);
         List<GiftCertificateDto> giftCertificates = giftCertificateService.findAll(parameterMap, paginationDto);
-        LinkUtil.addCertificateLinks(giftCertificates);
+        certificateLinkUtil.addLinks(giftCertificates);
         return ResponseEntity.ok(getPagedModel(giftCertificates, paginationDto, webRequest, page));
     }
 
@@ -61,7 +66,7 @@ public class GiftCertificateController implements PaginationController {
     @GetMapping("/{id}")
     public ResponseEntity<GiftCertificateDto> findById(@PathVariable Long id) {
         GiftCertificateDto certificate = giftCertificateService.findById(id);
-        LinkUtil.addTagLinks(certificate.getTags());
+        tagLinkUtil.addLinks(certificate.getTags());
         return ResponseEntity.ok(certificate);
     }
 
@@ -139,7 +144,7 @@ public class GiftCertificateController implements PaginationController {
         int countOfElements = giftCertificateService.getCountCountOfElements(params);
         PagedModel.PageMetadata pageMetadata = PaginationUtil.getPageMetaData(paginationDto, countOfElements);
         PagedModel<GiftCertificateDto> certificates = PagedModel.of(certificateList, pageMetadata);
-        LinkUtil.addPageLinks(certificates, GiftCertificateController.class, webRequest, paginationDto, page);
+        certificateLinkUtil.addPageLinks(certificates, GiftCertificateController.class, webRequest, paginationDto, page);
         return certificates;
     }
 }

@@ -3,6 +3,7 @@ package by.epam.esm.dao.impl;
 import by.epam.esm.constant.RepoConstant;
 import by.epam.esm.dao.OrderDao;
 import by.epam.esm.enity.Order;
+import by.epam.esm.enity.Pagination;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -45,12 +46,25 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findByUserId(Long userId) {
+    public List<Order> findByUserId(Long userId, Pagination pagination) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> query = criteriaBuilder.createQuery(Order.class);
         Root<Order> root = query.from(Order.class);
         query.where(criteriaBuilder.equal(root.join(RepoConstant.USER_ENTITY), userId));
         TypedQuery<Order> typedQuery = entityManager.createQuery(query);
+        typedQuery.setFirstResult(pagination.getStartPosition());
+        typedQuery.setMaxResults(pagination.getLimit());
         return typedQuery.getResultList();
+    }
+
+    @Override
+    public Integer getCountCountOfElements(Long userId) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Order> query = criteriaBuilder.createQuery(Order.class);
+        Root<Order> root = query.from(Order.class);
+        query.where(criteriaBuilder.equal(root.join(RepoConstant.USER_ENTITY), userId));
+       return entityManager.createQuery(query)
+               .getResultList()
+               .size();
     }
 }

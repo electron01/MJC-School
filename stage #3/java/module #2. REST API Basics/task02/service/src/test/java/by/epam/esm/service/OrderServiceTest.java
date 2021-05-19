@@ -2,10 +2,13 @@ package by.epam.esm.service;
 
 import by.epam.esm.dao.OrderDao;
 import by.epam.esm.dto.entity.OrderDto;
+import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.mapper.GiftCertificateMapper;
 import by.epam.esm.dto.mapper.OrderMapperImpl;
+import by.epam.esm.dto.mapper.PaginationMapperImpl;
 import by.epam.esm.dto.mapper.UserMapper;
 import by.epam.esm.enity.Order;
+import by.epam.esm.enity.Pagination;
 import by.epam.esm.exception.ServiceException;
 import by.epam.esm.service.impl.OrderServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -37,6 +40,8 @@ public class OrderServiceTest {
     private UserMapper userMapper;
     @Spy
     private OrderMapperImpl orderMapper;
+    @Spy
+    private PaginationMapperImpl paginationMapper;
     @InjectMocks
     private OrderServiceImpl orderService;
 
@@ -75,9 +80,10 @@ public class OrderServiceTest {
     public void findByCorrectUserIdTest(){
         //given
         Long userId = 1l;
-        Mockito.when(orderDao.findByUserId(userId)).thenReturn(correctOrderList);
+        PaginationDto pagination = new PaginationDto();
+        Mockito.when(orderDao.findByUserId(Mockito.any(),Mockito.any())).thenReturn(correctOrderList);
         //when
-        List<OrderDto> orderList = orderService.findByUserId(userId);
+        List<OrderDto> orderList = orderService.findByUserId(userId,pagination);
         //then
         Assertions.assertTrue(orderList.size()==correctOrderList.size());
     }
@@ -86,9 +92,9 @@ public class OrderServiceTest {
     public void findByUnCorrectUserIdTest(){
         //given
         Long unCorrectUserId = -1l;
-        Mockito.when(orderDao.findByUserId(unCorrectUserId)).thenReturn(new ArrayList<>());
+        Mockito.when(orderDao.findByUserId(Mockito.any(),Mockito.any(Pagination.class))).thenReturn(new ArrayList<>());
         //when
-        List<OrderDto> orderList = orderService.findByUserId(unCorrectUserId);
+        List<OrderDto> orderList = orderService.findByUserId(unCorrectUserId,new PaginationDto());
         //then
         Assertions.assertTrue(orderList.isEmpty());
     }

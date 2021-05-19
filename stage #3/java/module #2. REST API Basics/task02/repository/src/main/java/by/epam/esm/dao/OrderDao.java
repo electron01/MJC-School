@@ -1,8 +1,10 @@
 package by.epam.esm.dao;
 
 import by.epam.esm.enity.Order;
+import by.epam.esm.enity.Pagination;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -39,7 +41,16 @@ public interface OrderDao {
      * method findById
      * method for find Orders by userId
      * @param userId - search identifier
+     * @param pagination - offset and limit for find
      * @return found Order
      */
-    List<Order> findByUserId(Long userId);
+    List<Order> findByUserId(Long userId, Pagination pagination);
+
+    /**
+     * getCountCountOfElements
+     * method for find count of element
+     * @param userId - params for find
+     * @return count
+     */
+    Integer getCountCountOfElements(Long userId);
 }

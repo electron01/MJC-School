@@ -5,8 +5,8 @@ import by.epam.esm.constant.WebConstant;
 import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.TagDto;
 import by.epam.esm.service.TagService;
-import by.epam.esm.util.LinkUtil;
 import by.epam.esm.util.PaginationUtil;
+import by.epam.esm.util.link.TagLinkUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +28,12 @@ import java.util.Map;
 @RequestMapping("/app/tags")
 public class TagController implements PaginationController {
     private TagService tagService;
+    private TagLinkUtil tagLinkUtil;
 
     @Autowired
-    public TagController(TagService tagService) {
+    public TagController(TagService tagService, TagLinkUtil tagLinkUtil) {
         this.tagService = tagService;
+        this.tagLinkUtil=tagLinkUtil;
     }
 
     /**
@@ -49,7 +51,7 @@ public class TagController implements PaginationController {
         PaginationDto paginationDto = PaginationUtil.getPaginationDto(page, limit);
         Map<String, String[]> webRequestParameter = webRequest.getParameterMap();
         List<TagDto> tags = tagService.findAll(webRequestParameter, paginationDto);
-        LinkUtil.addTagLinks(tags);
+        tagLinkUtil.addLinks(tags);
         return ResponseEntity.ok(getPagedModel(tags, paginationDto, webRequest, page));
     }
 
@@ -151,7 +153,7 @@ public class TagController implements PaginationController {
         int countOfElements = tagService.getCountCountOfElements(params);
         PagedModel.PageMetadata pageMetadata = PaginationUtil.getPageMetaData(paginationDto, countOfElements);
         PagedModel<TagDto> tagsPagedModel = PagedModel.of(tagList, pageMetadata);
-        LinkUtil.addPageLinks(tagsPagedModel, TagController.class, webRequest, paginationDto, page);
+        tagLinkUtil.addPageLinks(tagsPagedModel, TagController.class, webRequest, paginationDto, page);
         return tagsPagedModel;
     }
 }
