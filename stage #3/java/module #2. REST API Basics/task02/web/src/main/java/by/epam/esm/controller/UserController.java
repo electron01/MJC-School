@@ -104,7 +104,7 @@ public class UserController implements PaginationController {
      * @param userId - find orders user
      * @return order list
      */
-    @GetMapping("/{userId}/order")
+    @GetMapping("/{userId}/orders")
     public ResponseEntity<PagedModel<OrderDto>> getOrders(@PathVariable Long userId,
                                                     @RequestParam(required = false, defaultValue = WebConstant.PAGE_DEFAULT_VALUE) Integer page,
                                                     @RequestParam(required = false, defaultValue = WebConstant.LIMIT_DEFAULT_VALUE) Integer limit){
@@ -122,7 +122,7 @@ public class UserController implements PaginationController {
      * @param orderInfoList - interaction information
      * @return new Order
      */
-    @PostMapping("/{userId}/order")
+    @PostMapping("/{userId}/orders")
     public ResponseEntity<OrderDto> addOrder(@PathVariable Long userId, @RequestBody List<OrderInfoDto>  orderInfoList){
         OrderDto orderDto = orderService.add(orderInfoList, userId);
         return ResponseEntity.ok(orderDto);

@@ -24,7 +24,7 @@ import java.util.Map;
  * @version 1.0
  */
 @RestController
-@RequestMapping("/app/gift-certificate")
+@RequestMapping("/app/gift-certificates")
 public class GiftCertificateController implements PaginationController {
     private GiftCertificateService giftCertificateService;
     private GIftCertificateLinkUtil certificateLinkUtil;
