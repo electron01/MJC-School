@@ -13,6 +13,8 @@ public class WebConstant {
     public static final String ORDERS = "Orders";
     public static final String PAGE_DEFAULT_VALUE = "1";
     public static final String LIMIT_DEFAULT_VALUE = "6";
+    public static final String PAGE = "page";
+    public static final String LIMIT = "limit";
 
     public static final String NEXT_PAGE = "nextPage";
     public static final String PREVIOUS_PAGE = "previousPage";

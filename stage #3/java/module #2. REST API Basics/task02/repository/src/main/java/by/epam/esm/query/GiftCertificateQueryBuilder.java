@@ -40,7 +40,7 @@ public class GiftCertificateQueryBuilder extends BaseQueryBuilder<GiftCertificat
                 addTagNames(root, params.get(paramKey));
 
             } else if (paramKey.equals(RepoConstant.CERTIFICATE_CREATE_DATE)//equal date type or integer
-                    || paramKey.equals(RepoConstant.CERTIFICATE_CREATE_DATE)
+                    || paramKey.equals(RepoConstant.CERTIFICATE_UPDATE_DATE)
                     || paramKey.equals(RepoConstant.CERTIFICATE_PRICE)
                     || paramKey.equals(RepoConstant.CERTIFICATE_DURATION)
             ) {

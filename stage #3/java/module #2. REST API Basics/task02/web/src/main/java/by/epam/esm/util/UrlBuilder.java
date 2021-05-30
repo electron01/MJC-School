@@ -1,7 +1,10 @@
 package by.epam.esm.util;
 
+import by.epam.esm.constant.WebConstant;
+
 import java.util.Map;
 import java.util.Set;
+
 /**
  * class UrlBuilder
  * class contains methods for create url
@@ -22,9 +25,14 @@ public class UrlBuilder {
         }
         StringBuilder url = new StringBuilder("?");
         for (String key : keySet) {
+            if (key.equals(WebConstant.PAGE) || key.equals(WebConstant.LIMIT)) {
+                continue;
+            }
             addParam(url, webParams.get(key), key);
         }
-        url.deleteCharAt(url.lastIndexOf("&"));
+        if(url.lastIndexOf("&")!=-1){
+            url.deleteCharAt(url.lastIndexOf("&"));
+        }
         return url.toString();
     }
 
