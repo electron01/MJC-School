@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,15 @@ public class TagServiceImpl implements TagService {
         this.baseValidator = baseValidator;
         this.tagMapper = tagMapper;
         this.paginationMapper = paginationMapper;
+    }
+
+    @Override
+    public TagDto mostWidelyUsedTag() {
+        return tagDao.mostWidelyUsedTag()
+                .stream()
+                .findAny()
+                .map(tagMapper::toDto)
+                .orElse(null);
     }
 
     @Override
@@ -64,10 +75,15 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagDto> findAll(PaginationDto paginationDto) {
+    public Integer getCountCountOfElements(Map<String, String[]> params) {
+        return tagDao.getCountOfElements(params);
+    }
+
+    @Override
+    public List<TagDto> findAll(Map<String, String[]> params, PaginationDto paginationDto) {
         baseValidator.dtoValidator(paginationDto);
         return tagDao
-                .findAll(paginationMapper.toEntity(paginationDto))
+                .findAll(params,paginationMapper.toEntity(paginationDto))
                 .stream()
                 .map(tagMapper::toDto)
                 .collect(Collectors.toList());
@@ -86,6 +102,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public TagDto add(TagDto dto) {
         baseValidator.dtoValidator(dto);
         if (tagDao.findByName(dto.getName()).isPresent()) {
@@ -95,6 +112,7 @@ public class TagServiceImpl implements TagService {
                     ));
         }
         Tag tag = tagMapper.toEntity(dto);
+        tag.setName(tag.getName().trim());
         Tag newTag = tagDao.add(tag);
         return tagMapper.toDto(newTag);
     }
@@ -106,12 +124,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void delete(Long id) {
-        if (!(tagDao.deleteById(id))) {
-            throw new ServiceException(ErrorCode.NOT_FIND_TAG_BY_ID,
-                    ErrorCode.NOT_FIND_TAG_BY_ID.getMessage(),
-                    Set.of(new ErrorMessage("id", String.valueOf(id), ErrorCode.NOT_FIND_TAG_BY_ID.getMessage()))
-            );
-        }
+    @Transactional
+    public boolean delete(Long id) {
+        return tagDao.deleteById(id);
     }
 }

@@ -22,7 +22,7 @@ import java.util.Set;
 @Component
 public class BaseValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseValidator.class);
-    private Validator validator;
+    private final Validator validator;
 
     @Autowired
     public BaseValidator(Validator validator) {

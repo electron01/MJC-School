@@ -1,15 +1,14 @@
 package by.epam.esm.service;
 
 import by.epam.esm.dao.impl.GiftCertificateDaoImpl;
+import by.epam.esm.dao.impl.GiftCertificateTagDaoImpl;
 import by.epam.esm.dto.entity.GiftCertificateDto;
 import by.epam.esm.dto.entity.PaginationDto;
-import by.epam.esm.dto.entity.request.DtoGiftCertificateRequestParam;
 import by.epam.esm.dto.mapper.GiftCertificateMapperImpl;
-import by.epam.esm.dto.mapper.GiftCertificateRequestMapperImpl;
 import by.epam.esm.dto.mapper.PaginationMapperImpl;
 import by.epam.esm.enity.GiftCertificate;
 import by.epam.esm.enity.Pagination;
-import by.epam.esm.enity.request.GiftCertificateRequestParam;
+import by.epam.esm.enity.Tag;
 import by.epam.esm.exception.ServiceException;
 import by.epam.esm.service.impl.GiftCertificateServiceImpl;
 import by.epam.esm.service.impl.TagServiceImpl;
@@ -24,8 +23,7 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GiftCertificateTest {
@@ -44,28 +42,28 @@ public class GiftCertificateTest {
     private GiftCertificateMapperImpl giftCertificateMapper;
     @Mock
     private GiftCertificateDaoImpl giftCertificateDao;
-    @Spy
-    private GiftCertificateRequestMapperImpl giftCertificateRequestMapper;
+    @Mock
+    private GiftCertificateTagDaoImpl giftCertificateTagDao;
     @InjectMocks
     private GiftCertificateServiceImpl giftCertificateService;
 
 
     @BeforeAll
     public static void init() {
-
         correctGiftCertificate.setId(CORRECT_ID);
         correctGiftCertificate.setName(CERTIFICATE_NAME);
+        List<Tag> tagList = new ArrayList<>();
+        correctGiftCertificate.setTags(tagList);
         certificateList = List.of(correctGiftCertificate, new GiftCertificate(), new GiftCertificate(), new GiftCertificate());
     }
-
 
     @Test
     public void findAllCertificateWithCorrectDto() {
         // Given Request for find all gift certificate
-        Mockito.when(giftCertificateDao.findAll(Mockito.any(GiftCertificateRequestParam.class),
+        Mockito.when(giftCertificateDao.findAll(Mockito.any(Map.class),
                 Mockito.any(Pagination.class))).thenReturn(certificateList);
         // When method findAll will start executing with default pagination params startPosition = 0 and Limit = 6
-        List<GiftCertificateDto> foundList = giftCertificateService.findAll(new DtoGiftCertificateRequestParam(), new PaginationDto());
+        List<GiftCertificateDto> foundList = giftCertificateService.findAll(new HashMap<>(), new PaginationDto());
         //Then a complete  certificate list should be received with startPosition = 0 and Limit = 6
         Assertions.assertTrue(foundList.size() == certificateList.size());
     }
@@ -76,19 +74,9 @@ public class GiftCertificateTest {
         // When method findAll will start executing with uncCorrect pagination params
         Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(Mockito.any(PaginationDto.class));
         // Then get an exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.findAll(new DtoGiftCertificateRequestParam(), new PaginationDto()));
+        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.findAll(new HashMap<>(), new PaginationDto()));
     }
 
-    @Test
-    public void findAllCertificateWithUnCorrectDto() {
-        // Given Request for find all gift certificate
-        // When method findAll will start executing with uncCorrect dto params
-        Mockito.doNothing().when(baseValidator).dtoValidator(Mockito.any(PaginationDto.class));
-        Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(Mockito.any(DtoGiftCertificateRequestParam.class));
-        // Then get an exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.findAll(new DtoGiftCertificateRequestParam(), new PaginationDto()));
-
-    }
 
     @Test
     public void findCertificateByCorrectId() {
@@ -153,6 +141,7 @@ public class GiftCertificateTest {
         Mockito.when(giftCertificateDao.update(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
         GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         giftCertificateDto.setId(correctGiftCertificate.getId());
+        giftCertificateDto.setName(correctGiftCertificate.getName());
         // When method update will start executing with correct params
         GiftCertificateDto updateCertificate = giftCertificateService.update(giftCertificateDto);
         //Then we get updated certificate
@@ -193,15 +182,18 @@ public class GiftCertificateTest {
         // When method deleteById will start executing with unCorrect id
         Mockito.when(giftCertificateDao.deleteById(UN_CORRECT_ID)).thenReturn(false);
         //Then returned exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> giftCertificateService.delete(UN_CORRECT_ID));
+        Assertions.assertFalse(giftCertificateService.delete(UN_CORRECT_ID));
     }
 
     @Test
     public void partUpdateCorrectDtoTest() {
         // Given Request for update giftCertificate
         Mockito.when(giftCertificateDao.update(Mockito.any(GiftCertificate.class))).thenReturn(correctGiftCertificate);
+        Mockito.when(giftCertificateDao.findById(Mockito.any())).thenReturn(Optional.of(correctGiftCertificate));
         // When method deleteById will start executing with correct certificate dto
-        GiftCertificateDto partUpdateDto = giftCertificateService.partUpdate(new GiftCertificateDto());
+        GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
+        giftCertificateDto.setId(correctGiftCertificate.getId());
+        GiftCertificateDto partUpdateDto = giftCertificateService.partUpdate(giftCertificateDto);
         //Then we get updated certificate
         Assertions.assertEquals(correctGiftCertificate.getName(), partUpdateDto.getName());
     }

@@ -1,7 +1,10 @@
 package by.epam.esm.enity;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -11,13 +14,29 @@ import java.util.Objects;
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
-public class GiftCertificate extends Entity {
+@Entity
+@Audited
+@Table(name = "gift_certificate")
+public class GiftCertificate extends BaseEntity{
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
+    @Column(name = "description", nullable = false)
     private String description;
+    @Column(name = "duration", nullable = false)
     private Integer duration;
+    @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
+    @Column(name = "last_update_date", nullable = false)
     private LocalDateTime updateDate;
+    @Column(name = "remove",nullable = false)
+    private Boolean remove=false;
+    @NotAudited
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "tag_gift_certificate",
+            joinColumns = @JoinColumn(name = "gift_certificate_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private List<Tag> tags;
 
     public String getName() {
@@ -76,23 +95,31 @@ public class GiftCertificate extends Entity {
         this.tags = tags;
     }
 
+
+    public Boolean getRemove() {
+        return remove;
+    }
+
+    public void setRemove(Boolean remove) {
+        this.remove = remove;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return Objects.equals(getId(),that.getId()) &&
-                Objects.equals(name, that.name) &&
+        return Objects.equals(name, that.name) &&
                 Objects.equals(price, that.price) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(duration, that.duration) &&
                 Objects.equals(createDate, that.createDate) &&
                 Objects.equals(updateDate, that.updateDate) &&
-                Objects.equals(tags, that.tags);
+                Objects.equals(remove, that.remove);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(),name, price, description, duration, createDate, updateDate, tags);
+        return Objects.hash(name, price, description, duration, createDate, updateDate, remove);
     }
 }

@@ -1,13 +1,16 @@
 package by.epam.esm.config;
 
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@ComponentScan("by.epam.esm")
-@EnableWebMvc
-@Import(ServiceConfig.class)
 public class SpringConfig {
+    @Bean
+    public ConfigurableServletWebServerFactory webServerFactory() {
+        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+        factory.addConnectorCustomizers(o -> o.setProperty("relaxedQueryChars", "|{}[]"));
+        return factory;
+    }
 }

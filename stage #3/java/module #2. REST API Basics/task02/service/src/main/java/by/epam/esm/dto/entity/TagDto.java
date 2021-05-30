@@ -1,5 +1,7 @@
 package by.epam.esm.dto.entity;
 
+import org.springframework.hateoas.server.core.Relation;
+
 import javax.validation.constraints.Pattern;
 /**
  * class Tag
@@ -7,6 +9,7 @@ import javax.validation.constraints.Pattern;
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
+@Relation(collectionRelation = "tags")
 public class TagDto extends EntityDto {
     @Pattern(regexp = "(?=.*([a-zA-Z\\.]\\s*){3,})(?=(^[\\s\\S]{0,25}$)).*",
             message = "GiftCertificateService Name must be longer than 3 characters and shorter than 25 characters" +

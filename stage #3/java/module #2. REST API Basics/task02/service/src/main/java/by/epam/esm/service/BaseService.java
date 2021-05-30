@@ -1,8 +1,12 @@
 package by.epam.esm.service;
 
 import by.epam.esm.dto.entity.EntityDto;
+import by.epam.esm.dto.entity.PaginationDto;
+import by.epam.esm.dto.entity.TagDto;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * interface BaseService
@@ -11,6 +15,15 @@ import java.io.Serializable;
  * @version 1.0
  */
 public interface BaseService<E extends EntityDto,ID extends Serializable> {
+    /**
+     * method findAll
+     * method for find all tags
+     * @param paginationDto - offset and limit for find
+     * @param params - params for search
+     * @return Tags dto list
+     */
+    List<E> findAll(Map<String,String[]> params, PaginationDto paginationDto);
+
     /**
      * method findById
      * method for find entity by id
@@ -40,5 +53,13 @@ public interface BaseService<E extends EntityDto,ID extends Serializable> {
      * method for delete entity by identifier
      * @param id
      */
-    void delete(ID id);
+    boolean delete(ID id);
+
+    /**
+     * getCountCountOfElements
+     * method for find count of element
+     * @param params - params for find
+     * @return count
+     */
+    Integer getCountCountOfElements(Map<String,String[]> params);
 }

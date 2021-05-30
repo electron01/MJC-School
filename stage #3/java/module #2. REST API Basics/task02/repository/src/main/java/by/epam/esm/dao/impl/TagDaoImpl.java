@@ -2,94 +2,115 @@ package by.epam.esm.dao.impl;
 
 import by.epam.esm.constant.RepoConstant;
 import by.epam.esm.dao.CrdTagDao;
-import by.epam.esm.dao.mapper.TagRowMapper;
 import by.epam.esm.enity.Pagination;
 import by.epam.esm.enity.Tag;
+import by.epam.esm.query.TagQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class TagDaoImpl implements CrdTagDao {
-    private JdbcTemplate jdbcTemplate;
-    private TagRowMapper tagRowMapper;
+    private TagQueryBuilder tagQueryBuilder;
 
     @Autowired
-    public TagDaoImpl(JdbcTemplate jdbcTemplate, TagRowMapper tagRowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.tagRowMapper = tagRowMapper;
+    public TagDaoImpl(TagQueryBuilder tagQueryBuilder) {
+        this.tagQueryBuilder = tagQueryBuilder;
+    }
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+
+    @Override
+    public Optional<Tag> mostWidelyUsedTag() {
+        Query nativeQuery = entityManager.createNativeQuery(RepoConstant.MOST_WIDELY_USED_TAG, Tag.class);
+        return nativeQuery.getResultList()
+                .stream()
+                .findAny();
     }
 
     @Override
     public Optional<Tag> findByName(String tagName) {
-        return jdbcTemplate.query(RepoConstant.GET_TAG_NY_NAME, new Object[]{tagName}, tagRowMapper)
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> query = criteriaBuilder.createQuery(Tag.class);
+        Root<Tag> from = query.from(Tag.class);
+        query.where(criteriaBuilder.equal(from.get(RepoConstant.ENTITY_NAME), tagName));
+        TypedQuery<Tag> tagTypedQuery = entityManager.createQuery(query);
+        return tagTypedQuery.getResultList()
                 .stream()
                 .findAny();
     }
 
     @Override
     public List<Tag> findByCertificateId(Long id) {
-        return jdbcTemplate.query(RepoConstant.GET_LIST_TAG_BY_CERTIFICATE_ID,
-                new Object[]{id},
-                tagRowMapper);
+        Query nativeQuery = entityManager.createNativeQuery(RepoConstant.GET_LIST_TAG_BY_CERTIFICATE_ID, Tag.class);
+        nativeQuery.setParameter(RepoConstant.CERTIFICATE_ID, id);
+        List resultList = nativeQuery.getResultList();
+        return resultList;
+
     }
 
     @Override
-    public List<Tag> findAll(Pagination pagination) {
-        return jdbcTemplate.query(RepoConstant.FIND_ALL_TAG_REQUEST,
-                new Object[]{pagination.getStartPosition(), pagination.getLimit()},
-                tagRowMapper);
+    public List<Tag> findAll(Map<String, String[]> params, Pagination pagination) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> criteriaQuery = tagQueryBuilder.createCriteriaQuery(params, criteriaBuilder);
+        TypedQuery<Tag> query = entityManager.createQuery(criteriaQuery);
+        query.setFirstResult(pagination.getStartPosition());
+        query.setMaxResults(pagination.getLimit());
+        return query.getResultList()
+                .stream()
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<Tag> findById(Long id) {
-        return jdbcTemplate.query(RepoConstant.GET_TAG_BY_ID_REQUEST, new Object[]{id}, tagRowMapper)
-                .stream()
-                .findAny();
+        TypedQuery<Tag> tagTypedQuery = entityManager.createQuery(RepoConstant.GET_TAG_BY_ID_REQUEST, Tag.class)
+                .setParameter(RepoConstant.ENTITY_ID, id);
+        Optional<Tag> tag = tagTypedQuery.getResultStream().findAny();
+        tag.ifPresent(entityManager::detach);
+        return tag;
     }
 
     @Override
     public Tag add(Tag entity) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> getAddNewTagStatement(con, entity), keyHolder);
-        entity.setId(getGeneratedId(keyHolder));
-        return findById(entity.getId())
-                .orElseThrow(() -> new EmptyResultDataAccessException(1));
+        entityManager.persist(entity);
+        return entity;
     }
 
     @Override
     public Tag update(Tag entity) {
-        throw new UnsupportedOperationException("Update");
+        throw new UnsupportedOperationException(RepoConstant.UPDATE);
     }
 
-
-    private PreparedStatement getAddNewTagStatement(Connection con, Tag entity) throws SQLException {
-        PreparedStatement preparedStatement = con.prepareStatement(RepoConstant.SAVE_TAG_REQUEST, Statement.RETURN_GENERATED_KEYS);
-        preparedStatement.setString(1, entity.getName());
-        return preparedStatement;
-
-    }
-
-    private Long getGeneratedId(KeyHolder keyHolder) {
-        return Optional.ofNullable(keyHolder.getKey())
-                .map(Number::longValue)
-                .orElseThrow(() -> new EmptyResultDataAccessException(1));
-    }
 
     @Override
     public boolean deleteById(Long id) {
-        return jdbcTemplate.update(RepoConstant.DELETE_TAG_BY_ID_REQUEST,
-                new Object[]{id}) == 1;
+        Query query = entityManager.createNativeQuery(RepoConstant.DELETE_TAG_BY_ID_REQUEST)
+                .setParameter(RepoConstant.ENTITY_ID, id);
+        return query.executeUpdate() == 1;
+    }
+
+    @Override
+    public Integer getCountOfElements(Map<String, String[]> params) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tag> criteriaQuery = tagQueryBuilder.createCriteriaQuery(params, criteriaBuilder);
+        TypedQuery<Tag> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList()
+                .stream()
+                .collect(Collectors.toList())
+                .size();
     }
 }
 

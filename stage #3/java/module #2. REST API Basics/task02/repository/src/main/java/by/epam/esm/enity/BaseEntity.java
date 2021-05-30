@@ -1,12 +1,19 @@
 package by.epam.esm.enity;
 
+import javax.persistence.*;
+
 /**
- * class Entity
+ * class BaseEntity
  * base abstract entity class
+ *
  * @author Aliaksei Tkachuk
  * @version 1.0
  */
-public abstract class Entity {
+@MappedSuperclass
+public abstract class BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     public Long getId() {

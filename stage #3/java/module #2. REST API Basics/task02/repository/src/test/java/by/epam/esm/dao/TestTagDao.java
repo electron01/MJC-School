@@ -8,152 +8,192 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-@SpringJUnitConfig(RepositoryConfig.class)
+@SpringBootTest(classes = RepositoryConfig.class)
 @ActiveProfiles("test")
+@Transactional
 public class TestTagDao {
 
     @Autowired
     private CrdTagDao tagDao;
-    private static Pagination pagination = new Pagination();
-
-    private static List<Tag> tags;
-    private static List<Tag> certificateTags;
-
+    private static Pagination pagination;
 
     @BeforeAll
-    public static void initBeforeTest() {
-        pagination.setLimit(6);
+    static void init() {
+        pagination = new Pagination();
         pagination.setStartPosition(0);
-        initTagList();
-
+        pagination.setLimit(6);
     }
 
     @Test
-    public void findAllTagTest() {
-        // Given Request for find all tags
-        // When method findAll will start executing with default pagination params
-        List<Tag> tagList = tagDao.findAll(pagination);
-        //Then a complete tag list should be received with startPosition = 0 and Limit = 6
-        Assertions.assertEquals(tags, tagList);
+    public void addNewTagTest() {
+        //given
+        Tag tag = new Tag();
+        tag.setName("tag1");
+        //when
+        Tag newTag = tagDao.add(tag);
+        //then
+        Assertions.assertNotNull(newTag.getId());
     }
 
     @Test
-    public void findAllTagsWithPagination() {
-        // Given Request for find all tags
+    public void findTagByCorrectIdTest() {
+        //given
+        Tag tag = new Tag();
+        tag.setName("tag1");
+        Tag newTag = tagDao.add(tag);
+        //when
+        Optional<Tag> foundTag = tagDao.findById(newTag.getId());
+        //then
+        Assertions.assertEquals(Optional.of(newTag),foundTag);
+    }
+
+    @Test
+    public void findTagByUnCorrectIdTest() {
+        //given
+        Long unCorrectId = -1l;
+        //when
+        Optional<Tag> foundTag = tagDao.findById(unCorrectId);
+        //then
+        Assertions.assertEquals(Optional.empty(),foundTag);
+    }
+
+    @Test
+    public void updateTag(){
+        //given
+        Tag tag = new Tag();
+        tag.setName("name1");
+        Tag newTag = tagDao.add(tag);
+        //when
+        newTag.setName("newName");
+        //then
+        Assertions.assertThrows(UnsupportedOperationException.class,()->tagDao.update(newTag));
+    }
+
+    @Test
+    public void findAllTagsWithPaginationTest(){
+        //given
+        createNewTag();
         Pagination pagination = new Pagination();
         pagination.setStartPosition(2);
-        pagination.setLimit(2);
-        // When method findAll will start executing with pagination params startPosition = 2 and Limit = 2
-        List<Tag> expectedTags = tags.subList(pagination.getStartPosition(), pagination.getLimit() + pagination.getStartPosition());
-        //Then a complete tag list should be received with startPosition = 2 and Limit = 2
-        Assertions.assertEquals(expectedTags, tagDao.findAll(pagination));
+        pagination.setLimit(1);
+        //when
+        List<Tag> foundTags = tagDao.findAll(new HashMap<>(), pagination);
+        //then
+        Assertions.assertTrue(foundTags.size()==1
+                && foundTags.get(0).getName().equals("newTag3"));
     }
 
     @Test
-    public void findTagByCorrectId() {
-        // Given Request for find tag by id
-        Long id = 1l;
-        // When method find will start executing with correct id
-        Optional<Tag> tag = tagDao.findById(id);
-        //Then returned Optional should be contains tag
-        Assertions.assertEquals(Optional.of(tags.get(id.intValue())), tag);
+    public void findAllTagsWithNameTest(){
+        //given
+        createNewTag();
+        Map<String,String[]> params = new HashMap<>();
+        params.put("name",new String[]{"newTag2"});
+        //when
+        List<Tag> foundTags = tagDao.findAll(params, pagination);
+        //then
+        Assertions.assertTrue(foundTags.size()==1
+                && foundTags.get(0).getName().equals("newTag2"));
     }
 
     @Test
-    public void findTagByUnCorrectId() {
-        // Given Request for find tag by id
-        Long id = -1l;
-        // When method find will start executing with unCorrect id
-        Optional<Tag> tag = tagDao.findById(id);
-        //Then returned Optional should be empty
-        Assertions.assertEquals(Optional.empty(), tag);
+    public void findAllTagsWithParamsTest(){
+        //given
+        createNewTag();
+        Map<String,String[]> params = new HashMap<>();
+        params.put("name",new String[]{"newTag"});
+        //when
+        List<Tag> foundTags = tagDao.findAll(params, pagination);
+        //then
+        Assertions.assertTrue(foundTags.size()==5);
     }
 
     @Test
-    public void findTagByCorrectCertificateId() {
-        // Given Request for find tag by certificate id
-        Long id = 1l;
-        // When method findByCertificateId will start executing with correct id
-        List<Tag> tagByCertificateId = tagDao.findByCertificateId(id);
-        //Then returned list should be contains tags related for certificate
-        Assertions.assertEquals(certificateTags, tagByCertificateId);
-    }
-
-    @Test
-    public void findTagByUnCorrectCertificateId() {
-        // Given Request for find tag by certificate id
-        Long id = -1l;
-        // When method findByCertificateId will start executing with unCorrect id
-        List<Tag> tagByCertificateId = tagDao.findByCertificateId(id);
-        //Then returned list should be empty
-        Assertions.assertTrue((tagByCertificateId).isEmpty());
-    }
-
-    @Test
-    public void addNewTag() {
-        // Given Request for add new tag
+    public void findTagByCorrectName(){
+        //given
+        String tagName = "testTag";
         Tag tag = new Tag();
-        tag.setId(10l);
-        tag.setName("newTag");
-        // When method add will start executing with correct tag
-        Tag savedTag = tagDao.add(tag);
-        // Then new tag must be saved with an autoIncrement identifier
-        Assertions.assertEquals(tag.getName(), savedTag.getName());
-        Assertions.assertNotNull(savedTag.getId());
+        tag.setName(tagName);
+        tagDao.add(tag);
+        //when
+        Optional<Tag> foundTag = tagDao.findByName(tagName);
+        //then
+        Assertions.assertEquals(Optional.of(tag),foundTag);
     }
 
     @Test
-    public void updateTag() {
-        // Given Request for update  tag
-        // When method update will start executing
-        // Then get an exception (UnsupportedOperationException)
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> tagDao.update(new Tag()));
+    public void findTagByUnCorrectName(){
+        //given
+        String unCorrectTagName = "unCorrectTagName";
+        //when
+        Optional<Tag> foundTag = tagDao.findByName(unCorrectTagName);
+        //then
+        Assertions.assertEquals(Optional.empty(),foundTag);
     }
 
+
     @Test
-    void deleteTagByCorrectId() {
-        // Given Request for delete tag by id
+    public void deleteTagByCorrectId(){
+        //given
         Tag tag = new Tag();
-        tag.setId(11l);
-        tag.setName("tagNew12)");
-        Tag savedTag = tagDao.add(tag);
-        // When method deleteById will start executing with correct id
-        boolean deleteById = tagDao.deleteById(savedTag.getId());
-        //Then certificate must be removed and method delete must be return true
-        Assertions.assertTrue(deleteById);
+        tag.setName("tag");
+        Tag newTag = tagDao.add(tag);
+        //when
+        tagDao.deleteById(newTag.getId());
+        //then
+        Assertions.assertEquals(Optional.empty(),tagDao.findById(newTag.getId()));
     }
 
     @Test
-    void deleteTagByUnCorrectId() {
-        // Given Request for delete tag by id
-        Long id = -1l;
-        // When method deleteById will start executing with unCorrect id
-        boolean deleteById = tagDao.deleteById(id);
-        //Then certificate must be return false
-        Assertions.assertFalse(deleteById);
+    public void deleteTagByUnCorrectId(){
+        //given
+        Long unCorrectId = -1l;
+        //when
+        boolean wasDeleted = tagDao.deleteById(unCorrectId);
+        //then
+        Assertions.assertFalse(wasDeleted);
     }
 
+    @Test
+    public void findAllTagWithSort(){
+        //given
+        createNewTag();
+        Map<String, String[]> params = new HashMap<>();
+        params.put("sort",new String[]{"desc[name]"});
+        //when
+        List<Tag> tags = tagDao.findAll(params, pagination);
+        //then
+        Assertions.assertEquals("newTag5",tags.get(0).getName());
+    }
 
-    private static void initTagList() {
-        tags = new ArrayList<>();
-        certificateTags = new ArrayList<>();
-        Long id = 0l;
-        String[] names = {"Extreme", "For him and for her", "Training", "Flying", "In another country", "Ride and Walk"};
-        for (String name : names) {
-            Tag tag = new Tag();
-            tag.setId(id++);
-            tag.setName(name);
-            tags.add(tag);
-        }
-        certificateTags.add(tags.get(0));
-        certificateTags.add(tags.get(1));
-        certificateTags.add(tags.get(3));
+    private void createNewTag(){
+        Tag tag1 = new Tag();
+        tag1.setName("newTag1");
+
+        Tag tag2 = new Tag();
+        tag2.setName("newTag2");
+
+        Tag tag3 = new Tag();
+        tag3.setName("newTag3");
+
+        Tag tag4 = new Tag();
+        tag4.setName("newTag4");
+
+        Tag tag5 = new Tag();
+        tag5.setName("newTag5");
+        tagDao.add(tag1);
+        tagDao.add(tag2);
+        tagDao.add(tag3);
+        tagDao.add(tag4);
+        tagDao.add(tag5);
     }
 }

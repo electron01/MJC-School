@@ -1,9 +1,9 @@
 package by.epam.esm.service;
 
-import by.epam.esm.dto.entity.PaginationDto;
 import by.epam.esm.dto.entity.TagDto;
 
 import java.util.List;
+
 /**
  * class TagService
  * interface extends BaseService and contains methods for tag
@@ -11,14 +11,8 @@ import java.util.List;
  * @version 1.0
  */
 public interface TagService extends BaseService<TagDto, Long> {
-    /**
-     * method findAll
-     * method for find all tags
-     * @param paginationDto - offset and limit for find
-     * @return Tags dto list
-     */
-    List<TagDto> findAll(PaginationDto paginationDto);
 
+     TagDto mostWidelyUsedTag();
     /**
      * method findByGiftCertificateId
      * method for find tags list related for certificate

@@ -1,9 +1,14 @@
+
 dependencies {
     implementation "org.springframework:spring-jdbc:5.2.13.RELEASE"
     testImplementation "org.springframework:spring-test:5.2.13.RELEASE"
     implementation "com.zaxxer:HikariCP:4.0.3"
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
     testImplementation "org.hsqldb:hsqldb:2.5.1"
+    implementation group: 'org.hibernate', name: 'hibernate-envers', version: '5.4.30.Final'
     implementation "mysql:mysql-connector-java:8.0.23"
     implementation "org.springframework:spring-context:5.2.13.RELEASE"
     implementation "org.springframework:spring-core:5.2.13.RELEASE"
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.5'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.5'
 }

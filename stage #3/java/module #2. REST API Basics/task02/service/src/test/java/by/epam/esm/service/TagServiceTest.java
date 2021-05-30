@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +59,7 @@ public class TagServiceTest {
         // When method findAll will start executing with unCorrect pagination params
         Mockito.doThrow(ServiceException.class).when(baseValidator).dtoValidator(unCorrectPaginationDto);
         // Then get an exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> tagService.findAll(unCorrectPaginationDto));
+        Assertions.assertThrows(ServiceException.class, () -> tagService.findAll(new HashMap<>(),unCorrectPaginationDto));
     }
 
     @Test
@@ -146,9 +147,9 @@ public class TagServiceTest {
     public void deleteByUnCorrectIdTest() {
         // Given Request for delete teg by id
         // When method deleteById will start executing with unCorrect id
-        Mockito.when(tagDao.deleteById(CORRECT_ID)).thenReturn(false);
+        Mockito.when(tagDao.deleteById(UN_CORRECT_ID)).thenReturn(false);
         // Then get an exception (ServiceException)
-        Assertions.assertThrows(ServiceException.class, () -> tagService.delete(CORRECT_ID));
+        Assertions.assertFalse(tagService.delete(UN_CORRECT_ID));
     }
 
     @Test
@@ -174,8 +175,8 @@ public class TagServiceTest {
         // Given Request for find all tags
         PaginationDto paginationDto = new PaginationDto();
         // When method findAll will start executing with default pagination params startPosition = 0 and Limit = 6
-        Mockito.when(tagDao.findAll(Mockito.any(Pagination.class))).thenReturn(tagList);
+        Mockito.when(tagDao.findAll(Mockito.anyMap(),Mockito.any(Pagination.class))).thenReturn(tagList);
         //Then a complete  tag list should be received with startPosition = 0 and Limit = 6
-        Assertions.assertTrue(tagList.size() == tagService.findAll(paginationDto).size());
+        Assertions.assertTrue(tagList.size() == tagService.findAll(new HashMap<>(),paginationDto).size());
     }
 }
